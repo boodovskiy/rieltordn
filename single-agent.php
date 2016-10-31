@@ -64,13 +64,13 @@ get_header();
                                                         <ul class="contacts-list">
                                                             <?php
                                                             if(!empty($agent_office_phone)){
-                                                                ?><li class="office"><?php include( get_template_directory() . '/images/icon-phone.svg' ); _e('Office', 'framework'); ?> : <?php echo $agent_office_phone; ?></li><?php
+                                                                ?><li class="office"><?php include( get_template_directory() . '/images/icon-phone.svg' ); _e('Office', 'framework'); ?> : <?php echo esc_html( $agent_office_phone ); ?></li><?php
                                                             }
                                                             if(!empty($agent_mobile)){
-                                                                ?><li class="mobile"><?php include( get_template_directory() . '/images/icon-mobile.svg' ); _e('Mobile', 'framework'); ?> : <?php echo $agent_mobile; ?></li><?php
+                                                                ?><li class="mobile"><?php include( get_template_directory() . '/images/icon-mobile.svg' ); _e('Mobile', 'framework'); ?> : <?php echo esc_html( $agent_mobile ); ?></li><?php
                                                             }
                                                             if(!empty($agent_office_fax)){
-                                                                ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?>  : <?php echo $agent_office_fax; ?></li><?php
+                                                                ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?>  : <?php echo esc_html( $agent_office_fax ); ?></li><?php
                                                             }
                                                             ?>
                                                         </ul>
@@ -93,40 +93,51 @@ get_header();
                                             $twitter_url = get_post_meta($post->ID, 'REAL_HOMES_twitter_url',true);
                                             $google_plus_url = get_post_meta($post->ID, 'REAL_HOMES_google_plus_url',true);
                                             $linked_in_url = get_post_meta($post->ID, 'REAL_HOMES_linked_in_url',true);
+                                            $instagram_url = get_post_meta($post->ID, 'inspiry_instagram_url',true);
 
-                                            if(!empty($facebook_url) || !empty($twitter_url) || !empty($google_plus_url) || !empty($linked_in_url)){
+                                            if(!empty($facebook_url) || !empty($twitter_url) || !empty($google_plus_url) || !empty($linked_in_url) || !empty($instagram_url)){
                                                 ?>
                                                 <!-- Agent's Social Navigation -->
                                                 <ul class="social_networks clearfix">
                                                     <?php
-                                                    if(!empty($facebook_url)){
+                                                    if ( ! empty( $facebook_url ) ) {
                                                         ?>
                                                         <li class="facebook">
-                                                            <a target="_blank" href="<?php echo $facebook_url; ?>"><i class="fa fa-facebook fa-lg"></i></a>
+                                                            <a target="_blank" href="<?php echo esc_url( $facebook_url ); ?>"><i class="fa fa-facebook fa-lg"></i></a>
                                                         </li>
-                                                    <?php
-                                                    }
-                                                    if(!empty($twitter_url)){
-                                                        ?>
-                                                        <li class="twitter">
-                                                            <a target="_blank" href="<?php echo $twitter_url; ?>" ><i class="fa fa-twitter fa-lg"></i></a>
-                                                        </li>
-                                                    <?php
-                                                    }
-                                                    if(!empty($linked_in_url)){
-                                                        ?>
-                                                        <li class="linkedin">
-                                                            <a target="_blank" href="<?php echo $linked_in_url; ?>"><i class="fa fa-linkedin fa-lg"></i></a>
-                                                        </li>
-                                                    <?php
+                                                        <?php
                                                     }
 
-                                                    if(!empty($google_plus_url)){
+                                                    if ( ! empty( $twitter_url ) ) {
+                                                        ?>
+                                                        <li class="twitter">
+                                                            <a target="_blank" href="<?php echo esc_url( $twitter_url ); ?>"><i class="fa fa-twitter fa-lg"></i></a>
+                                                        </li>
+                                                        <?php
+                                                    }
+
+                                                    if ( ! empty( $linked_in_url ) ) {
+                                                        ?>
+                                                        <li class="linkedin">
+                                                            <a target="_blank" href="<?php echo esc_url( $linked_in_url ); ?>"><i class="fa fa-linkedin fa-lg"></i></a>
+                                                        </li>
+                                                        <?php
+                                                    }
+
+                                                    if ( ! empty( $google_plus_url ) ) {
                                                         ?>
                                                         <li class="gplus">
-                                                            <a target="_blank" href="<?php echo $google_plus_url; ?>"><i class="fa fa-google-plus fa-lg"></i></a>
+                                                            <a target="_blank" href="<?php echo esc_url( $google_plus_url ); ?>"><i class="fa fa-google-plus fa-lg"></i></a>
                                                         </li>
-                                                    <?php
+                                                        <?php
+                                                    }
+
+                                                    if ( ! empty( $instagram_url ) ) {
+                                                        ?>
+                                                        <li class="instagram">
+                                                            <a target="_blank" href="<?php echo esc_url( $instagram_url ); ?>"><i class="fa fa-instagram fa-lg"></i></a>
+                                                        </li>
+                                                        <?php
                                                     }
                                                     ?>
                                                 </ul>
@@ -140,19 +151,29 @@ get_header();
                             endif;
 
 
+                            /**
+                             * Agent properties
+                             */
+                            $number_of_properties = intval(get_option('theme_number_of_properties_agent'));
+                            if(!$number_of_properties){
+                                $number_of_properties = 6;
+                            }
 
                             $agent_id = $post->ID;
 
+                            global $paged;
+
                             $agent_properties_args = array(
                                 'post_type' => 'property',
-                                'posts_per_page' => -1,
+                                'posts_per_page' => $number_of_properties,
                                 'meta_query' => array(
                                     array(
                                         'key' => 'REAL_HOMES_agents',
                                         'value' => $agent_id,
                                         'compare' => '='
                                     )
-                                )
+                                ),
+                                'paged' => $paged
                             );
 
                             $agent_properties_listing_query = new WP_Query( $agent_properties_args );
@@ -162,14 +183,14 @@ get_header();
                                     $agent_properties_listing_query->the_post();
 
                                     /* Display Property for Listing */
-                                    get_template_part('template-parts/property-for-listing');
+                                    get_template_part('template-parts/property-for-single-agent');
 
                                 endwhile;
-                                wp_reset_query();
+                                wp_reset_postdata();
                             endif;
                             ?>
                         </div>
-
+                        <?php theme_pagination( $agent_properties_listing_query->max_num_pages); ?>
                     </section>
 
                 </div><!-- End Main Content -->

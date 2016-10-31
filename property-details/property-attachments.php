@@ -3,13 +3,16 @@ $display_display_attachments = get_option('theme_display_attachments');
 if( $display_display_attachments == 'true' ){
     global $post;
     $attachments = get_post_meta( $post->ID, 'REAL_HOMES_attachments',false);
+    if ( is_array( $attachments ) ) {
+        $attachments = array_filter( $attachments );
+    }
     if( !empty($attachments) ){
         ?>
         <div class="attachments-wrap clearfix">
             <?php
             $property_attachments_title = get_option('theme_property_attachments_title');
             if( !empty( $property_attachments_title ) ){
-                ?><span class="attachments-label"><?php echo $property_attachments_title; ?></span><?php
+                ?><span class="attachments-label"><?php echo esc_html( $property_attachments_title ); ?></span><?php
             }
             ?>
             <div class="attachments-inner clearfix">

@@ -8,7 +8,8 @@
 <?php if ( have_comments() ): ?>
 
     <h3 id="comments-title">
-        <?php comments_number(__('No Comment','framework'), __('One Comment','framework'), __('(%) Comments','framework') );?>
+        <i class="fa fa-comments" aria-hidden="true"></i>
+        <?php comments_number(__('No Comment','framework'), __('One Comment','framework'), __('% Comments','framework') );?>
     </h3>
 
     <ol class="commentlist">

@@ -19,6 +19,10 @@ switch($theme_homepage_module){
         get_template_part('template-parts/slider');
         break;
 
+    case 'search-form-over-image':
+        get_template_part('template-parts/search-form-over-image');
+        break;
+
     case 'slides-slider':
         get_template_part('template-parts/separate-slider');
         break;
@@ -41,35 +45,35 @@ switch($theme_homepage_module){
         $main_border_class = 'top-border';
         break;
 }
-
 ?>
-
     <!-- Content -->
     <div class="container contents">
+
         <div class="row">
 
             <div class="span12">
-
-                <!-- Main Content -->
                 <?php
-                    $search_page_url = get_option('theme_search_url');
-                    if( empty( $search_page_url ) ){
-                        $main_border_class = 'top-border';
-                    }
+                if ( !inspiry_is_search_page_configured() ) {
+                    $main_border_class = 'top-border';
+                }
                 ?>
-                <div class="main <?php echo $main_border_class; ?>">
+	            <!-- Main Content -->
+                <div class="main <?php echo esc_attr( $main_border_class ); ?>">
                     <?php
-                    /* Display home search area widgets if there is any - otherwise display default advance search form */
-                    if ( is_active_sidebar( 'home-search-area' ) ) :
-                        dynamic_sidebar( 'home-search-area' );
-                    else:
-                        $show_home_search = get_option('theme_show_home_search');
-                        if( $show_home_search == 'true' ){
-                            /* Advance Search Form for Homepage */
-                            get_template_part('template-parts/advance-search');
-                        }
-                    endif;
+                    /* In case of search form over image, we do not need to display search form below */
+                    if ( $theme_homepage_module != 'search-form-over-image' ) {
 
+	                    /* Display home search area widgets if there is any - otherwise display default advance search form */
+	                    if ( is_active_sidebar( 'home-search-area' ) ) :
+		                    dynamic_sidebar( 'home-search-area' );
+	                    else:
+		                    $show_home_search = get_option( 'theme_show_home_search' );
+		                    if ( $show_home_search == 'true' ) {
+			                    /* Advance Search Form for Homepage */
+			                    get_template_part( 'template-parts/advance-search' );
+		                    }
+	                    endif;
+                    }
 
                     /* Homepage Contents from Page Editor */
                     if ( have_posts() ) :
@@ -94,51 +98,8 @@ switch($theme_homepage_module){
                     if( $show_home_properties == 'true' ){
                         get_template_part("template-parts/home-properties") ;
                     }
-					?>
-					<!-- Homepage 3 Buttons! -->
-					<section class="home-recent-posts container-fluid clearfix 3buttons">
-        <div class="recent-posts-container row-fluid clearfix">
-<!-- 1 Button -->
-	
-	<article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
-		<figure>
-<span class="format-icon image"></span>
-                    <a href="http://dnrieltor.bget.ru/property-status/prodazha/?view=list" title="">
-<div class="image123">
-					<img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/1.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
-<h123>ДЛЯ ПОКУПАТЕЛЕЙ</h123>        
-</div>			</a>
-		</figure>
-	</article>
-	
-<!-- 2 Button -->	
-<article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
-		<figure>
-<span class="format-icon image"></span>
-                    <a href="http://dnrieltor.bget.ru/lorem-post-with-image-format/" title="">
-<div class="image123">
-					<img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/2.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
-<h123>ДЛЯ ВЛАДЕЛЬЦЕВ</h123>        
-</div>	
-        </a>
-		</figure>
-	</article>
-<!-- 3 Button -->	
-	<article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
-		<figure>
-<span class="format-icon image"></span>
-                    <a href="http://dnrieltor.bget.ru/property-status/arenda/?view=list" title="">
-<div class="image123">
-					<img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/3.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
-<h123>АРЕНДА</h123>        
-</div>	        </a>
-		</figure>
-	</article>
 
-		</div>
-					</section>
 
-					<?php
                     /* Featured Properties */
                     $show_featured_properties = get_option('theme_show_featured_properties');
                     if($show_featured_properties == 'true'){

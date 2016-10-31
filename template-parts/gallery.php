@@ -39,7 +39,7 @@ get_header();
 
                         <!-- Gallery Container -->
                         <div id="gallery-container">
-                            <div class="<?php global $gallery_name; echo $gallery_name; ?> isotope clearfix">
+                            <div class="<?php global $gallery_name; echo esc_attr( $gallery_name ); ?> isotope clearfix">
                                 <?php
                                 // Basic Gallery Query
                                 $query_args = array(
@@ -74,7 +74,7 @@ get_header();
                                             ?>
                                             <figure>
                                                 <div class="media_container">
-                                                    <a class="<?php echo get_lightbox_plugin_class(); ?> zoom" <?php echo generate_gallery_attribute(); ?> href="<?php echo $full_image_url; ?>" title="<?php the_title(); ?>"></a>
+                                                    <a class="<?php echo get_lightbox_plugin_class(); ?> zoom" <?php echo generate_gallery_attribute(); ?> href="<?php echo esc_url( $full_image_url ); ?>" title="<?php the_title(); ?>"></a>
                                                     <a class="link" href="<?php the_permalink(); ?>"></a>
                                                 </div>
                                                 <?php echo '<img class="img-border" src="'.$featured_image[0].'" alt="'.get_the_title().'">'; ?>

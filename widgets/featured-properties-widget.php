@@ -112,18 +112,18 @@ class Featured_Properties_Widget extends WP_Widget {
 		
 		    ?>
 			<p>
-	            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title', 'framework'); ?></label>
-	            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+	            <label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Widget Title', 'framework'); ?></label>
+	            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 	        </p>
 			<p>
-                <label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Properties', 'framework'); ?></label>
-                <input class="widefat" id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="text" value="<?php echo $count; ?>" />
+                <label for="<?php echo esc_attr( $this->get_field_id('count') ); ?>"><?php _e('Number of Properties', 'framework'); ?></label>
+                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('count') ); ?>" name="<?php echo esc_attr( $this->get_field_name('count') ); ?>" type="text" value="<?php echo esc_attr( $count ); ?>" />
 			</p>
 			<p>
-				<label for="<?php echo $this->get_field_id('sort_by'); ?>"><?php _e('Sort By:', 'framework') ?></label>
-				<select name="<?php echo $this->get_field_name('sort_by'); ?>" id="<?php echo $this->get_field_id('sort_by'); ?>" class="widefat">
-						<option value="recent"<?php selected( $sort_by, 'recent' ); ?>><?php _e('Most Recent', 'framework'); ?></option>
-						<option value="random"<?php selected( $sort_by, 'random' ); ?>><?php _e('Random', 'framework'); ?></option>
+				<label for="<?php echo esc_attr( $this->get_field_id('sort_by') ); ?>"><?php _e('Sort By:', 'framework') ?></label>
+				<select name="<?php echo esc_attr( $this->get_field_name('sort_by') ); ?>" id="<?php echo esc_attr( $this->get_field_id('sort_by') ); ?>" class="widefat">
+						<option value="recent" <?php selected( $sort_by, 'recent' ); ?>><?php _e('Most Recent', 'framework'); ?></option>
+						<option value="random" <?php selected( $sort_by, 'random' ); ?>><?php _e('Random', 'framework'); ?></option>
 				</select>
 			</p>
 		    <?php

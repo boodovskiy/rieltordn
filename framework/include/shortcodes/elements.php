@@ -239,7 +239,7 @@ if( !function_exists( 'inspiry_properties' ) ) {
                     $properties_shortcode_query->the_post();
 
                     // display property in list layout
-                    get_template_part('template-parts/property-for-listing');
+                    get_template_part('template-parts/property-for-single-agent');
 
                 endwhile;
                 echo '</div>';
@@ -253,7 +253,7 @@ if( !function_exists( 'inspiry_properties' ) ) {
                     $properties_shortcode_query->the_post();
 
                     // Display Property in grid layout
-                    get_template_part('template-parts/property-for-grid');
+                    get_template_part('template-parts/property-for-similar-section');
 
                 endwhile;
                 echo '</div>';

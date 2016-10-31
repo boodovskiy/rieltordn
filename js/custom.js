@@ -1,8 +1,11 @@
-﻿(function($){
-
+(function($){
     "use strict";
 
     $(document).ready(function() {
+
+        var $window = $(window),
+            $body = $('body'),
+            isRtl = $body.hasClass('rtl');
 
         /*-----------------------------------------------------------------------------------*/
         /* For RTL Languages
@@ -96,7 +99,7 @@
             });
 
             // Flex Slider Gallery Post
-            $('.listing-slider ').flexslider({
+            $('.listing-slider').flexslider({
                 animation: "slide"
             });
 
@@ -116,7 +119,7 @@
                 directionNav: true,
                 controlNav: false,
                 animationLoop: false,
-                slideshow: true,
+                slideshow: false,
                 sync: "#property-carousel-two",
                 start: function (slider) {
                     slider.removeClass('loading');
@@ -247,14 +250,6 @@
                 }
             });
 
-            // Property detail page form
-            $('#agent-contact-form').validate({
-                errorLabelContainer: errorContainer,
-                submitHandler: function(form) {
-                    $(form).ajaxSubmit( formOptions );
-                }
-            });
-
             // Agent single page form
             $('#agent-single-form').validate( {
                 errorLabelContainer: errorContainer,
@@ -283,7 +278,9 @@
         {
             $(".pretty-photo").prettyPhoto({
                 deeplinking: false,
-                social_tools: false
+                social_tools: false,
+				theme: 'dark_square',
+				show_title: false
             });
 
             $('a[data-rel]').each(function() {
@@ -292,10 +289,11 @@
 
             $("a[rel^='prettyPhoto']").prettyPhoto({
                 overlay_gallery: false,
-                social_tools:false
+                social_tools:false,
+				theme: 'dark_square',
+				show_title: false
             });
         }
-
 
 
         /*-------------------------------------------------------*/
@@ -459,135 +457,11 @@
         $('.tagcloud').addClass('clearfix');
         $('.tagcloud a').removeAttr('style');
 
-        /*-----------------------------------------------------------------------------------*/
-        /*	Max and Min Price Related JavaScript - to show red outline of min is bigger than max
-        /*-----------------------------------------------------------------------------------*/
-        $('#select-min-price,#select-max-price').change(function(obj, e){
-            var min_text_val = $('#select-min-price').val();
-            var min_int_val = (isNaN(min_text_val))?0:parseInt(min_text_val);
-
-            var max_text_val = $('#select-max-price').val();
-            var max_int_val = (isNaN(max_text_val))?0:parseInt(max_text_val);
-			
-            if( (min_int_val >= max_int_val) && (min_int_val != 0) && (max_int_val != 0)){
-                $('#select-max-price,#select-min-price').css('outline','2px solid red');
-            }else{
-                $('#select-max-price,#select-min-price').css('outline','none');
-            }
-			
-			if (min_text_val >= max_text_val) {
-				$('#select-max-price').val(min_int_val+1);
-			}
-        });
-
-        $('#select-min-price-for-rent, #select-max-price-for-rent').change(function(obj, e){
-            var min_text_val = $('#select-min-price-for-rent').val();
-            var min_int_val = (isNaN(min_text_val))?0:parseInt(min_text_val);
-
-            var max_text_val = $('#select-max-price-for-rent').val();
-            var max_int_val = (isNaN(max_text_val))?0:parseInt(max_text_val);
-
-            if( (min_int_val >= max_int_val) && (min_int_val != 0) && (max_int_val != 0)){
-                $('#select-max-price-for-rent_input,#select-min-price-for-rent_input').css('outline','2px solid red');
-            }else{
-                $('#select-max-price-for-rent_input,#select-min-price-for-rent_input').css('outline','none');
-            }
-
-            if (min_text_val >= max_text_val) {
-                $('#select-max-price-for-rent').val(min_int_val+1);
-            }
-        });
-
-        /*-----------------------------------------------------------------------------------*/
-        /*	Max and Min Area Related JavaScript - to show red outline of min is bigger than max
-         /*-----------------------------------------------------------------------------------*/
-        $('#min-area,#max-area').change(function(obj, e){
-            var min_text_val = $('#min-area').val();
-            var min_int_val = (isNaN(min_text_val))?0:parseInt(min_text_val);
-
-            var max_text_val = $('#max-area').val();
-            var max_int_val = (isNaN(max_text_val))?0:parseInt(max_text_val);
-			
-            if( (min_int_val >= max_int_val) && (min_int_val != 0) && (max_int_val != 0)){
-                $('#min-area,#max-area').css('outline','2px solid red');
-            }else{
-                $('#min-area,#max-area').css('outline','none');
-            }
-        });
-
-		
-		
-        /*-----------------------------------------------------------------------------------*/
-        /*	Property ID Change Event
-        /*-----------------------------------------------------------------------------------*/
-        /*$('.advance-search-form #property-id-txt').change(function(obj, e){
-            var search_form = $(this).closest('form.advance-search-form');
-            var input_controls = search_form.find('input').not('#property-id-txt, .real-btn');
-            if( $(this).val().length > 0  ){
-                input_controls.prop('disabled', true);
-            }else{
-                input_controls.prop('disabled', false);
-            }
-        });*/
-
-        /*-----------------------------------------------------------------------------------*/
-        /* Submit Property Page
-        /*-----------------------------------------------------------------------------------*/
-
-        /* Validate Form */
-        if( jQuery().validate ){
-
-            //Login
-            $('#login-form').validate();
-
-            //Register
-            $('#register-form').validate();
-
-            //Forgot Password
-            $('#forgot-form').validate();
-
-        }
-
-        /* Forgot Form */
-        $('.login-register #forgot-form').slideUp('fast');
-        $('.login-register .toggle-forgot-form').click(function(event){
-            event.preventDefault();
-            $('.login-register #forgot-form').slideToggle('fast');
-        });
-
 
         /* dsIDXpress */
         $('#dsidx-top-search #dsidx-search-form table td').removeClass('label');
         $('.dsidx-tag-pre-foreclosure br').replaceWith(' ');
 
-
-        /*-----------------------------------------------------------------------------------*/
-        /* Display Price Fields Based on Status Selection
-        /*-----------------------------------------------------------------------------------*/
-        if ( typeof localized.rent_slug !== "undefined" ){
-            var property_status_changed = function( new_status ){
-                var price_for_others = $('.advance-search-form .price-for-others');
-                var price_for_rent = $('.advance-search-form .price-for-rent');
-                if( price_for_others.length > 0 && price_for_rent.length > 0){
-                    if( new_status == localized.rent_slug ){
-                        price_for_others.addClass('hide-fields').find('select').prop('disabled', true);
-                        price_for_rent.removeClass('hide-fields').find('select').prop('disabled', false);
-                    }else{
-                        price_for_rent.addClass('hide-fields').find('select').prop('disabled', true);
-                        price_for_others.removeClass('hide-fields').find('select').prop('disabled', false);
-                    }
-                }
-            }
-            $('.advance-search-form #select-status').change(function(e){
-                var selected_status = $(this).val();
-                property_status_changed(selected_status);
-            });
-            /* On page load ( as on search page ) */
-            var selected_status = $('.advance-search-form #select-status').val();
-            if( selected_status == localized.rent_slug ){
-                property_status_changed(selected_status);
-            }
-        }
 
         /*-----------------------------------------------------------------------------------*/
         /* Properties Sorting
@@ -624,16 +498,6 @@
             insertParam( key, value );
         });
 
-        /*-----------------------------------------------------------------------------------*/
-        /* Modal dialog for Login and Register
-        /*-----------------------------------------------------------------------------------*/
-        $('.activate-section').click(function(e){
-            e.preventDefault();
-            var $this = $(this);
-            var target_section = $this.data('section');
-            $this.closest('.modal-section').hide();
-            $this.closest('.forms-modal').find('.'+target_section).show();
-        });
 
         /*-----------------------------------------------------------------------------------*/
         /* Add to favorites
@@ -675,298 +539,255 @@
                 type: "POST",
                 data: {
                     property_id : $this.data('property-id'),
-                    user_id : $this.data('user-id'),
                     action : "remove_from_favorites"
                 },
-                dataType: "html"
+                dataType: "json"
             });
 
-
-            remove_favorite_request.done(function( msg ) {
-                var code = parseInt(msg);
+            remove_favorite_request.done( function( response ) {
                 loader.hide();
-
-                if(code == 3){
+                if( response.success ) {
                     property_item.remove();
-                }else if( code == 2){
-                    ajax_response.text("Failed to remove!");
-                }else if( code == 1){
-                    ajax_response.text("Invalide Parameters!");
-                }else{
-                    ajax_response.text("Unexpected Response: "+ msg);
+                } else {
+                    ajax_response.text( response.message );
                 }
-
             });
 
-            remove_favorite_request.fail(function( jqXHR, textStatus ) {
+            remove_favorite_request.fail( function( jqXHR, textStatus ) {
                 ajax_response.text( "Request failed: " + textStatus );
             });
         });
 
         /*-----------------------------------------------------------------------------------*/
-        /* Search Location Select Boxes
+        /* Compare Properties
         /*-----------------------------------------------------------------------------------*/
+        var compare_properties_number = $( '.compare-properties .compare-carousel > div' ).length;
 
-        if ( typeof locationData !== "undefined" ) {
-
-            /* initialize required variables to data passed by WordPress */
-            var allLocations = locationData.all_locations;
-            var selectIds = locationData.select_names;
-            var selectCount = parseInt( locationData.select_count );
-            var locationsInParams = locationData.locations_in_params;
-            var any = locationData.any;
-            var locationsCount = allLocations.length;
-
-            /* Add child of given term id in provided select box */
-            var addChildLocations = function( parentID, targetSelect, prefix, all_child ) {
-                var childLocations = [];
-                var childLocationsCounter = 0;
-
-                // add 'Any' option to empty select
-                if( targetSelect.has('option').length == 0 ){
-                    targetSelect.append( '<option value="any" selected="selected">'+ any +'</option>' );
-                }
-
-                for( var i=0; i < locationsCount; i++ ) {
-                    var currentLocation = allLocations[i];
-                    if( parseInt( currentLocation['parent'] ) == parentID ) {
-                        targetSelect.append( '<option value="' + currentLocation['slug'] + '">' + prefix + currentLocation['name'] + '</option>' );
-                        childLocations[childLocationsCounter] = currentLocation;
-                        childLocationsCounter++;
-                        if( all_child ) {
-                            var currentLocationID = parseInt( currentLocation['term_id'] );
-                            addChildLocations ( currentLocationID, targetSelect, prefix + '- ', all_child );
-                        }
-                    }
-                }
-                return childLocations;
-            };
-
-            /* Get Related Term ID */
-            var getRelatedTermID = function ( selectedLocation ){
-                var termID = 0;
-                var currentLocation;
-                // loop through all locations and match selected slug with each one to find the related term id which will be used as parent id later on
-                for( var i=0; i < locationsCount; i++ ){
-                    currentLocation = allLocations[i];
-                    if( currentLocation['slug'] == selectedLocation ) {
-                        termID = parseInt( currentLocation['term_id'] );
-                        break;
-                    }
-                }
-                return termID;
-            };
-
-            /* Reset a Select Box */
-            var resetSelect = function ( targetSelect ){
-                targetSelect.empty();
-                targetSelect.append( '<option value="any" selected="selected">'+ any +'</option>' );
-            };
-
-            /* Disable a Select Box and Next Possible Select Boxes */
-            var disableSelect = function ( targetSelect ) {
-
-                resetSelect( targetSelect );
-                targetSelect.closest('.option-bar').addClass('disabled').find('.selectbox').val( any );
-
-                var targetSelectID = targetSelect.attr('id');                    // target select box id
-                var targetSelectIndex = selectIds.indexOf(targetSelectID);      // target select box index
-                var nextSelectBoxesCount = selectCount - ( targetSelectIndex + 1 );
-
-                // disable next select boxes
-                if( nextSelectBoxesCount > 0 ) {
-                    for ( var i = targetSelectIndex + 1; i < selectCount; i++ ) {
-                        var tempSelect = $( '#' + selectIds[i] );
-                        resetSelect( tempSelect );
-                        tempSelect.closest('.option-bar').addClass('disabled').find('.selectbox').val( any );
-                    }
-                }
-            };
-
-            /* Enable Select Box */
-            var enableSelect = function ( targetSelect ) {
-                var optionWrapper = targetSelect.closest('.option-bar');
-                if( optionWrapper.hasClass('disabled') ){
-                    optionWrapper.removeClass('disabled');
-                }
-            };
-
-            /* Parent Select Box Change Event */
-            var updateChildSelect = function ( event ) {
-                var selectedLocation = $(this).val();                                               // get selected slug
-                var currentSelectIndex = selectIds.indexOf( $(this).attr('id') );                   // current select box index
-
-                /* in case of any selection */
-                if ( selectedLocation == 'any' && currentSelectIndex > -1 && currentSelectIndex < ( selectCount - 1 ) ) {  // no need to run this on last select box
-
-                    for( var s = currentSelectIndex; s < ( selectCount - 1 ); s++ ) {
-
-                        var childSelectIsLast = ( selectCount == ( s + 2 ) );
-
-                        /* init required variables */
-                        var childSelect = $( '#'+selectIds[ s + 1 ] );
-                        var childSelectClone = childSelect.clone();                                 // clone child select box
-                        childSelectClone.empty();                                                   // make it empty
-
-                        /* loop through select options to find and add child locations into next select */
-                        var anyChildLocations = [];
-                        $( '#' + selectIds[s] + ' > option').each( function() {
-                            var currentOptionVal = this.value;
-                            if ( currentOptionVal != 'any' ) {
-                                var relatedTermID = getRelatedTermID( currentOptionVal );
-                                if ( relatedTermID > 0 ){
-                                    var tempLocations = addChildLocations ( relatedTermID, childSelectClone, '', childSelectIsLast );
-                                    if ( tempLocations.length > 0 ){
-                                        anyChildLocations = $.merge( anyChildLocations, tempLocations );
-                                    }
-                                }
-                            }
-                        });
-
-                        /* enable next select if options are added otherwise disable it */
-                        if( anyChildLocations.length > 0 ) {
-                            enableSelect( childSelect );                                    // enable child select box
-                            var childSelectWrapper = childSelect.closest( '.selectwrap' );
-                            childSelectWrapper.empty();                                     // remove the old select box
-
-                            if( !childSelectIsLast ){
-                                childSelectClone.change( updateChildSelect );
-                            }
-
-                            childSelectWrapper.append( childSelectClone );                  // add the newly created into it's wrapper
-                            childSelectClone.selectbox();                                   // apply selectbox api on newly created select box
-                        } else {
-                            disableSelect( childSelect );
-                            break;
-                        }
-
-                    }
-
-                    /* in case of valid location selection */
-                } else {
-                    var parentID = getRelatedTermID( selectedLocation );                        // get related term id that will be used as parent id below
-                    if( parentID > 0 ) {                                                        // We can only do something if term id is valid
-                        var childLocations = [];
-                        for( var n = currentSelectIndex + 1; n < selectCount; n++ ) {
-                            var childSelect = $( '#'+selectIds[ n ] );                          // selector for next( child locations ) select box
-                            var childSelectIsLast = ( selectCount == ( n + 1 ) );
-                            var childSelectClone = childSelect.clone();                         // clone child select box
-                            childSelectClone.empty();                                           // make it empty
-
-                            if( childLocations.length == 0 ){    // 1st iteration
-                                childLocations = addChildLocations( parentID, childSelectClone, '', childSelectIsLast );    // add all children
-                            } else if( childLocations.length > 0 ) {  // 2nd and later iterations
-                                var currentLocations = [];
-                                for( var i = 0; i < childLocations.length; i++ ) {
-                                    var tempLocations = addChildLocations ( parseInt( childLocations[i]['term_id']), childSelectClone, '', childSelectIsLast );
-                                    if( tempLocations.length > 0 ) {
-                                        currentLocations = $.merge( currentLocations, tempLocations );
-                                    }
-                                }
-                                childLocations = currentLocations;
-                            }
-
-                            if( childLocations.length > 0 ) {
-                                enableSelect( childSelect );                                    // enable child select box
-                                var childSelectWrapper = childSelect.closest( '.selectwrap' );
-                                childSelectWrapper.empty();                                     // remove the old select box
-                                if( !childSelectIsLast ){
-                                    childSelectClone.change( updateChildSelect );
-                                }
-                                childSelectWrapper.append( childSelectClone );                  // add the newly created into it's wrapper
-                                childSelectClone.selectbox();                                   // apply selectbox api on newly created select box
-                            } else {
-                                disableSelect( childSelect );
-                                break;
-                            }
-
-                        }
-                    }
-                }
-
-            };
-
-            /* Mark the current value in query params as selected */
-            var selectRightOption = function ( targetSelect  ) {
-                if( Object.keys(locationsInParams).length > 0 ){
-                    var selectName = targetSelect.attr('name');
-                    if ( typeof locationsInParams[ selectName ] != 'undefined' ) {
-                        targetSelect.find( 'option[value="'+ locationsInParams[ selectName ] +'"]' ).prop('selected', true);
-                    }
-                }
-                if(locationData.default_location == 'donetsk')
-                    targetSelect.find( 'option[value="donetsk"]' ).prop('selected', true);
-            }
-
-            /* Initialize Locations */
-            var initLocations = function () {
-
-                var parentLocations = [];
-                for( var s=0; s < selectCount; s++ ){
-
-                    var currentSelect = $( '#'+selectIds[s] );
-                    var currentIsLast = ( selectCount == (s + 1) );
-
-                    // 1st iteration
-                    if( s == 0 ) {
-                        parentLocations = addChildLocations ( 0, currentSelect, '', currentIsLast );
-
-                    // later iterations
-                    } else {
-                        if( parentLocations.length > 0 ) {
-                            var currentLocations = [];
-                            var previousSelect = $( '#'+selectIds[s-1] );
-
-                            // loop through all if value is any
-                            if ( previousSelect.val() == 'any' ) {
-                                for (var i = 0; i < parentLocations.length; i++) {
-                                    var tempLocations = addChildLocations(parseInt(parentLocations[i]['term_id']), currentSelect, '', currentIsLast );
-                                    if (tempLocations.length > 0) {
-                                        currentLocations = $.merge(currentLocations, tempLocations);
-                                    }
-                                }
-
-                            // else display only children of current value
-                            } else {
-                                var parentID = getRelatedTermID( previousSelect.val() );
-                                if( parentID > 0 ) {
-                                    currentLocations = addChildLocations( parentID, currentSelect, '', currentIsLast );
-                                }
-                            }
-                            previousSelect.change( updateChildSelect );
-                            parentLocations = currentLocations;
-                        }
-                    }
-
-                    // based on what happens above
-                    if ( parentLocations.length == 0 ) {
-                        disableSelect( currentSelect );
-                        break;
-                    } else {
-                        selectRightOption( currentSelect );
-                    }
-
-                }
-            }
-
-            /* Runs on Load */
-            initLocations();
-
+        if ( compare_properties_number != 0 ) {
+            $( '.compare-properties' ).slideDown( 500 );
         }
 
+        /*-----------------------------------------------------------------------------------*/
+        /* Add to compare
+        /*-----------------------------------------------------------------------------------*/
+        $( document ).on( 'click', 'a.add-to-compare', function(e) {
+            e.preventDefault();
+
+            var slides_number = $( '.compare-carousel .compare-carousel-slide' ).length;
+            if ( slides_number > 3 ) {
+                var remove_last_check = 1;
+                $( '.compare-carousel .compare-carousel-slide:nth-child(1) a.compare-remove' ).trigger( "click", [ $( this ), remove_last_check ] );
+            } else {
+                var plus            = $( this ).find( 'i' );
+                var compare_target  = $( this ).parents( '.add-to-compare-span' ).find( '.compare_target' );
+                var compare_link    = $( this );
+                var compare_output  = $( this ).parents( '.add-to-compare-span' ).find( '.compare_output' );
+
+                plus.addClass( 'fa-spin' );
+
+                var add_compare_request = $.ajax({
+                    url         : $( compare_link ).attr('href'),
+                    type        : "POST",
+                    data        : {
+                        property_id     : $( compare_link ).data( 'property-id' ),
+                        action          : "inspiry_add_to_compare"
+                    },
+                    dataType    : "json"
+                });
+
+                add_compare_request.done( function( response ) {
+                    plus.removeClass( 'fa-spin' );
+                    if( response.success ) {
+                        $( compare_link ).hide( 0, function() {
+                            $( compare_target ).html( response.message );
+                            $( compare_output ).delay( 200 ).show();
+                        });
+                        $( '.compare-carousel' ).append(
+                            '<div class="compare-carousel-slide"><div class="compare-slide-img"><img src="' + response.img + '"></div><a class="compare-remove" data-property-id="' + response.property_id + '" href="' + response.ajaxURL + '" width="' + response.img_width + '" height="' + response.img_height + '"><i class="fa fa-close"></i></a></div>'
+                        );
+                        var compare_properties_number = $( '.compare-properties .compare-carousel > div' ).length;
+                        if ( compare_properties_number == 1 ) {
+                            $( '.compare-properties' ).slideDown();
+                        }
+                    } else {
+                        compare_output.text( response.message );
+                    }
+                });
+
+                add_compare_request.fail( function( jqXHR, textStatus ) {
+                    compare_output.text( "Request failed: " + textStatus );
+                });
+            }
+        });
+
+        /*-----------------------------------------------------------------------------------*/
+        /* Remove from compare
+        /*-----------------------------------------------------------------------------------*/
+        $( document ).on( 'click', 'a.compare-remove', function( event, add_compare_target, remove_last ) {
+            event.preventDefault();
+            var current_link    = $( this );
+            var cross           = $( this ).find( 'i' );
+            var plus            = $( add_compare_target ).find( 'i' );
+
+            cross.addClass( 'fa-spin' );
+            plus.addClass( 'fa-spin' );
+
+            $.when(
+                $.ajax({
+                    url     : current_link.attr( 'href' ),
+                    type    : "POST",
+                    data    : {
+                        property_id : current_link.data( 'property-id' ),
+                        action      : "inspiry_remove_from_compare"
+                    },
+                    dataType        : "json"
+                })
+
+                .done( function( response ) {
+                    cross.removeClass( 'fa-spin' );
+                    if( response.success ) {
+                        current_link.parents( 'div.compare-carousel-slide' ).remove();
+                        var property_item = $( 'span.add-to-compare-span *[data-property-id="' + response.property_id + '"]' ).parents( '.add-to-compare-span' );
+                        property_item.find( 'div.compare_output' ).hide();
+                        $( 'span.add-to-compare-span *[data-property-id="' + response.property_id + '"]' ).removeClass( 'hide' ).delay(200).show();
+                        var compare_properties_number = $( '.compare-properties .compare-carousel > div' ).length;
+                        if ( compare_properties_number == 0 ) {
+                            $( '.compare-properties' ).slideUp();
+                        }
+                    } else {
+                        console.log( response.message );
+                    }
+                })
+
+                .fail( function( jqXHR, textStatus ) {
+                    compare_output.text( "Request failed: " + textStatus );
+                })
+            )
+
+            .then( function( response ) {
+                if ( remove_last ) {
+                    var compare_target  = $( add_compare_target ).parents( '.add-to-compare-span' ).find( '.compare_target' );
+                    var compare_link    = $( add_compare_target );
+                    var compare_output  = $( add_compare_target ).parents( '.add-to-compare-span' ).find( '.compare_output' );
+
+                    var add_compare_request = $.ajax({
+                        url         : $( compare_link ).attr('href'),
+                        type        : "POST",
+                        data        : {
+                            property_id     : $( compare_link ).data( 'property-id' ),
+                            action          : "inspiry_add_to_compare"
+                        },
+                        dataType    : "json"
+                    });
+
+                    add_compare_request.done( function( response ) {
+                        plus.removeClass( 'fa-spin' );
+                        if( response.success ) {
+                            $( compare_link ).hide( 0, function() {
+                                $( compare_target ).html( response.message );
+                                $( compare_output ).delay( 200 ).show();
+                            });
+                            $( '.compare-carousel' ).append(
+                                '<div class="compare-carousel-slide"><div class="compare-slide-img"><img src="' + response.img + '"></div><a class="compare-remove" data-property-id="' + response.property_id + '" href="' + response.ajaxURL + '" width="' + response.img_width + '" height="' + response.img_height + '"><i class="fa fa-close"></i></a></div>'
+                            );
+                        } else {
+                            compare_output.text( response.message );
+                        }
+                    });
+                };
+            } );
+        });
+
+
+        /*-----------------------------------------------------------------------------------*/
+        /* Sticky-kit
+        /* URL: https://github.com/leafo/sticky-kit
+        /*-----------------------------------------------------------------------------------*/
+        var makeSticky = function() {
+            var screenWidth = $( window ).width();
+            if ( 768 <= screenWidth ) {
+                $( '.compare-properties-column .property-thumbnail' ).stick_in_parent()
+                    .on("sticky_kit:stick", function(e) {
+                        // console.log("has stuck!", e.target);
+                        $( '.compare-template .compare-properties-column > p:nth-child(odd)' ).css({
+                            'background'    : '#eeeeee'
+                        });
+                        $( '.compare-template .compare-properties-column > p:nth-child(even)' ).css({
+                            'background'    : '#ffffff'
+                        });
+                        var heightThumbnail = $( '.compare-properties-column .property-thumbnail' ).height();
+                        $( '.compare-properties-column > div:nth-child(2)' ).css({
+                            'height'        : heightThumbnail
+                        });
+                    })
+                    .on("sticky_kit:unstick", function(e) {
+                        // console.log("has unstuck!", e.target);
+                    });
+                $( '.compare-feature-column .property-thumbnail' ).stick_in_parent()
+                    .on("sticky_kit:stick", function(e) {
+                        // console.log("has stuck!", e.target);
+                        $( '.compare-template .compare-feature-column > p:nth-child(odd)' ).css({
+                            'background'    : '#eeeeee'
+                        });
+                        $( '.compare-template .compare-feature-column > p:nth-child(even)' ).css({
+                            'background'    : '#ffffff'
+                        });
+                        var heightEmptyThumbnail = $( '.compare-properties-column .property-thumbnail' ).height();
+                        $( '.compare-feature-column > div:nth-child(2)' ).css({
+                            'height'        : heightEmptyThumbnail
+                        });
+                    })
+                    .on("sticky_kit:unstick", function(e) {
+                        // console.log("has unstuck!", e.target);
+                    });
+            } else {
+                $( '.compare-properties-column .property-thumbnail' ).trigger( "sticky_kit:detach" );
+                $( '.compare-feature-column .property-thumbnail' ).trigger( "sticky_kit:detach" );
+            }
+        }
+        makeSticky();
+        // Execute again when browser resizes.
+        $( window ).resize( function(){
+            makeSticky();
+        });
+
+
+        /*-----------------------------------------------------------------------------------*/
+        /* Select2
+        /* URL: http://select2.github.io/select2/
+        /*-----------------------------------------------------------------------------------*/
+        if ( jQuery().select2 ) {
+            var selectOptions = {
+                width : 'off'
+            };
+
+            if ( isRtl ) {
+                selectOptions.dir = "rtl";
+            }
+
+            $('.search-select').select2 ( selectOptions );
+
+			// Parent Properties Select box on Submit & Edit Property Pages
+            $('#property_parent_id').select2 ( selectOptions );
+        }
 
         /*-------------------------------------------------------*/
-        /*	Select Box
-        /* -----------------------------------------------------*/
-        if(jQuery().selectbox){
-            $('.search-select').selectbox();
+        /*	Advanced Search Button - Search Form Over Image Variation
+         /* -----------------------------------------------------*/
+        $('.SFOI__advanced-expander').on( 'click', function(e) {
 
-            /* dropdown fix - to close dropdown if opened by clicking anywhere out */
-            $('body').on('click',function(e){
-                if ($(e.target).hasClass('selectbox')) return;
-                $('.selectbox-wrapper').css('display','none');
-            });
-        }
+            var upDownArrow = $(this).find('i');
+            var advancedFieldsWrapper = $(this).parent('.SFOI__form-wrapper' ).find('.SFOI__advanced-fields-wrapper');
+
+            if ( upDownArrow.hasClass( 'fa-angle-down' ) ) {
+                advancedFieldsWrapper.slideDown();
+                upDownArrow.removeClass('fa-angle-down' ).addClass('fa-angle-up');
+            } else {
+                advancedFieldsWrapper.slideUp();
+                upDownArrow.removeClass('fa-angle-up' ).addClass('fa-angle-down');
+            }
+
+        });
 
         /*-------------------------------------------------------*/
         /*	More Options in Search Form
@@ -988,15 +809,18 @@
         /*	Scroll to Top
         /*-----------------------------------------------------------------------------------*/
         $(function(){
-            var scroll_anchor = $('#scroll-top');
+            var scroll_anchor = $( '#scroll-top' ),
+                post_nav = $( '.inspiry-post-nav' );
             $( window ).scroll(function () {
                 if ( $( window ).width() > 980 ) {
                     if ( $(this).scrollTop() > 250 ) {
-                        scroll_anchor.fadeIn('fast');
+                        scroll_anchor.fadeIn( 'fast' );
+                        post_nav.fadeIn( 'fast' );
                         return;
                     }
                 }
-                scroll_anchor.fadeOut('fast');
+                scroll_anchor.fadeOut( 'fast' );
+                post_nav.fadeOut( 'fast' );
             });
 
             scroll_anchor.on( 'click', function ( event ) {
@@ -1014,7 +838,7 @@
         // if homepage
         if( homePropertiesSection.length && homePropertiesSection.hasClass('ajax-pagination') ) {
 
-            
+
 
             $(document).on('click','#home-properties-section-wrapper .pagination > a',function(e){
                 e.preventDefault();
@@ -1133,9 +957,9 @@
         /*-----------------------------------------------------------------*/
         /* Property Floor Plans
         /*-----------------------------------------------------------------*/
-        /*$('.floor-plans-accordions .floor-plan:first-child').addClass('current')
+        $('.floor-plans-accordions .floor-plan:first-child').addClass('current')
             .children('.floor-plan-content').css('display', 'block').end()
-            .find('i.fa').removeClass( 'fa-plus').addClass( 'fa-minus' );*/
+            .find('i.fa').removeClass( 'fa-plus').addClass( 'fa-minus' );
 
         $('.floor-plan-title').on( 'click', function(){
             var parent_accordion = $(this).closest('.floor-plan');
@@ -1151,62 +975,79 @@
             siblings.removeClass('current').children('.floor-plan-content').slideUp(300);
         });
 
-
         /*-----------------------------------------------------------------*/
-        /* Set Default Select for Property Status in Advanced Search
+        /* Support for Mortgage Calculator - https://wordpress.org/plugins/mortgage-calculator/
         /*-----------------------------------------------------------------*/
-        
-       /* $("#select-status_input").attr("value", "Продажа");
-        $("#select-status [value='any']").attr("selected", false);
-        $("#select-status [value='prodazha']").attr("selected", "selected");*/
-        
-        
+        $('#mc-submit').addClass('real-btn');
 
-        /*-----------------------------------------------------------------*/
-        /* Toggle checkbox button (label) to active in Advanced Search
-        /*-----------------------------------------------------------------*/
+    });
 
-        $(".btn_radiobox").on("click", function (e) {
-            // $(".btn_radiobox").removeClass("active");
-            e.preventDefault();
-            $(this).toggleClass("active");
-            if ($(this).children("input").is(":checked")) {
+    $( window ).load(function() {
 
-                $(this).children("input").prop("checked", false);
+        /*-----------------------------------------------------------------------------------*/
+        /* Compare Listings
+        /*-----------------------------------------------------------------------------------*/
 
-            } else {
-                $(this).children("input").prop("checked", true);
-            }
+        var assignHeights = function() {
+            // Add heights to the first column elements.
+            var columnHeight    = -1;
+            var headingHeight   = -1;
+            var priceHeight     = -1;
+
+            $( '.compare-template .span2 .property-thumbnail img' ).each(function() {
+                if ( $( this ).prop( "complete", "complete" )  ) {
+                    headingHeight   = headingHeight > $( this ).parents( '.property-thumbnail' ).find( '.property-title' ).height() ? headingHeight : $( this ).parents( '.property-thumbnail' ).find( '.property-title' ).height();
+                    priceHeight     = priceHeight > $( this ).parents( '.property-thumbnail' ).find( '.property-price' ).height() ? priceHeight : $( this ).parents( '.property-thumbnail' ).find( '.property-price' ).height();
+                } else {
+                    $( this ).load(function() {
+                        headingHeight   = headingHeight > $( this ).parents( '.property-thumbnail' ).find( '.property-title' ).height() ? headingHeight : $( this ).parents( '.property-thumbnail' ).find( '.property-title' ).height();
+                        priceHeight     = priceHeight > $( this ).parents( '.property-thumbnail' ).find( '.property-price' ).height() ? priceHeight : $( this ).parents( '.property-thumbnail' ).find( '.property-price' ).height();
+                    });
+                }
+            });
+
+            $( '.compare-template .property-thumbnail .property-title' ).css({
+                height  : headingHeight
+            });
+
+            $( '.compare-template .property-thumbnail .property-price' ).css({
+                height  : priceHeight
+            });
+
+            $( '.compare-template .span2 .property-thumbnail img' ).each(function() {
+                if ( $( this ).prop( "complete", "complete" )  ) {
+                    columnHeight    = columnHeight > $( this ).parents( '.property-thumbnail' ).outerHeight() ? columnHeight : $( this ).parents( '.property-thumbnail' ).outerHeight();
+                } else {
+                    $( this ).load(function() {
+                        columnHeight    = columnHeight > $( this ).parents( '.property-thumbnail' ).outerHeight() ? columnHeight : $( this ).parents( '.property-thumbnail' ).outerHeight();
+                    });
+                }
+            });
+
+            $( '.compare-template .span2 .property-thumbnail' ).css({
+                height  : columnHeight
+            });
+
+        }
+        assignHeights();
+
+        var screenWidth = $( window ).width();
+
+        $( '.compare-template .compare-feature-column' ).fadeTo( 600, 1 );
+        $( '.compare-template .compare-properties-column' ).fadeTo( 600, 1 );
+
+        // Add equal heights to all the rows of all the columns
+        var rowHeight = -1;
+
+        $( '.compare-template .span2 p' ).each(function() {
+            rowHeight = rowHeight > $( this ).height() ? rowHeight : $( this ).height();
         });
 
-
-        $(".btn_radiobox_cur").on("click", function () {
-            $(".btn_radiobox_cur").removeClass("active");
-            $(this).addClass("active");
-        });
-
-        $(".operation-type select").on("change", function () {
-            
-            if ( $(".operation-type select").val() == 'Земля') {
-               $(".floor").hide();
-               $(".floors").hide();
-               $(".rooms").hide();
-               $(".living-area").hide();
-               $(".kitchen-area").hide();
-               $(".toggle").hide();
-               $(".form-div .area input[type='text']").css("margin-left","0px");;
-            } else {
-               $(".floor").show();
-               $(".floors").show();
-               $(".rooms").show();
-               $(".living-area").show();
-               $(".kitchen-area").show();
-               $(".toggle").show();
-               $(".form-div .area input[type='text']").css("margin-left","12px");;
-            }
-        });
-
-
+        if ( 768 <= screenWidth ) {
+            $( '.compare-template .span2 > p' ).css({
+                height  : rowHeight
+            });
+        }
 
     });
 

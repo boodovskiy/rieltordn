@@ -46,7 +46,7 @@ if($slider_query->have_posts()){
                                     <a href="<?php the_permalink(); ?>" class="know-more"><?php _e('Know More','framework'); ?></a>
                                 </div>
                             </div>
-                            <a href="<?php the_permalink(); ?>"><img src="<?php echo $slider_image_url; ?>" alt="<?php the_title(); ?>"></a>
+                            <a href="<?php the_permalink(); ?>"><img src="<?php echo esc_url( $slider_image_url ); ?>" alt="<?php the_title(); ?>"></a>
                         </li>
                         <?php
                     }

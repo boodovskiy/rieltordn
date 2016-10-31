@@ -25,10 +25,10 @@ if ( $featured_properties_query->have_posts() ) :
         if(!empty($featured_prop_title)){
             ?>
             <div class="narrative">
-               <h3><?php echo $featured_prop_title; ?></h3>
+               <h3><?php echo esc_html( $featured_prop_title ); ?></h3>
                 <?php
-                if(!empty($featured_prop_text)){
-                    ?><p><?php echo $featured_prop_text; ?></p><?php
+                if ( ! empty( $featured_prop_text ) ) {
+                    ?><p><?php echo esc_html( $featured_prop_text ); ?></p><?php
                 }
                 ?>
             </div>

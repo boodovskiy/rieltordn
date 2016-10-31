@@ -21,7 +21,7 @@
         ?>
         <div class="post-video">
             <span class="format-icon video"></span>
-            <a href="<?php echo $image_url; ?>" class="pretty-photo" title="<?php the_title(); ?>">
+            <a href="<?php echo esc_url( $image_url ); ?>" class="pretty-photo" title="<?php the_title(); ?>">
                 <?php
                 if( is_page_template( 'template-home.php' )){
                     the_post_thumbnail('gallery-two-column-image');

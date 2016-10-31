@@ -124,7 +124,7 @@ function inspiry_shortcodes_integration() {
                 "heading" => __( "Minimum Bedrooms", "framework" ),
                 "param_name" => "min_beds",
                 "value" => array(
-                    __('Any','framework') => null,
+                    inspiry_any_text() => null,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
@@ -142,7 +142,7 @@ function inspiry_shortcodes_integration() {
                 "heading" => __( "Maximum Bedrooms", "framework" ),
                 "param_name" => "max_beds",
                 "value" => array(
-                    __('Any','framework') => null,
+                    inspiry_any_text() => null,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
@@ -163,7 +163,7 @@ function inspiry_shortcodes_integration() {
                 "heading" => __( "Minimum Bathrooms", "framework" ),
                 "param_name" => "min_baths",
                 "value" => array(
-                    __('Any','framework') => null,
+                    inspiry_any_text() => null,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
@@ -181,7 +181,7 @@ function inspiry_shortcodes_integration() {
                 "heading" => __( "Maximum Bathrooms", "framework" ),
                 "param_name" => "max_baths",
                 "value" => array(
-                    __('Any','framework') => null,
+                    inspiry_any_text() => null,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,

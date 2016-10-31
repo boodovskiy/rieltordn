@@ -14,9 +14,27 @@ global $post;
             if( $property_address && !empty($property_location) && $display_google_map == 'true' && ( $property_map != 1 ) )
             {
                 $property_marker = array();
+
+	            /* Property Title */
+	            $property_marker['title'] = get_the_title();
+
+
+	            /* Property Price */
+	            $property_marker['price'] = get_property_price();
+
+	            /* Property Latitude and Longitude */
                 $lat_lng = explode(',',$property_location);
                 $property_marker['lat'] = $lat_lng[0];
                 $property_marker['lang'] = $lat_lng[1];
+
+	            /* Property Thumbnail */
+	            if(has_post_thumbnail()){
+		            $image_id = get_post_thumbnail_id();
+		            $image_attributes = wp_get_attachment_image_src( $image_id, 'property-thumb-image' );
+		            if(!empty($image_attributes[0])){
+			            $property_marker['thumb'] = $image_attributes[0];
+		            }
+	            }
 
                 /* Property Map Icon Based on Property Type */
                 $property_type_slug = 'single-family-home'; // Default Icon Slug
@@ -41,9 +59,9 @@ global $post;
                 }
 
 
-                $property_map_title = get_option('theme_property_map_title');
-                if( !empty($property_map_title) ){
-                    ?><span class="map-label"><?php echo $property_map_title; ?></span><?php
+                $property_map_title = get_option( 'theme_property_map_title' );
+                if ( ! empty( $property_map_title ) ){
+                    ?><span class="map-label"><?php echo esc_html( $property_map_title ); ?></span><?php
                 }
                 ?>
                 <div id="property_map"></div>
@@ -86,6 +104,49 @@ global $post;
                             map: propertyMap,
                             icon: image
                         });
+
+	                    /* Info Box */
+                        var boxText = document.createElement("div");
+                        boxText.className = 'map-info-window';
+                        var innerHTML = "";
+                        if ( propertyMarkerInfo.thumb ) {
+                            innerHTML += '<img class="prop-thumb" src="' + propertyMarkerInfo.thumb + '" alt="' + propertyMarkerInfo.title + '"/>';
+                        }
+                        innerHTML += '<h5 class="prop-title">' + propertyMarkerInfo.title + '</h5>';
+                        if ( propertyMarkerInfo.price ) {
+                            innerHTML += '<p><span class="price">' + propertyMarkerInfo.price + '</span></p>';
+                        }
+                        innerHTML += '<div class="arrow-down"></div>';
+                        boxText.innerHTML = innerHTML;
+
+                        var myOptions = {
+                            content: boxText,
+                            disableAutoPan: true,
+                            maxWidth: 0,
+                            alignBottom: true,
+                            pixelOffset: new google.maps.Size( -122, -48 ),
+                            zIndex: null,
+                            closeBoxMargin: "0 0 -16px -16px",
+                            closeBoxURL: "<?php echo get_template_directory_uri() . '/images/map/close.png'; ?>",
+                            infoBoxClearance: new google.maps.Size( 1, 1 ),
+                            isHidden: false,
+                            pane: "floatPane",
+                            enableEventPropagation: false
+                        };
+
+                        var infoBox = new InfoBox( myOptions );
+
+	                    google.maps.event.addListener( propertyMarker, 'click', function(){
+		                    var scale = Math.pow( 2, propertyMap.getZoom() );
+		                    var offsety = ( (150/scale) || 0 );
+		                    var projection = propertyMap.getProjection();
+		                    var markerPosition = propertyMarker.getPosition();
+		                    var markerScreenPosition = projection.fromLatLngToPoint( markerPosition );
+		                    var pointHalfScreenAbove = new google.maps.Point( markerScreenPosition.x, markerScreenPosition.y - offsety );
+		                    var aboveMarkerLatLng = projection.fromPointToLatLng( pointHalfScreenAbove );
+		                    propertyMap.setCenter( aboveMarkerLatLng );
+		                    infoBox.open( propertyMap, propertyMarker );
+	                    });
                     }
 
                     window.onload = initialize_property_map();

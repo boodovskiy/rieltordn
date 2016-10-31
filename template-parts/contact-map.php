@@ -12,10 +12,10 @@ $contact_phone = get_option('theme_contact_phone');
     // Google Map
     function initializeContactMap()
     {
-        var officeLocation = new google.maps.LatLng(<?php echo $map_lati; ?>, <?php echo $map_longi; ?>);
+        var officeLocation = new google.maps.LatLng(<?php echo esc_attr( $map_lati ); ?>, <?php echo esc_attr( $map_longi ); ?>);
         var contactMapOptions = {
             center: officeLocation,
-            zoom: <?php echo $map_zoom; ?>,
+            zoom: <?php echo esc_attr( $map_zoom ); ?>,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scrollwheel: false
         };

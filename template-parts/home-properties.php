@@ -37,18 +37,19 @@
 
         /* Sort Properties Based on Theme Option Selection */
         $sorty_by = get_option('theme_sorty_by');
-        if( !empty($sorty_by) ){
-            if( $sorty_by == 'low-to-high' ){
-                $home_args['orderby'] = 'meta_value_num';
-                $home_args['meta_key'] = 'REAL_HOMES_property_price';
-                $home_args['order'] = 'ASC';
-            }elseif( $sorty_by == 'high-to-low' ){
-                $home_args['orderby'] = 'meta_value_num';
-                $home_args['meta_key'] = 'REAL_HOMES_property_price';
-                $home_args['order'] = 'DESC';
+        if ( ! empty( $sorty_by ) ) {
+            if ( $sorty_by == 'low-to-high' ) {
+                $home_args[ 'orderby' ]  = 'meta_value_num';
+                $home_args[ 'meta_key' ] = 'REAL_HOMES_property_price';
+                $home_args[ 'order' ]    = 'ASC';
+            } elseif ( $sorty_by == 'high-to-low' ) {
+                $home_args[ 'orderby' ]  = 'meta_value_num';
+                $home_args[ 'meta_key' ] = 'REAL_HOMES_property_price';
+                $home_args[ 'order' ]    = 'DESC';
+            } elseif ( $sorty_by == 'random' ) {
+                $home_args[ 'orderby' ] = 'rand';
             }
         }
-
         $home_properties_query = new WP_Query( $home_args );
 
         /* Homepage Properties Loop */

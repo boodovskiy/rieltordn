@@ -5,35 +5,24 @@
 <!--[if gt IE 8]><!--> <html <?php language_attributes(); ?>> <!--<![endif]-->
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<meta name="format-detection" content="telephone=no">
 
     <?php
-    $favicon = get_option('theme_favicon');
-    if( !empty($favicon) )
-    {
-        ?>
-        <link rel="shortcut icon" href="<?php echo $favicon; ?>" />
-        <?php
+    if ( !function_exists( 'has_site_icon' ) || !has_site_icon() ) {
+	    $favicon = get_option( 'theme_favicon' );
+	    if ( ! empty( $favicon ) ) {
+		    ?><link rel="shortcut icon" href="<?php echo esc_url( $favicon ); ?>" /><?php
+	    }
     }
+
+    if ( is_singular() && pings_open( get_queried_object() ) ) {
+	    ?><link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>"><?php
+    }
+
+    wp_head();
     ?>
-
-    <!-- Define a viewport to mobile devices to use - telling the browser to assume that the page is as wide as the device (width=device-width) and setting the initial page zoom level to be 1 (initial-scale=1.0) -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no">
-
-    <!-- Pingback URL -->
-    <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-
-    <!-- RSS -->
-    <link rel="alternate" type="application/rss+xml" title="<?php bloginfo( 'name' ); ?>" href="<?php bloginfo( 'rss2_url' ); ?>" />
-    <link rel="alternate" type="application/atom+xml" title="<?php bloginfo( 'name' ); ?>" href="<?php bloginfo( 'atom_url' ); ?>" />
-    <link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 
@@ -44,6 +33,42 @@
 
                 <header id="header" class="clearfix">
 
+                    <div id="header-top" class="clearfix">
+                        <?php
+                        /* WPML Language Switcher */
+                        if ( function_exists( 'icl_get_languages' ) ) {
+	                        $wpml_lang_switcher = get_option( 'theme_wpml_lang_switcher' );
+	                        if ( $wpml_lang_switcher == 'true' ) {
+		                        do_action( 'icl_language_selector' );
+	                        }
+                        }
+
+                        // Currency Switcher
+                        get_template_part( 'template-parts/header-currency-switcher' );
+
+
+                        // header email
+                        $header_email = get_option('theme_header_email');
+                        if ( ! empty( $header_email ) ) {
+                            ?>
+                            <h2 id="contact-email">
+                                <?php
+                                include( get_template_directory() . '/images/icon-mail.svg' );
+                                _e( 'Email us at', 'framework' ); ?> :
+                                <a href="mailto:<?php echo antispambot( $header_email ); ?>"><?php echo antispambot( $header_email ); ?></a>
+                            </h2>
+                            <?php
+                        }
+                        ?>
+
+                        <!-- Social Navigation -->
+                        <?php get_template_part( 'template-parts/social-nav' ); ?>
+
+                        <!-- User Navigation -->
+                        <?php get_template_part( 'template-parts/user-nav' ); ?>
+
+                    </div>
+
                     <!-- Logo -->
                     <div id="logo">
 
@@ -52,7 +77,7 @@
                         if(!empty($logo_path)){
                             ?>
                             <a title="<?php  bloginfo( 'name' ); ?>" href="<?php echo home_url(); ?>">
-                                <img src="<?php echo $logo_path; ?>" alt="<?php  bloginfo( 'name' ); ?>">
+                                <img src="<?php echo esc_url( $logo_path ); ?>" alt="<?php  bloginfo( 'name' ); ?>">
                             </a>
                             <h2 class="logo-heading only-for-print">
                                 <a href="<?php echo home_url(); ?>"  title="<?php bloginfo( 'name' ); ?>">
@@ -73,18 +98,12 @@
                         $description = get_bloginfo ( 'description' );
                         if($description){
                             echo '<div class="tag-line"><span>';
-                            echo $description;
+                            echo esc_html( $description );
                             echo '</span></div>';
                         }
                         ?>
                     </div>
-					
-					<div id="header-top" class="clearfix">
-<?php
-                        // Currency Switcher
-//                        get_template_part( 'template-parts/header-currency-switcher' );		
-?>					
-					</div>
+
 
                     <div class="menu-and-contact-wrap">
                         <?php
@@ -108,12 +127,7 @@
                             ?>
                         </nav>
                         <!-- End Main Menu -->
-                            <div class="header-icon-sect">
-                                <i class="fa fa-viber" style="color:#202BA6"></i>
-                                <i class="fa fa-skype" style="color:blue"></i>
-                                <i class="fa fa-whatsapp" style="color:#34af23"></i>
-                            </div>
-                        </div>
+                    </div>
 
                 </header>
 

@@ -1,42 +1,62 @@
 <?php
 /* Property Custom Post Type */
-if( !function_exists( 'create_property_post_type' ) ){
-    function create_property_post_type(){
+if ( ! function_exists( 'create_property_post_type' ) ) {
+	function create_property_post_type() {
 
-      $labels = array(
-            'name' => __( 'Properties','framework'),
-            'singular_name' => __( 'Property','framework' ),
-            'add_new' => __('Add New','framework'),
-            'add_new_item' => __('Add New Property','framework'),
-            'edit_item' => __('Edit Property','framework'),
-            'new_item' => __('New Property','framework'),
-            'view_item' => __('View Property','framework'),
-            'search_items' => __('Search Property','framework'),
-            'not_found' =>  __('No Property found','framework'),
-            'not_found_in_trash' => __('No Property found in Trash','framework'),
-            'parent_item_colon' => ''
-          );
+		$labels = array(
+			'name' => __( 'Properties', 'framework' ),
+			'singular_name' => __( 'Property', 'framework' ),
+			'add_new' => __( 'Add New', 'framework' ),
+			'add_new_item' => __( 'Add New Property', 'framework' ),
+			'edit_item' => __( 'Edit Property', 'framework' ),
+			'new_item' => __( 'New Property', 'framework' ),
+			'view_item' => __( 'View Property', 'framework' ),
+			'search_items' => __( 'Search Property', 'framework' ),
+			'not_found' => __( 'No Property found', 'framework' ),
+			'not_found_in_trash' => __( 'No Property found in Trash', 'framework' ),
+			'parent_item_colon' => ''
+		);
 
-      $args = array(
-            'labels' => $labels,
-            'public' => true,
-            'publicly_queryable' => true,
-            'show_ui' => true,
-            'query_var' => true,
-            'has_archive' => true,
-            'capability_type' => 'post',
-            'hierarchical' => true,
-            'menu_icon' => 'dashicons-building',
-            'menu_position' => 5,
-            'supports' => array('title','editor','thumbnail','revisions','author','page-attributes','excerpt'),
-            'rewrite' => array( 'slug' => __('property', 'framework') )
-      );
+		$args = array(
+			'labels' => $labels,
+			'public' => true,
+			'publicly_queryable' => true,
+			'show_ui' => true,
+			'query_var' => true,
+			'has_archive' => true,
+			'capability_type' => 'post',
+			'hierarchical' => true,
+			'menu_icon' => 'dashicons-building',
+			'menu_position' => 5,
+			'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', 'author', 'page-attributes', 'excerpt', 'comments' ),
+			'rewrite' => array(
+				'slug' => apply_filters( 'inspiry_property_slug', __( 'property', 'framework' ) ),
+			)
+		);
 
-      register_post_type('property',$args);
+		register_post_type( 'property', $args );
 
-    }
+	}
+	add_action( 'init', 'create_property_post_type' );
 }
-add_action('init', 'create_property_post_type');
+
+
+if( !function_exists( 'inspiry_set_property_slug' ) ) :
+	/**
+	 * This function set property's url slug by hooking itself with related filter
+	 *
+	 * @param $existing_slug
+	 * @return mixed|void
+	 */
+    function inspiry_set_property_slug( $existing_slug ) {
+	    $new_slug = get_option( 'inspiry_property_slug' );
+	    if ( !empty( $new_slug ) ) {
+		    return $new_slug;
+	    }
+		return $existing_slug;
+    }
+	add_filter( 'inspiry_property_slug', 'inspiry_set_property_slug' );
+endif;
 
 
 /* Create Property Taxonomies */
@@ -68,7 +88,7 @@ if( !function_exists( 'build_taxonomies' ) ){
                 'labels' => $labels,
                 'show_ui' => true,
                 'query_var' => true,
-                'rewrite' => array('slug' => __('property-feature', 'framework'))
+                'rewrite' => array('slug' => apply_filters( 'inspiry_property_feature_slug', __( 'property-feature', 'framework' ) ) )
             )
         );
 
@@ -99,7 +119,7 @@ if( !function_exists( 'build_taxonomies' ) ){
                 'labels' => $type_labels,
                 'show_ui' => true,
                 'query_var' => true,
-                'rewrite' => array('slug' => __('property-type', 'framework'))
+                'rewrite' => array('slug' => apply_filters( 'inspiry_property_type_slug', __( 'property-type', 'framework' ) ) )
             )
         );
 
@@ -129,7 +149,7 @@ if( !function_exists( 'build_taxonomies' ) ){
                 'labels' => $city_labels,
                 'show_ui' => true,
                 'query_var' => true,
-                'rewrite' => array('slug' => __('property-city', 'framework'))
+                'rewrite' => array('slug' => apply_filters( 'inspiry_property_city_slug', __( 'property-city', 'framework' ) ) )
             )
         );
 
@@ -160,48 +180,139 @@ if( !function_exists( 'build_taxonomies' ) ){
                 'labels' => $status_labels,
                 'show_ui' => true,
                 'query_var' => true,
-                'rewrite' => array('slug' => __('property-status', 'framework'))
+                'rewrite' => array('slug' => apply_filters( 'inspiry_property_status_slug', __( 'property-status', 'framework' ) ) )
             )
         );
     }
+	add_action( 'init', 'build_taxonomies', 0 );
 }
-add_action( 'init', 'build_taxonomies', 0 );
 
 
-/* Add Custom Columns */
-if( !function_exists( 'property_edit_columns' ) ){
-    function property_edit_columns($columns)
-    {
+if( !function_exists( 'inspiry_set_property_city_slug' ) ) :
+	/**
+	 * This function set property city's url slug by hooking itself with related filter
+	 *
+	 * @param $existing_slug
+	 * @return mixed|void
+	 */
+	function inspiry_set_property_city_slug( $existing_slug ) {
+		$new_slug = get_option( 'inspiry_property_city_slug' );
+		if ( !empty( $new_slug ) ) {
+			return $new_slug;
+		}
+		return $existing_slug;
+	}
+	add_filter( 'inspiry_property_city_slug', 'inspiry_set_property_city_slug' );
+endif;
+
+
+if( !function_exists( 'inspiry_set_property_status_slug' ) ) :
+	/**
+	 * This function set property status's url slug by hooking itself with related filter
+	 *
+	 * @param $existing_slug
+	 * @return mixed|void
+	 */
+	function inspiry_set_property_status_slug( $existing_slug ) {
+		$new_slug = get_option( 'inspiry_property_status_slug' );
+		if ( !empty( $new_slug ) ) {
+			return $new_slug;
+		}
+		return $existing_slug;
+	}
+	add_filter( 'inspiry_property_status_slug', 'inspiry_set_property_status_slug' );
+endif;
+
+
+if( !function_exists( 'inspiry_set_property_type_slug' ) ) :
+	/**
+	 * This function set property type's url slug by hooking itself with related filter
+	 *
+	 * @param $existing_slug
+	 * @return mixed|void
+	 */
+	function inspiry_set_property_type_slug( $existing_slug ) {
+		$new_slug = get_option( 'inspiry_property_type_slug' );
+		if ( !empty( $new_slug ) ) {
+			return $new_slug;
+		}
+		return $existing_slug;
+	}
+	add_filter( 'inspiry_property_type_slug', 'inspiry_set_property_type_slug' );
+endif;
+
+
+if( !function_exists( 'inspiry_set_property_feature_slug' ) ) :
+	/**
+	 * This function set property feature's url slug by hooking itself with related filter
+	 *
+	 * @param $existing_slug
+	 * @return mixed|void
+	 */
+	function inspiry_set_property_feature_slug( $existing_slug ) {
+		$new_slug = get_option( 'inspiry_property_feature_slug' );
+		if ( !empty( $new_slug ) ) {
+			return $new_slug;
+		}
+		return $existing_slug;
+	}
+	add_filter( 'inspiry_property_feature_slug', 'inspiry_set_property_feature_slug' );
+endif;
+
+
+if ( ! function_exists( 'property_edit_columns' ) ) {
+	/**
+	 * Custom columens for properties
+	 * @param $columns
+	 * @return array
+	 */
+	function property_edit_columns( $columns ) {
+
+	    /*
+	     * Columns that we removed over time.
+	     *
+	    "address" => __('Address','framework'),
+        "agent" => __( 'Property Agent','framework' ),
+        "bed" => __('Beds','framework'),
+        "bath" => __('Baths','framework'),
+        "garage" => __('Garages','framework'),
+        "features" => __('Features','framework'),
+        */
 
         $columns = array(
             "cb" => "<input type=\"checkbox\" />",
             "title" => __( 'Property Title','framework' ),
             "thumb" => __( 'Thumbnail','framework' ),
-            //"address" => __('Address','framework'),
             "city" => __( 'City','framework' ),
             "type" => __('Type','framework'),
             "status" => __('Status','framework'),
             "price" => __('Price','framework'),
             "id" => __( 'Property ID','framework' ),
-            /*
-            "bed" => __('Beds','framework'),
-            "bath" => __('Baths','framework'),
-            "garage" => __('Garages','framework'),
-            "features" => __('Features','framework'),
-            */
             "date" => __( 'Publish Time','framework' )
         );
 
-        //WPML support
-        if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
-            global $sitepress;
-            $columns = $sitepress->add_posts_management_column( $columns );
+		/**
+		 * WPML Support
+		 */
+        if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+            global $wpdb, $sitepress;
+            $wpml_columns = new WPML_Custom_Columns( $wpdb, $sitepress );
+            $columns      = $wpml_columns->add_posts_management_column( $columns );
+        }
+
+	    /**
+	     * Reverse the array for RTL
+	     */
+        if ( is_rtl() ) {
+            $columns = array_reverse( $columns );
         }
 
         return $columns;
     }
+
+	add_filter("manage_edit-property_columns", "property_edit_columns");
 }
-add_filter("manage_edit-property_columns", "property_edit_columns");
+
 
 if( !function_exists( 'property_custom_columns' ) ){
     function property_custom_columns($column){
@@ -223,11 +334,23 @@ if( !function_exists( 'property_custom_columns' ) ){
             case 'id':
                 $Prop_id = get_post_meta($post->ID,'REAL_HOMES_property_id',true);
                 if(!empty($Prop_id)){
-                    echo $Prop_id;
+                    echo esc_html( $Prop_id );
                 }
                 else{
                     _e('NA','framework');
                 }
+                break;
+            case 'agent':
+	            $agents_id = get_post_meta( $post->ID, 'REAL_HOMES_agents' );
+	            if ( ! empty( $agents_id ) ) {
+		            $agents_title = array();
+		            foreach ( $agents_id as $agent_id ) {
+			            $agents_title[] = get_the_title( $agent_id );
+		            }
+		            echo implode( ', ', $agents_title );
+	            } else {
+		            _e( 'NA', 'framework' );
+	            }
                 break;
             case 'city':
                 echo inspiry_admin_taxonomy_terms ( $post->ID, 'property-city', 'property' );
@@ -235,7 +358,7 @@ if( !function_exists( 'property_custom_columns' ) ){
             case 'address':
                 $address = get_post_meta($post->ID,'REAL_HOMES_property_address',true);
                 if(!empty($address)){
-                    echo $address;
+                    echo esc_html( $address );
                 }
                 else{
                     _e('No Address Provided!','framework');
@@ -253,7 +376,7 @@ if( !function_exists( 'property_custom_columns' ) ){
             case 'bed':
                 $bed = get_post_meta($post->ID,'REAL_HOMES_property_bedrooms',true);
                 if(!empty($bed)){
-                    echo $bed;
+                    echo esc_html( $bed );
                 }
                 else{
                     _e('NA','framework');
@@ -262,7 +385,7 @@ if( !function_exists( 'property_custom_columns' ) ){
             case 'bath':
                 $bath = get_post_meta($post->ID,'REAL_HOMES_property_bathrooms',true);
                 if(!empty($bath)){
-                    echo $bath;
+                    echo esc_html( $bath );
                 }
                 else{
                     _e('NA','framework');
@@ -271,7 +394,7 @@ if( !function_exists( 'property_custom_columns' ) ){
             case 'garage':
                 $garage = get_post_meta($post->ID,'REAL_HOMES_property_garage',true);
                 if(!empty($garage)){
-                    echo $garage;
+                    echo esc_html( $garage );
                 }
                 else{
                     _e('NA','framework');
@@ -288,9 +411,8 @@ add_action("manage_pages_custom_column", "property_custom_columns");
 
 /*-----------------------------------------------------------------------------------*/
 /*	Add Metabox to Display Property Payment Information
-add_action( 'add_meta_boxes', 'add_payment_meta_box' );
 /*-----------------------------------------------------------------------------------*/
-
+add_action( 'add_meta_boxes', 'add_payment_meta_box' );
 
 if( !function_exists( 'add_payment_meta_box' ) ){
     function add_payment_meta_box(){
@@ -317,35 +439,35 @@ if( !function_exists( 'payment_meta_box' ) ){
         <table style="width:100%;">
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Transaction ID','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $txn_id; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $txn_id ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Payment Date','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $payment_date; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $payment_date ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('First Name','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $first_name; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $first_name ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Last Name','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $last_name; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $last_name ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Payer Email','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $payer_email; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $payer_email ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Payment Status','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $payment_status; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $payment_status ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Payment Amount','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $payment_gross; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $payment_gross ); ?></td>
             </tr>
             <tr>
                 <td style="width:25%; vertical-align: top;"><strong><?php _e('Payment Currency','framework');?></strong></td>
-                <td style="width:75%;"><?php echo $payment_currency; ?></td>
+                <td style="width:75%;"><?php echo esc_html( $payment_currency ); ?></td>
             </tr>
         </table>
         <?php

@@ -21,7 +21,7 @@ $property_floor_plans = get_post_meta( $post->ID, 'inspiry_floor_plans', true );
 					<div class="floor-plan">
 						<div class="floor-plan-title clearfix">
 							<i class="fa fa-plus"></i>
-							<h3><?php echo $floor['inspiry_floor_plan_name']; ?></h3>
+							<h3><?php echo esc_html( $floor['inspiry_floor_plan_name'] ); ?></h3>
 							<div class="floor-plan-meta">
 								<?php
 								/*
@@ -30,10 +30,7 @@ $property_floor_plans = get_post_meta( $post->ID, 'inspiry_floor_plans', true );
 								if( ! empty( $floor['inspiry_floor_plan_size'] ) ) {
 									$floor_size = $floor['inspiry_floor_plan_size'];
 									echo '<div>';
-									/*echo '<span>';
-									include( get_template_directory() . '/images/icon-size.svg' );
-									echo '</span>';*/
-									echo $floor_size;
+									echo esc_html( $floor_size );
 									if( ! empty( $floor['inspiry_floor_plan_size_postfix'] ) ){
 										$floor_size_postfix = $floor['inspiry_floor_plan_size_postfix'];
 										echo ' ' . $floor_size_postfix;
@@ -48,10 +45,7 @@ $property_floor_plans = get_post_meta( $post->ID, 'inspiry_floor_plans', true );
 									$floor_bedrooms = floatval( $floor['inspiry_floor_plan_bedrooms'] );
 									$bedrooms_label = ( $floor_bedrooms > 1 ) ? __( 'Bedrooms', 'framework' ) : __( 'Bedroom', 'framework' );
 									echo '<div>';
-									/*echo '<span>';
-									include( get_template_directory() . '/images/icon-bed.svg' );
-									echo '</span>';*/
-									echo $floor_bedrooms . ' ' . $bedrooms_label;
+									echo esc_html( $floor_bedrooms . ' ' . $bedrooms_label );
 									echo '</div>';
 								}
 
@@ -62,10 +56,7 @@ $property_floor_plans = get_post_meta( $post->ID, 'inspiry_floor_plans', true );
 									$floor_bathrooms = floatval( $floor['inspiry_floor_plan_bathrooms'] );
 									$bathrooms_label = ( $floor_bathrooms > 1 ) ? __( 'Bathrooms', 'framework' ): __( 'Bathroom', 'framework' );
 									echo '<div>';
-									/*echo '<span>';
-									include( get_template_directory() . '/images/icon-bath.svg' );
-									echo '</span>';*/
-									echo $floor_bathrooms . ' ' . $bathrooms_label;
+									echo esc_html( $floor_bathrooms . ' ' . $bathrooms_label );
 									echo '</div>';
 								}
 

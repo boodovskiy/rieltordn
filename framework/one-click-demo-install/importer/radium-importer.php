@@ -114,7 +114,9 @@
 			$this->imported_demos = get_option( 'radium_imported_demo' );
 
             if( $this->theme_options_framework == 'optiontree' ) {
-                $this->theme_option_name = ot_options_id();
+	            if ( function_exists( 'ot_options_id' ) ) {
+		            $this->theme_option_name = ot_options_id();
+	            }
             }
 
 	        if( $this->add_admin_menu ) add_action( 'admin_menu', array($this, 'add_admin') );
@@ -123,6 +125,16 @@
 
       		add_action( 'radium_import_end', array( $this, 'after_wp_importer' ) );
 
+		    /**
+		     * Inspiry Demo Import Styles & Scripts
+		     */
+		    add_action( 'admin_enqueue_scripts', array( $this, 'inspiry_demo_import_styles' ) );
+		    add_action( 'admin_enqueue_scripts', array( $this, 'inspiry_demo_import_js' ) );
+
+		    /**
+		     * Import Ajax Request Handler
+		     */
+		    add_action( 'wp_ajax_inspiry_demo_import', array( $this, 'inspiry_import_handler' ) );
 	    }
 
 		/**
@@ -131,10 +143,53 @@
 		 * @since 0.0.2
 		 */
 	    public function add_admin() {
-
 	        add_submenu_page('themes.php', "Import Demo Data", "Import Demo Data", 'switch_themes', 'radium_demo_installer', array($this, 'demo_installer'));
-
 	    }
+
+
+		/**
+		 * Styles required for demo import page
+		 */
+		function inspiry_demo_import_styles( $hook ) {
+			if( $hook == 'appearance_page_radium_demo_installer' ) {
+				wp_enqueue_style( 'inspiry-demo-import-styles', get_template_directory_uri() . '/framework/one-click-demo-install/inspiry-demo-import.css' );
+			}
+		}
+
+		/**
+		 * JavaScript required for demo import page
+		 */
+		function inspiry_demo_import_js( $hook ) {
+			if( $hook == 'appearance_page_radium_demo_installer' ) {
+
+				// jQuery Validate
+				wp_enqueue_script(
+					'jqvalidate',
+					get_template_directory_uri() . '/js/jquery.validate.min.js',
+					array( 'jquery' ),
+					'1.11.1',
+					false
+				);
+
+				// jQuery Form
+				wp_enqueue_script(
+					'jqform',
+					get_template_directory_uri() . '/js/jquery.form.js',
+					array( 'jquery' ),
+					'3.40',
+					false
+				);
+
+				wp_enqueue_script(
+					'inspiry-demo-import-js',
+					get_template_directory_uri() . '/framework/one-click-demo-install/inspiry-demo-import.js',
+					array( 'jquery' ),
+					INSPIRY_THEME_VERSION,
+					false
+				);
+
+			}
+		}
 
 	    /**
          * Avoids adding duplicate meta causing arrays in arrays from WP_importer
@@ -183,83 +238,86 @@
 
 		}
 
+		/**
+		 * Generates User Interface HTML
+		 */
     	public function intro_html() {
 
-			?>
-
-			<div style="background-color: #F5FAFD; margin:10px 0;padding: 5px 10px;color: #0C518F;border: 2px solid #CAE0F3; clear:both; width:90%; line-height:18px;">
-			    <p class="tie_message_hint">Importing demo data (post, pages, images, theme settings, ...) is the easiest way to setup your theme. It will
-			    allow you to quickly edit everything instead of creating content from scratch. When you import the data following things will happen:</p>
-
-			      <ul style="padding-left: 20px;list-style-position: inside;list-style-type: square;}">
-			          <li>No existing posts, pages, categories, images, custom post types or any other data will be deleted or modified .</li>
-			          <li>No WordPress settings will be modified .</li>
-			          <li>Posts, pages, some images, some widgets and menus will get imported .</li>
-			          <li>Images will be downloaded from our server, these images are copyrighted and are for demo use only .</li>
-			          <li>Please click import only once and wait, it can take a couple of minutes</li>
-			      </ul>
-			 </div>
-
-			 <div style="background-color: #F5FAFD; margin:10px 0;padding: 5px 10px;color: #0C518F;border: 2px solid #CAE0F3; clear:both; width:90%; line-height:18px;"><p class="tie_message_hint">Before you begin, make sure all the required plugins are activated.</p></div>
-
-			 <?php
-
-			 if( !empty($this->imported_demos) ) { ?>
-
-			  	<div style="background-color: #FAFFFB; margin:10px 0;padding: 5px 10px;color: #8AB38A;border: 2px solid #a1d3a2; clear:both; width:90%; line-height:18px;">
-			  		<p><?php _e('Demo already imported', 'radium'); ?></p>
-			  	</div><?php
-			   	//return;
-
-			  }
     	}
 
 	    /**
 	     * demo_installer Output
 	     *
-	     * @since 0.0.2
-	     *
-	     * @return null
 	     */
 	    public function demo_installer() {
 
-			$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+		    if ( ! empty( $this->imported_demos ) ) {
+			    $button_text = __( 'Import Again', 'inspiry' );
+		    } else {
+			    $button_text = __( 'Import Demo Data', 'inspiry' );
+		    }
+	        ?>
 
-			if( !empty($this->imported_demos ) ) {
+		    <div class="wrap">
 
-				$button_text = __('Import Again', 'radium');
+			<div class="welcome-panel">
 
-			} else {
+				<div class="welcome-panel-content">
 
-				$button_text = __('Import Demo Data', 'radium');
+					<form id="demo-import-form" class="demo-import-form" action="<?php echo admin_url('admin-ajax.php'); ?>" method="post" enctype="multipart/form-data">
 
-			}
+						<h1>One Click Demo Import</h1>
 
-	        ?><div id="icon-tools" class="icon32"><br></div>
-	        <h2>Import Demo Data</h2>
+						<p class="about-description">
+							Importing demo data is the easiest way to setup with your theme.
+							<br>
+							When you import the data, Following things will happen:
+						</p>
 
-	       <div class="radium-importer-wrap" data-demo-id="1"  data-nonce="<?php echo wp_create_nonce('radium-demo-code'); ?>">
+						<ol>
+							<li>No existing data ( posts, pages, categories, images, custom post types ) will be deleted or modified.</li>
+							<li>Few WordPress settings can be modified to setup front page and news page.</li>
+							<li>New data ( posts, pages, custom post types, some images, widgets and menus ) will be imported.</li>
+							<li>Demo images will be downloaded from our server, These images are copyrighted and are only for demo use.</li>
+							<li>Click import button only once and wait, Import process can take few minutes to complete.</li>
+						</ol>
+						<?php
+						if ( ! empty( $this->imported_demos ) ) {
+							?>
+							<div class="already-imported">
+								<p><?php _e('Note: Demo is already imported', 'inspiry'); ?></p>
+							</div>
+							<?php
+						}
+						?>
+						<?php wp_nonce_field( 'inspiry-demo-import-nonce', 'inspiry-secure-import' ); ?>
+						<input type="hidden" name="action" value="inspiry_demo_import" />
+						<input id="import-demo" class="button button-primary" name="reset" type="submit" value="<?php echo $button_text ; ?>" />
+						<img id="import-loader" src="<?php echo get_template_directory_uri(); ?>/images/spinner-2x.gif" height="20px" width="20px" alt="Working...">
+						<br />
+						<br />
+						<div id="import-message"></div>
+						<div id="import-error"></div>
+					</form>
 
-		        <form method="post">
-		        	<?php $this->intro_html(); ?>
-		          	<input type="hidden" name="demononce" value="<?php echo wp_create_nonce('radium-demo-code'); ?>" />
-		          	<input name="reset" class="panel-save button-primary radium-import-start" type="submit" value="<?php echo $button_text ; ?>" />
-		          	<input type="hidden" name="action" value="demo-data" />
+				</div>
 
-		          	<br />
-		          	<br />
-					<div class="radium-importer-message clear">
-				        <?php if( 'demo-data' == $action && check_admin_referer('radium-demo-code' , 'demononce')){
-				         	$this->process_imports();
-			 	        } ?>
-					</div>
-	 	        </form>
+			</div>
 
- 	        </div>
+		    </div>
+		    <?php
 
-	        <br />
-	        <br /><?php
+	    }
 
+
+	    function inspiry_import_handler() {
+
+		    // First check the nonce, if it fails the function will break
+		    check_ajax_referer( 'inspiry-demo-import-nonce', 'inspiry-secure-import' );
+
+		    $this->process_imports();
+
+		    die();
 	    }
 
 	    /**
@@ -274,7 +332,7 @@
 	     *
 	     * @return null
 	     */
-	    public function process_imports( $content = true, $options = true, $options = true, $widgets = true) {
+	    public function process_imports( $content = true, $options = true, $widgets = true) {
 
 			if ( $content && !empty( $this->content_demo ) && is_file( $this->content_demo ) ) {
 				$this->set_demo_data( $this->content_demo );
@@ -338,55 +396,37 @@
 	        $importer_error = false;
 
 	        if ( !class_exists( 'WP_Importer' ) ) {
-
 	            $class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
-
 	            if ( file_exists( $class_wp_importer ) ){
-
-	                require_once($class_wp_importer);
-
+	                require_once( $class_wp_importer );
 	            } else {
-
 	                $importer_error = true;
-
 	            }
-
 	        }
 
 	        if ( !class_exists( 'WP_Import' ) ) {
-
 	            $class_wp_import = dirname( __FILE__ ) .'/wordpress-importer.php';
-
-	            if ( file_exists( $class_wp_import ) )
-	                require_once($class_wp_import);
-	            else
-	                $importer_error = true;
-
+	            if ( file_exists( $class_wp_import ) ) {
+		            require_once( $class_wp_import );
+	            } else {
+		            $importer_error = true;
+	            }
 	        }
 
-	        if($importer_error){
+		    if ( $importer_error ) {
+			    die( "Error on import" );
+		    } else {
+			    if ( ! is_file( $file ) ) {
+				    echo "The XML file containing the dummy content is not available or could not be read .. You might want to try to set the file permission to chmod 755.<br/>If this doesn't work please use the Wordpress importer and import the XML file (should be located in your download .zip: Sample Content folder) manually ";
+			    } else {
+				    $wp_import = new WP_Import();
+				    $wp_import->fetch_attachments = true;
+				    $wp_import->import( $file );
+				    $this->flag_as_imported[ 'content' ] = true;
+			    }
+		    }
 
-	            die("Error on import");
-
-	        } else {
-
-	            if(!is_file( $file )){
-
-	                echo "The XML file containing the dummy content is not available or could not be read .. You might want to try to set the file permission to chmod 755.<br/>If this doesn't work please use the Wordpress importer and import the XML file (should be located in your download .zip: Sample Content folder) manually ";
-
-	            } else {
-
-	               	$wp_import = new WP_Import();
-	               	$wp_import->fetch_attachments = true;
-	               	$wp_import->import( $file );
-					$this->flag_as_imported['content'] = true;
-
-	         	}
-
-	    	}
-
-	    	do_action( 'radium_importer_after_theme_content_import');
-
+		    do_action( 'radium_importer_after_theme_content_import' );
 
 	    }
 
@@ -409,8 +449,10 @@
 
 					//option tree import
 					$data = $this->optiontree_decode($data);
-					
-					update_option( ot_options_id(), $data );
+
+					if ( function_exists( 'ot_options_id' ) ) {
+						update_option( ot_options_id(), $data );
+					}
 					
 					$this->flag_as_imported['options'] = true;
 
@@ -433,12 +475,12 @@
 					$this->flag_as_imported['options'] = true;
 				}
 
-	      		do_action( 'radium_importer_after_theme_options_import', $this->active_import, $this->demo_files_path );
+	      		do_action( 'radium_importer_after_theme_options_import', $this->demo_files_path );
 
       		} else {
 
 	      		wp_die(
-      				__( 'Theme options Import file could not be found. Please try again.', 'radium' ),
+      				__( 'Theme options Import file could not be found. Please try again.', 'inspiry' ),
       				'',
       				array( 'back_link' => true )
       			);
@@ -496,7 +538,7 @@
 	    	// File exists?
 	    	if ( ! file_exists( $file ) ) {
 	    		wp_die(
-	    			__( 'Widget Import file could not be found. Please try again.', 'radium' ),
+	    			__( 'Widget Import file could not be found. Please try again.', 'inspiry' ),
 	    			'',
 	    			array( 'back_link' => true )
 	    		);
@@ -569,7 +611,7 @@
 	    			$sidebar_available = false;
 	    			$use_sidebar_id = 'wp_inactive_widgets'; // add to inactive if sidebar does not exist in theme
 	    			$sidebar_message_type = 'error';
-	    			$sidebar_message = __( 'Sidebar does not exist in theme (using Inactive)', 'radium' );
+	    			$sidebar_message = __( 'Sidebar does not exist in theme (using Inactive)', 'inspiry' );
 	    		}
 
 	    		// Result for sidebar
@@ -591,7 +633,7 @@
 	    			if ( ! $fail && ! isset( $available_widgets[$id_base] ) ) {
 	    				$fail = true;
 	    				$widget_message_type = 'error';
-	    				$widget_message = __( 'Site does not support widget', 'radium' ); // explain why widget not imported
+	    				$widget_message = __( 'Site does not support widget', 'inspiry' ); // explain why widget not imported
 	    			}
 
 	    			// Filter to modify settings before import
@@ -614,7 +656,7 @@
 
 	    						$fail = true;
 	    						$widget_message_type = 'warning';
-	    						$widget_message = __( 'Widget already exists', 'radium' ); // explain why widget not imported
+	    						$widget_message = __( 'Widget already exists', 'inspiry' ); // explain why widget not imported
 
 	    						break;
 
@@ -663,17 +705,17 @@
 	    				// Success message
 	    				if ( $sidebar_available ) {
 	    					$widget_message_type = 'success';
-	    					$widget_message = __( 'Imported', 'radium' );
+	    					$widget_message = __( 'Imported', 'inspiry' );
 	    				} else {
 	    					$widget_message_type = 'warning';
-	    					$widget_message = __( 'Imported to Inactive', 'radium' );
+	    					$widget_message = __( 'Imported to Inactive', 'inspiry' );
 	    				}
 
 	    			}
 
 	    			// Result for widget instance
 	    			$results[$sidebar_id]['widgets'][$widget_instance_id]['name'] = isset( $available_widgets[$id_base]['name'] ) ? $available_widgets[$id_base]['name'] : $id_base; // widget name or ID if name not available (not supported by site)
-	    			$results[$sidebar_id]['widgets'][$widget_instance_id]['title'] = $widget->title ? $widget->title : __( 'No Title', 'radium' ); // show "No Title" if widget instance is untitled
+	    			$results[$sidebar_id]['widgets'][$widget_instance_id]['title'] = $widget->title ? $widget->title : __( 'No Title', 'inspiry' ); // show "No Title" if widget instance is untitled
 	    			$results[$sidebar_id]['widgets'][$widget_instance_id]['message_type'] = $widget_message_type;
 	    			$results[$sidebar_id]['widgets'][$widget_instance_id]['message'] = $widget_message;
 

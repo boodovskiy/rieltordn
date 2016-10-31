@@ -91,6 +91,15 @@ a img.aligncenter {
     left: 5px;
 }
 
+#lang_sel a.lang_sel_sel{
+	background-position: 5px center;
+}
+
+#lang_sel a{
+	padding-left: 0;
+	padding-right: 10px;
+}
+
 /*  Contact Email
 -------------------------------------------------------------------------*/
 #contact-email {
@@ -299,16 +308,21 @@ a img.aligncenter {
 }
 
 /*------------------------------------------------------*/
+/* Select2
+/*------------------------------------------------------*/
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    border-left-width: 0;
+    border-right-width: 1px;
+}
+
+
+/*------------------------------------------------------*/
 /* Google Map
 /*------------------------------------------------------*/
 
 #listing-map .gm-style-iw{
     left: auto !important;
     right: 28px !important;
-}
-
-#listing-map .map-info-window{
-    padding-top: 10px;
 }
 
 /*------------------------------------------------------*/
@@ -398,11 +412,11 @@ a img.aligncenter {
 }
 
 .property-item .property-meta span .icon-bath {
-    background: url(../images/1111icon-bath.png) no-repeat right center;
+    background: url(../images/icon-bath.png) no-repeat right center;
 }
 
 .property-item .property-meta span .icon-garage {
-    background: url(../images/1111icon-garage.png) no-repeat right center;
+    background: url(../images/icon-garage.png) no-repeat right center;
 }
 
 #overview .property-item .property-meta .add-to-fav .fa{
@@ -452,6 +466,10 @@ a img.aligncenter {
 /*------------------------------------------------------*/
 /* Footer
 /*------------------------------------------------------*/
+.brands-carousel .jcarousel-container-horizontal{
+	direction: ltr;
+}
+
 #footer .widget ul {
     margin-left: 0px;
     margin-right: 2px;
@@ -561,14 +579,20 @@ a img.aligncenter {
     margin-right: 15px;
 }
 
-.widget.advance-search .small input[type="text"],
-.widget.advance-search .large input[type="text"] {
-    width: 174px;
-}
 
-.widget.advance-search .small .selectwrap input,
-.widget.advance-search .large .selectwrap input {
-    width: 145px;
+/*------------------------------------------------------*/
+/*  Quick and Easy Tweets Widget
+/*------------------------------------------------------*/
+.widget .qaet-tweets .qaet-tweet{
+    padding-left: 0;
+    padding-right: 50px;
+}
+.widget .qaet-tweets .qaet-tweet:before{
+    left: auto;
+    right: 0;
+}
+#footer .widget .qaet-tweets .qaet-tweet{
+    padding-right: 0;
 }
 
 
@@ -683,8 +707,8 @@ a img.aligncenter {
     float: right;
 }
 
-.sort-controls{
-    text-align: left;
+.property-grid .list-container .sort-controls{
+	text-align: left;
 }
 
 /*------------------------------------------------------*/
@@ -764,7 +788,6 @@ address {
 
 .comment-detail-wrap {
     float: left;
-    padding: 10px 28px 15px 48px;
 }
 
 .comment-detail-wrap .comment-detail-wrap-arrow {
@@ -823,6 +846,7 @@ address {
 #overview .property-item .title {
     float: right;
     padding: 0 16px 0 0;
+    text-rendering: auto;
 }
 
 #overview .property-item .price {
@@ -830,6 +854,7 @@ address {
     float: left;
     padding: 0 15px 0 0;
     direction: rtl;
+    text-rendering: auto;
 }
 
 #overview .property-item .price span {
@@ -844,6 +869,10 @@ address {
     padding-right: 7px;
     padding-left: 28px;
     background: url(../images/rtl-arrow-left.png) #292d2d no-repeat left 0;
+}
+
+.detail #overview .inspiry-shortcode .property-item .price{
+	margin: 0 -18px 10px -11px;
 }
 
 #overview .property-item .property-meta span {
@@ -941,7 +970,6 @@ address {
 
 #overview .contact-form {
     float: left;
-    width: 100%;
 }
 
 /*------------------------------------------------------*/
@@ -1096,3 +1124,645 @@ p.error {
     float: right;
     margin: 0 0 11px 30px;
 }
+
+/*------------------------------------------------------*/
+/* Compare Listings
+/*------------------------------------------------------*/
+.rtl .property-grid .list-container .property-item .add-to-compare-span .fa {
+    margin-right: 0;
+    margin-left: 5px;
+}
+.rtl .property-grid .compare-properties {
+    margin: 0 8px 15px -22px;
+}
+
+.rtl .compare-properties .compare-submit {
+    float: right;
+}
+
+.rtl .compare-template .compare-properties-column:nth-last-child(1) .property-price,
+.rtl .compare-template .compare-properties-column:nth-last-child(1) .property-type {
+    padding: 0 0 5px 0;
+}
+
+.rtl .compare-template .compare-feature-column p {
+    margin-right: 0;
+    padding: 10px;
+}
+
+.rtl .compare-template .compare-properties-column .property-thumbnail p {
+    margin-right: 0;
+}
+
+.rtl .compare-properties-column p {
+    padding: 10px 0px 10px 10px;
+    margin-left: -20px;
+}
+
+.rtl .compare-properties-column:nth-last-child(1) p {
+    padding: 10px 27px 10px 10px;
+}
+
+.rtl .search-header h4 {
+    text-align: right;
+}
+
+.rtl .property-item .compare-meta .add-to-compare-search .compare-tooltip::before {
+    left: -15px;
+}
+
+.rtl .property-item .compare-meta .add-to-compare-search .compare-label {
+    margin-right: 5px;
+    margin-left: 0;
+}
+
+.property-item .compare-meta span {
+    margin-left: 0;
+}
+
+.rtl .property-item .compare-meta .add-to-compare-search {
+    padding: 10px 15px 10px 24px;
+}
+
+.page-template-template-search-right-sidebar .property-grid .compare-properties {
+    margin: 25px 8px 0 -52px;
+}
+
+.page-template-template-search-sidebar .property-grid .compare-properties {
+    margin: 25px 8px 0 -52px;
+}
+
+
+
+/*
+ *	RTL Responsive Styles
+ */
+@media (min-width: 1200px) {
+
+	.user-nav a:last-child:after{
+		margin: 0 10px;
+	}
+
+	.main-menu ul li ul li ul {
+		left: auto;
+		right: 234px;
+	}
+
+	.slide-description {
+		left: auto;
+		right: 0;
+	}
+
+	.small .selectwrap input {
+		width: 105px;
+	}
+
+	.large .selectwrap input {
+		width: 218px;
+	}
+
+	.property-items .span6 {
+		margin-left: 0;
+		margin-right: 29px;
+	}
+
+	.property-item .detail {
+		padding-left: 0;
+		padding-right: 16px;
+	}
+
+	.property-item .price {
+		padding: 8px 13px 10px 10px;
+		margin-left: 0;
+		margin-right: -16px;
+	}
+
+	.property-item .property-meta span {
+		padding-right: 0;
+		padding-left: 12px;
+		margin-right: 0;
+		margin-left: 12px;
+	}
+
+	.widget.quick-links ul li {
+		float: right;
+	}
+
+	.sidebar .widget .title {
+		padding-left: 11px;
+		padding-right: 19px;
+	}
+
+	.widget.advance-search .title {
+		padding: 0 0 0 20px;
+	}
+
+	.page-head h2 span {
+		padding: 7px 28px 7px 58px;
+	}
+
+	.page-head p {
+		padding: 17px 28px 17px 30px;
+	}
+
+	.listing-layout .property-item .price {
+		margin-right: -18px;
+		margin-left: -20px;
+		padding: 8px 18px 10px 20px;
+	}
+
+	/*------------------------------------------------------*/
+	/* Property Listing View
+	/*------------------------------------------------------*/
+
+
+	.property-grid .list-container {
+		margin-left: 0;
+		margin-right: -40px;
+	}
+
+	.property-grid .property-item {
+		margin-left: 0;
+		margin-right: 40px;
+	}
+
+	#filter-by {
+		right: auto;
+		left: -1px;
+	}
+
+	#filter-by a {
+		float: left;
+		border: none;
+		border-right: 1px solid #dedede;
+		margin-left: 0;
+	}
+
+	#filter-by a:last-child {
+		border-right: none;
+	}
+
+
+	/*-----------------------------------------------------------------------------------*/
+	/*	Similar Properties on Property Detail Page
+	/*-----------------------------------------------------------------------------------*/
+	.detail .list-container h3 {
+		margin: 0 40px 7px 0;
+	}
+
+	.detail .property-grid .property-item {
+		margin-left: 0;
+		margin-right: 40px;
+	}
+
+	#overview .property-item .property-meta span{
+		margin-left: 0;
+		margin-right: 15px;
+		padding-right: 0;
+		padding-left: 15px;
+	}
+
+	/*------------------------------------------------------*/
+	/* Compare Listings
+	/*------------------------------------------------------*/
+	.rtl .property-grid .compare-properties {
+		margin: 0 15px 15px -25px;
+	}
+	.rtl .compare-template .compare-properties-column > p {
+		padding: 10px 0 10px 30px;
+	}
+	.rtl .compare-template .compare-properties-column:nth-last-child(1) > p {
+		padding: 10px 28px 10px 30px;
+	}
+	.rtl .property-item .compare-meta .add-to-compare-search {
+		padding: 10px 17px;
+	}
+	.rtl .property-item .compare-meta .add-to-compare-search .compare-tooltip::before {
+		left: -17px;
+	}
+	.rtl .property-item .compare-meta span {
+		border-right: none;
+	}
+	.page-template-template-search-right-sidebar .property-grid .compare-properties {
+		margin: 25px 15px 0 -65px;
+	}
+	.page-template-template-search-sidebar .property-grid .compare-properties {
+		margin: 25px 15px 0 -65px;
+	}
+
+	/*
+	 * Agent Form on agent detail page
+	 */
+	#agent-single-form .row-fluid [class*="span"]{
+		float: right;
+		margin-right: 2.5641%;
+		margin-left: 0;
+	}
+
+	#agent-single-form .row-fluid [class*="span"]:first-child{
+		margin-right: 0;
+	}
+
+	/*
+	 * Comments
+	 */
+	#comments .commentlist .children {
+		padding: 0 60px 0 0;
+	}
+
+}
+
+@media (max-width: 979px) {
+
+	.view-type{
+		left: auto;
+	}
+
+	.user-profile-img-wrapper #user-profile-img{
+		margin: 0 0 15px 0;
+	}
+
+	.user-profile-img-wrapper .real-btn{
+		margin-right: 0;
+		margin-left: 8px;
+	}
+
+	/*------------------------------------------------------*/
+	/* Compare Listings
+	/*------------------------------------------------------*/
+	.rtl .property-grid .compare-properties {
+		margin: 0 -2px 15px -22px;
+	}
+
+	.rtl .compare-template .compare-properties-column .property-thumbnail {
+		margin-left: 0;
+		padding-left: 0;
+		margin-right: -20px;
+		padding: 0 10px;
+	}
+
+	.rtl .compare-template .compare-properties-column:nth-last-child(1) .property-thumbnail {
+		margin-right: -38px;
+		padding: 0 28px 0 10px;
+	}
+
+	.rtl .compare-template .compare-properties-column:nth-last-child(1) > p {
+		margin-right: -38px;
+	}
+
+	.rtl .compare-template .compare-properties-column > p {
+		margin-right: -20px;
+		margin-left: 0;
+	}
+
+	.compare-template .compare-properties-column {
+		width: 120px;
+	}
+
+	.rtl .compare-template .compare-feature-column p {
+		margin-right: -20px;
+	}
+
+	.rtl .property-item .compare-meta .add-to-compare-search {
+		padding: 10px 17px;
+	}
+
+	.rtl .compare-template .compare-feature-column .property-thumbnail {
+		margin-right: -20px;
+		padding-left: 20px;
+	}
+
+	.rtl .property-item .compare-meta span {
+		border-right: 0;
+		margin-right: 0;
+		margin-left: 12px;
+	}
+
+	.rtl .property-item .compare-meta .add-to-compare-search .compare-tooltip::before {
+		left: -17px;
+	}
+
+	.page-template-template-search-right-sidebar .property-grid .compare-properties {
+		margin: 25px -2px 0 -42px;
+	}
+
+	.page-template-template-search-sidebar .property-grid .compare-properties {
+		margin: 25px -2px 0 -42px;
+	}
+
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+	.property-items .span6 {
+		margin-left: 49px;
+		margin-right: 49px;
+	}
+
+	.property-item .price {
+		padding: 10px 15px 10px 10px;
+		margin: 0 -15px 10px 0px;
+	}
+
+	.listing-layout .property-item .price{
+		margin: 0 -18px 10px -20px;
+	}
+
+	.widget.advance-search .advance-search-form {
+		margin: 0 -15px 0 0;
+	}
+
+	.widget.advance-search .option-bar {
+		float: right;
+		margin-left: 0;
+		margin-right: 15px;
+	}
+
+	ul.featured-properties{
+		margin-left: 0;
+		margin-right: -82px;
+	}
+
+	ul.featured-properties li{
+		padding: 0 0 40px 0;
+		float: right;
+		margin-left: 0;
+		margin-right: 82px;
+	}
+
+	.property-grid .list-container {
+		margin-left: 0;
+		margin-right: -20px;
+	}
+
+	.property-grid .property-item {
+		margin-left: 0;
+		margin-right: 20px;
+	}
+
+	.detail .list-container h3 {
+		margin: 0 20px 5px 0;
+	}
+
+	.detail .property-grid .property-item{
+		margin-left: 0;
+		margin-right: 20px;
+	}
+
+	.widget.advance-search .more-option-trigger{
+		margin-right: 15px;
+		margin-left: 0;
+	}
+
+	.widget.advance-search .more-options-wrapper .option-bar {
+		margin-right: 15px;
+		margin-left: 0;
+		float: right;
+	}
+	.widget.advance-search .more-options-wrapper input[type="checkbox"]{
+		margin-left: 5px;
+		margin-right: 0;
+	}
+}
+
+
+@media (max-width: 767px) {
+
+	.small .selectwrap input, .large .selectwrap input{
+		width: 90.4%;
+	}
+
+	.property-items .span6{
+		margin: 0 19px;
+	}
+
+	.property-item .price{
+		margin: 0 -12px 15px -10px;
+	}
+
+	#footer-bottom .copyright{
+		text-align: center;
+	}
+
+	ul.featured-properties li{
+		background: none;
+		padding: 0 0 40px 0;
+		float: right;
+		margin-left: 0;
+		margin-right: 27px;
+	}
+
+	/*
+	.widget.calculator .small .selectwrap input,
+	.widget.calculator .large .selectwrap input,
+	.widget.advance-search .small .selectwrap input,
+	.widget.advance-search .large .selectwrap input{
+		width: 90.4%;
+	}
+	*/
+
+	.property-grid .list-container {
+		margin-left: 0;
+		margin-right: -20px;
+	}
+
+	.property-grid .property-item {
+		margin-left: 0;
+		margin-right: 20px;
+	}
+
+	#comments .comment .avatar{
+		margin: 0 0 15px 15px;
+	}
+
+	#overview .property-item .property-meta span {
+		padding-left: 0;
+		padding-right: 16px;
+	}
+
+	#overview .property-item .property-meta .add-to-fav .fa{
+		margin-right: 2px;
+	}
+
+	#overview .property-item .property-meta .printer-icon{
+		background: #fff;
+		padding-left: 15px;
+	}
+
+	#overview .property-item .features .arrow-bullet-list li{
+		background: url(../images/rtl-feature-list-bullet.png) no-repeat 97% 14px;
+	}
+
+	#overview .left-box figure{
+		margin-right: 0;
+		margin-left: 27px;
+	}
+
+	.detail .list-container h3 {
+		margin: 0 20px 5px 0;
+	}
+
+	.detail .property-grid .property-item{
+		margin-left: 0;
+		margin-right: 20px;
+	}
+
+	.listing-layout .about-agent figure{
+		margin: 4px 0 15px 15px;
+	}
+
+	.about-agent .social_networks li {
+		margin: 0 0 0 -4px;
+	}
+
+	.about-agent .social_networks li a{
+		border-left: 1px solid #dedede;
+	}
+
+	.widget.advance-search .more-options-wrapper .option-bar{
+		float: right;
+		margin-right: 15px;
+		margin-left: 0;
+	}
+
+	#overview .contacts-list{
+		margin-right: 0;
+	}
+
+	.rtl .compare-template .compare-properties-column .property-thumbnail {
+		margin-right: -23px;
+	}
+
+	.rtl .compare-template .compare-properties-column:nth-last-child(1) .property-thumbnail {
+		margin-right: -22px;
+		padding: 0 10px;
+		margin-left: -15px;
+	}
+
+	.rtl .compare-template .compare-feature-column p {
+		margin-right: 0px;
+		padding: 10px 20px 10px 10px;
+		margin-left: 10px;
+	}
+
+	.rtl .compare-template .compare-properties-column:nth-last-child(1) > p {
+		margin-right: -22px;
+		padding: 10px;
+		margin-left: -15px;
+	}
+
+	.rtl .compare-template .compare-properties-column > p {
+		margin-right: -23px;
+	}
+
+	.rtl .property-item .compare-meta .add-to-compare-search {
+		padding: 10px 17px 10px 26px;
+	}
+
+	.rtl .compare-template .compare-feature-column .property-thumbnail {
+		margin-right: 0;
+		padding-left: 0;
+	}
+
+	.rtl .property-item .compare-meta span {
+		margin-left: 0;
+	}
+
+	.page-template-template-search-right-sidebar .property-grid .compare-properties {
+		margin: 25px -2px 0 -42px;
+	}
+
+	.page-template-template-search-sidebar .property-grid .compare-properties {
+		margin: 25px -2px 0 -42px;
+	}
+
+}
+
+
+@media (max-width: 499px) {
+
+	.property-item .price{
+		margin: 0 0 15px 0;
+	}
+
+	.listing-layout .property-item .property-meta span{
+		border-left: none;
+		margin: 0;
+	}
+
+	.property-items .property-meta span{
+		border-left: none;
+		padding-left: 0;
+	}
+
+	.rtl .compare-template .compare-feature-column {
+		width: 190px;
+	}
+
+	.rtl .compare-template .compare-properties-column {
+		margin-left: 15px;
+	}
+
+	.rtl .property-item .compare-meta .add-to-compare-search {
+		padding: 10px 0;
+	}
+}
+
+
+@media (max-width: 439px) {
+
+	ul.featured-properties li {
+		margin-right: 0px;
+	}
+
+	.advance-search .search-heading{
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+
+	.advance-search .search-heading .fa-search{
+		margin: 0 -10px 0 20px;
+	}
+
+	.small .selectwrap input, .large .selectwrap input {
+		width: 82.4%;
+	}
+
+	.listing-layout .about-agent .social_networks{
+		float: none;
+	}
+
+	.listing-layout .about-agent .social_networks li a{
+		border: none;
+	}
+
+	.widget.advance-search .more-options-wrapper .option-bar{
+		float: none;
+	}
+
+	/*------------------------------------------------------*/
+	/* Compare Listings
+	/*------------------------------------------------------*/
+	.rtl .property-grid .compare-properties {
+		margin: 0 -2px 15px -40px;
+	}
+
+	.rtl .property-item .compare-meta .add-to-compare-search {
+		padding: 10px 0;
+	}
+
+	.page-template-template-search-right-sidebar .property-grid .compare-properties {
+		margin: 20px -2px 0 -40px;
+	}
+
+	.page-template-template-search-sidebar .property-grid .compare-properties {
+		margin: 20px -2px 0 -40px;
+	}
+
+}
+
+
+@media (max-width: 279px) {
+
+}
+

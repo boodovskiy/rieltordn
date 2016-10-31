@@ -46,12 +46,12 @@ get_header();
     }
     ?>
 
-    <div class="page-head">
+    <div class="page-head" style="background-repeat: no-repeat;background-position: center top;background-image: url('<?php echo esc_url( $banner_image_path ); ?>'); ">
         <div class="container">
             <div class="wrap clearfix">
-                <h1 class="page-title"><span><?php echo $banner_title; ?></span></h1>
-                <?php if(!empty($banner_details)){ ?>
-                <p><?php echo $banner_details; ?></p>
+                <h1 class="page-title"><span><?php echo esc_html( $banner_title ); ?></span></h1>
+                <?php if ( ! empty( $banner_details ) ) { ?>
+                    <p><?php echo esc_html( $banner_details ); ?></p>
                 <?php } ?>
             </div>
         </div>

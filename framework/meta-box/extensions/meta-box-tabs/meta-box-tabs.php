@@ -1,20 +1,26 @@
 <?php
-/*
-Plugin Name: Meta Box Tabs
-Plugin URI: http://metabox.io/plugins/meta-box-tabs/
-Description: Create tabs for meta boxes easily. Support 3 WordPress-native tab styles.
-Version: 0.1.3
-Author: Rilwis
-Author URI: http://metabox.io
-License: GPL2+
-*/
+/**
+ * Plugin Name: Meta Box Tabs
+ * Plugin URI: https://metabox.io/plugins/meta-box-tabs/
+ * Description: Create tabs for meta boxes easily. Support 3 WordPress-native tab styles.
+ * Version: 1.0.0
+ * Author: Rilwis
+ * Author URI: https://www.deluxeblogtips.com
+ * License: GPL2+
+ */
 
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'RWMB_Tabs' ) )
+if ( ! class_exists( 'MB_Tabs' ) )
 {
-	class RWMB_Tabs
+	/**
+	 * Main plugin class
+	 * @package    Meta Box
+	 * @subpackage Meta Box Tabs
+	 * @author     Tran Ngoc Tuan Anh <rilwis@gmail.com>
+	 */
+	class MB_Tabs
 	{
 		/**
 		 * Indicate that the instance of the class is working on a meta box that has tabs or not
@@ -35,12 +41,10 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 
 		/**
 		 * Add hooks to meta box
-		 *
-		 * @return RWMB_Tabs
 		 */
-		function __construct()
+		public function __construct()
 		{
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_action( 'rwmb_enqueue_scripts', array( $this, 'enqueue' ) );
 
 			add_action( 'rwmb_before', array( $this, 'opening_div' ), 1 ); // 1 = display first, before tab nav
 			add_action( 'rwmb_after', array( $this, 'closing_div' ), 100 ); // 100 = display last, after tab panels
@@ -53,31 +57,20 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 
 		/**
 		 * Enqueue scripts and styles for tabs
-		 *
-		 * @return void
 		 */
-		function admin_enqueue_scripts()
+		public function enqueue()
 		{
-			// Enqueue scripts and styles for post edit screen only
-			$screen = get_current_screen();
-			if ( 'post' != $screen->base )
-				return;
-
-			// wp_enqueue_style( 'rwmb-tabs', plugins_url( 'tabs.css', __FILE__ ) );
-			wp_enqueue_style( 'rwmb-tabs', get_template_directory_uri() . '/framework/meta-box/extensions/meta-box-tabs/tabs.css' );
-
-			// wp_enqueue_script( 'rwmb-tabs', plugins_url( 'tabs.js', __FILE__ ), array( 'jquery' ), '0.1', true );
-			wp_enqueue_script( 'rwmb-tabs', get_template_directory_uri() . '/framework/meta-box/extensions/meta-box-tabs/tabs.js', array( 'jquery' ), '0.1', true );
+			list( , $url ) = RWMB_Loader::get_path( dirname( __FILE__ ) );
+			wp_enqueue_style( 'rwmb-tabs', $url . 'tabs.css', '', '1.0.0' );
+			wp_enqueue_script( 'rwmb-tabs', $url . 'tabs.js', array( 'jquery' ), '1.0.0', true );
 		}
 
 		/**
 		 * Display opening div for tabs for meta box
 		 *
-		 * @param RW_Meta_Box $obj
-		 *
-		 * @return void
+		 * @param RW_Meta_Box $obj Meta Box object
 		 */
-		function opening_div( $obj )
+		public function opening_div( RW_Meta_Box $obj )
 		{
 			if ( empty( $obj->meta_box['tabs'] ) )
 				return;
@@ -85,6 +78,9 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 			$class = 'rwmb-tabs';
 			if ( isset( $obj->meta_box['tab_style'] ) && 'default' != $obj->meta_box['tab_style'] )
 				$class .= ' rwmb-tabs-' . $obj->meta_box['tab_style'];
+
+			if ( isset( $obj->meta_box['tab_wrapper'] ) && false == $obj->meta_box['tab_wrapper'] )
+				$class .= ' rwmb-tabs-no-wrapper';
 
 			echo '<div class="' . $class . '">';
 
@@ -94,10 +90,8 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 
 		/**
 		 * Display closing div for tabs for meta box
-		 *
-		 * @return void
 		 */
-		function closing_div()
+		public function closing_div()
 		{
 			if ( ! $this->active )
 				return;
@@ -112,11 +106,9 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 		/**
 		 * Display tab navigation for meta box
 		 *
-		 * @param RW_Meta_Box $obj
-		 *
-		 * @return void
+		 * @param RW_Meta_Box $obj Meta Box object
 		 */
-		function show_nav( $obj )
+		public function show_nav( RW_Meta_Box $obj )
 		{
 			if ( ! $this->active )
 				return;
@@ -175,11 +167,10 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 
 		/**
 		 * Display tab navigation for meta box
-		 * Note that: this function is hooked to 'rwmb_after', when all fields are outputted (and captured by 'capture_fields' function)
-		 *
-		 * @return void
+		 * Note that: this public function is hooked to 'rwmb_after', when all fields are outputted
+		 * (and captured by 'capture_fields' public function)
 		 */
-		function show_panels()
+		public function show_panels()
 		{
 			if ( ! $this->active )
 				return;
@@ -202,7 +193,7 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 		 *
 		 * @return string
 		 */
-		function capture_fields( $output, $field )
+		public function capture_fields( $output, $field )
 		{
 			// If meta box doesn't have tabs, do nothing
 			if ( ! $this->active || ! isset( $field['tab'] ) )
@@ -221,6 +212,6 @@ if ( ! class_exists( 'RWMB_Tabs' ) )
 
 	if ( is_admin() )
 	{
-		new RWMB_Tabs;
+		new MB_Tabs;
 	}
 }

@@ -22,7 +22,7 @@
                         if( $status_count > 0 ){
                             echo ', ';
                         }
-                        echo $term->name;
+                        echo esc_html( $term->name );
                         $status_count++;
                     }
                 }else{
@@ -51,20 +51,10 @@
         get_template_part('property-details/property-add-to-favorites');
 
         ?>
-        
+        <!-- Print link -->
+        <span class="printer-icon"><a href="javascript:window.print()"><i class="fa fa-print"></i><?php _e('Print','framework'); ?></a></span>
     </div>
-<?php
-$gallery_slider_type = get_post_meta($post->ID, 'REAL_HOMES_gallery_slider_type', true);
-                                    /* For demo purpose only */
-                                    if(isset($_GET['slider-type'])){
-                                        $gallery_slider_type = $_GET['slider-type'];
-                                    }
-                                    if( $gallery_slider_type == 'thumb-on-bottom' ){
-                                        get_template_part('property-details/property-slider-two');
-                                    }else{
-                                        get_template_part('property-details/property-slider');
-                                    }
-?>
+
     <div class="content clearfix">
         <?php
         // contents from WordPress editor
@@ -88,7 +78,7 @@ $gallery_slider_type = get_post_meta($post->ID, 'REAL_HOMES_gallery_slider_type'
             <?php
             $property_features_title = get_option('theme_property_features_title');
             if(!empty($property_features_title)){
-                ?><h4 class="title"><?php echo $property_features_title; ?></h4><?php
+                ?><h4 class="title"><?php echo esc_html( $property_features_title ); ?></h4><?php
             }
             ?>
             <ul class="arrow-bullet-list clearfix">
@@ -102,31 +92,4 @@ $gallery_slider_type = get_post_meta($post->ID, 'REAL_HOMES_gallery_slider_type'
         <?php
     }
     ?>
-	
-	
-	
-	<div class="property-meta clearfix">
-       	<?php
-             echo 'На все дополнительные вопросы по данному объекту Вы можете получить консультацию у нашего менеджера по телефону: (050) 915-14-44';
-        ?>
-        
-    </div>
-	
-	<div class="wrap clearfix">
-
-        <h5 class="price">
-            <span class="status-label" style="display: none;">
-			</span>
-			<?php
-                    echo '';
-                ?>
-			<span>
-                <a  style="color: #FFF !important;" href="#" onclick="window.history.back();">вернуться к результатам поиска</a>
-               
-            </span>
-        </h5>
-    </div>
-	
 </article>
-
-

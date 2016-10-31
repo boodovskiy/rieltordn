@@ -26,6 +26,12 @@ if( $agent_email ) {
         </div>
 
         <div class="row-fluid">
+            <div class="span6">
+                <input type="text" name="phone" id="phone" placeholder="<?php _e('Phone', 'framework'); ?>" class="digits required" title="<?php _e('* Please provide valid phone number', 'framework'); ?>">
+            </div>
+        </div>
+
+        <div class="row-fluid">
             <div class="span12">
                 <textarea  name="message" id="comment" class="required" placeholder="<?php _e('Message', 'framework'); ?>" title="<?php _e('* Please provide your message', 'framework'); ?>"></textarea>
             </div>

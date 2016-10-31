@@ -6,32 +6,40 @@
   margin: 25px 0;
   border-collapse: collapse;
 }
+
 #payments-table th, #payments-table td {
   border: 1px solid #dedede;
   text-align: left;
 }
+
 #payments-table a {
   text-decoration: none;
 }
+
 #payments-table a:hover {
   text-decoration: underline;
 }
+
 #payments-table .pagination {
   padding: 0;
   margin: 0;
   text-align: center;
 }
+
 #payments-table .pagination li {
   display: inline;
 }
+
 #payments-table .pagination li.active a {
   font-weight: bold;
 }
+
 #payments-table .pagination a {
   display: inline-block;
   padding: 2px 3px;
   text-decoration: none;
 }
+
 #payments-table .pagination a:hover {
   text-decoration: underline;
 }
@@ -50,26 +58,32 @@
 #additonal_details .rwmb-meta-box {
   overflow: hidden;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper {
   float: left;
   width: 29%;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper:last-child {
   width: 70%;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper .rwmb-label {
   display: block;
   margin-bottom: 10px;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper .rwmb-button.remove-clone {
   position: static;
   top: auto;
   right: auto;
   margin-left: 5px;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper .rwmb-input {
   width: 100%;
 }
+
 #additonal_details .rwmb-meta-box .rwmb-field.rwmb-text-wrapper input.rwmb-text {
   width: 75%;
 }
@@ -83,6 +97,7 @@
 .rwmb-column .rwmb-label {
   margin-bottom: 5px;
 }
+
 .rwmb-column .rwmb-label label {
   font-weight: bold;
 }
@@ -99,9 +114,11 @@
 .rwmb-column .rwmb-input textarea {
   width: 90%;
 }
+
 .rwmb-column .rwmb-input #REAL_HOMES_property_address {
   width: 95%;
 }
+
 .rwmb-column .rwmb-input .rwmb-map-goto-address-button {
   margin-top: 10px;
 }
@@ -114,64 +131,29 @@
   padding: 10px 20px 13px 10px;
 }
 
-/*лишние поля в админке------------------------------*/
-div.rwmb-tab-panel:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > label:nth-child(2)
-{
-    display:none;    
+.rwmb-input-list.inline li {
+  margin-right: 5px;
+  margin-left: 0;
 }
-.rwmb-tab-floor-plans
-{
-    display:none !important;
+
+.rwmb-input-list.inline li input[type=radio] {
+  margin-right: 5px;
+  margin-left: 5px;
 }
-.rwmb-tab-video
-{
-    display:none !important;
+
+.rwmb-select option {
+  padding: 2px;
 }
-.rwmb-tab-agent
-{
-    display:none !important;
+
+/* RTL Fix after WordPress 4.4 */
+body.rtl #adminmenuback {
+  right: 0;
 }
-.rwmb-file_advanced-wrapper > div:nth-child(1)
-{
-    display:none !important;
+
+body.rtl #adminmenu div.wp-menu-name {
+  padding: 8px 0 8px 8px !important;
 }
-.rwmb-file_advanced-wrapper > div:nth-child(2)
-{
-    display:none !important;
-}
-.rwmb-tab-home-slider
-{
-    display:none !important;
-}
-.rwmb-tab-banner
-{
-    display:none !important;
-}
-#postexcerpt
-{
-    display:none !important;
-}
-#additional-details-meta-box
-{
-    display:none !important;
-}
-#menu-posts-property > ul:nth-child(2) > li:nth-child(8)
-{
-    display:none !important;
-}
-#menu-posts-agent
-{
-    display:none !important;
-}
-#menu-posts-partners
-{
-    display:none !important;
-}
-#wp-admin-bar-new-agent
-{
-    display:none !important;
-}
-#wp-admin-bar-new-partners
-{
-    display:none !important;
+
+body.rtl #adminmenuwrap {
+  position: relative !important;
 }

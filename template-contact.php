@@ -28,7 +28,15 @@ get_header();
                                 endwhile;
                             endif;
 
-                           
+                            $show_contact_map = get_option('theme_show_contact_map');
+                            if($show_contact_map == 'true'){
+                                ?>
+                                <div class="map-container clearfix">
+                                <?php get_template_part('template-parts/contact-map'); ?>
+                                </div>
+                                <?php
+                            }
+
                             $show_details = get_option('theme_show_details');
                             if($show_details == 'true'){
                                 $contact_details_title = get_option('theme_contact_details_title');
@@ -40,8 +48,8 @@ get_header();
                                 ?>
                                 <section class="contact-details clearfix">
                                     <?php
-                                    if(!empty($contact_details_title)){
-                                        ?><h3><?php echo $contact_details_title; ?></h3><?php
+                                    if ( ! empty( $contact_details_title ) ) {
+                                        ?><h3><?php echo esc_html( $contact_details_title ); ?></h3><?php
                                     }
                                     ?>
 
@@ -62,7 +70,7 @@ get_header();
                                         }
 
                                         if(!empty($contact_fax)){
-                                            ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?> : <?php echo $contact_fax; ?></li><?php
+                                            ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?> : <?php echo esc_html( $contact_fax ); ?></li><?php
                                         }
 
                                         if(!empty($contact_display_email)){
@@ -70,7 +78,7 @@ get_header();
                                         }
 
                                         if(!empty($contact_address)){
-                                            ?><li class="address"><?php include( get_template_directory() . '/images/icon-map.svg' ); _e('Address', 'framework'); ?> : <?php echo $contact_address; ?></li><?php
+                                            ?><li class="address"><?php include( get_template_directory() . '/images/icon-map.svg' ); _e('Address', 'framework'); ?> : <?php echo esc_html( $contact_address ); ?></li><?php
                                         }
                                         ?>
                                     </ul>
@@ -79,67 +87,75 @@ get_header();
                                 <?php
                             }
 
- $show_contact_map = get_option('theme_show_contact_map');
-                            if($show_contact_map == 'true'){
-                                ?>
-                                <div class="map-container clearfix">
-                                <?php get_template_part('template-parts/contact-map'); ?>
-                                </div>
-                                <?php
-                            }
 
-                            $theme_contact_email = get_option('theme_contact_email');
-                            $contact_form_heading = get_option('theme_contact_form_heading');
+                            /**
+                             * Contact Form
+                             */
+                            $inspiry_contact_form_shortcode = get_option('inspiry_contact_form_shortcode');
 
-                            if(!empty($theme_contact_email)){
-                                ?>
-                                <section id="contact-form">
-                                    <?php
-                                    if(!empty($contact_form_heading)){
-                                        ?><h3 class="form-heading"><?php echo $contact_form_heading; ?></h3><?php
-                                    }
+                            if ( !empty( $inspiry_contact_form_shortcode ) ) {
+
+	                            /* Contact Form Shortcode */
+	                            echo do_shortcode( $inspiry_contact_form_shortcode );
+
+                            } else {
+
+	                            /*
+	                             * Default Contact Form
+	                             */
+                                $theme_contact_email = get_option('theme_contact_email');
+                                $contact_form_heading = get_option('theme_contact_form_heading');
+
+                                if ( ! empty( $theme_contact_email ) ) {
                                     ?>
+                                    <section id="contact-form">
+                                        <?php
+                                        if ( ! empty( $contact_form_heading ) ) {
+                                            ?><h3 class="form-heading"><?php echo esc_html( $contact_form_heading ); ?></h3><?php
+                                        }
+                                        ?>
 
-                                    <form class="contact-form" method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
-                                        <p>
-                                            <label for="name"><?php _e('Name', 'framework'); ?></label>
-                                            <input type="text" name="name" id="name" class="required" title="<?php _e( '* Please provide your name', 'framework'); ?>">
-                                        </p>
+                                        <form class="contact-form" method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
+                                            <p>
+                                                <label for="name"><?php _e('Name', 'framework'); ?></label>
+                                                <input type="text" name="name" id="name" class="required" title="<?php _e( '* Please provide your name', 'framework'); ?>">
+                                            </p>
 
-                                        <p>
-                                            <label for="email"><?php _e('Email', 'framework'); ?></label>
-                                            <input type="text" name="email" id="email" class="email required" title="<?php _e( '* Please provide a valid email address', 'framework'); ?>">
-                                        </p>
+                                            <p>
+                                                <label for="email"><?php _e('Email', 'framework'); ?></label>
+                                                <input type="text" name="email" id="email" class="email required" title="<?php _e( '* Please provide a valid email address', 'framework'); ?>">
+                                            </p>
 
-                                        <p>
-                                            <label for="number"><?php _e('Phone Number', 'framework'); ?></label>
-                                            <input type="text" name="number" id="number">
-                                        </p>
+                                            <p>
+                                                <label for="number"><?php _e('Phone Number', 'framework'); ?></label>
+                                                <input type="text" name="number" id="number">
+                                            </p>
 
-                                        <p>
-                                            <label for="comment"><?php _e('Message', 'framework'); ?></label>
-                                            <textarea  name="message" id="comment" class="required" title="<?php _e( '* Please provide your message', 'framework'); ?>"></textarea>
-                                        </p>
+                                            <p>
+                                                <label for="comment"><?php _e('Message', 'framework'); ?></label>
+                                                <textarea  name="message" id="comment" class="required" title="<?php _e( '* Please provide your message', 'framework'); ?>"></textarea>
+                                            </p>
 
-                                        <p>
-                                            <?php
-                                            /* Display recaptcha if enabled and configured from theme options */
-                                            get_template_part('recaptcha/custom-recaptcha');
-                                            ?>
-                                        </p>
+                                            <p>
+                                                <?php
+                                                /* Display recaptcha if enabled and configured from theme options */
+                                                get_template_part('recaptcha/custom-recaptcha');
+                                                ?>
+                                            </p>
 
-                                        <p>
-                                            <input type="submit" id="submit-button" value="<?php _e('Send Message', 'framework'); ?>" id="submit" class="real-btn" name="submit">
-                                            <img src="<?php echo get_template_directory_uri(); ?>/images/ajax-loader.gif" id="ajax-loader" alt="Loading...">
-                                            <input type="hidden" name="action" value="send_message" />
-                                            <input type="hidden" name="nonce" value="<?php echo wp_create_nonce('send_message_nonce'); ?>"/>
-                                        </p>
+                                            <p>
+                                                <input type="submit" id="submit-button" value="<?php _e('Send Message', 'framework'); ?>" id="submit" class="real-btn" name="submit">
+                                                <img src="<?php echo get_template_directory_uri(); ?>/images/ajax-loader.gif" id="ajax-loader" alt="Loading...">
+                                                <input type="hidden" name="action" value="send_message" />
+                                                <input type="hidden" name="nonce" value="<?php echo wp_create_nonce('send_message_nonce'); ?>"/>
+                                            </p>
 
-                                        <div id="error-container"></div>
-                                        <div id="message-container">&nbsp;</div>
-                                    </form>
-                                </section>
-                                <?php
+                                            <div id="error-container"></div>
+                                            <div id="message-container">&nbsp;</div>
+                                        </form>
+                                    </section>
+                                    <?php
+                                }
                             }
                             ?>
 

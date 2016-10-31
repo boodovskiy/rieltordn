@@ -4,7 +4,15 @@ jQuery(document).ready(function($) {
 
     if ( typeof propertySubmit !== "undefined" ) {
 
-        var ajaxURL = propertySubmit.ajaxURL;
+        var removeQueryStringParameters = function ( url ) {
+            if ( url.indexOf ('?') >= 0 ) {
+                var urlParts = url.split('?');
+                return urlParts[0];
+            }
+            return url;
+        };
+
+        var ajaxURL = removeQueryStringParameters( propertySubmit.ajaxURL );
         var uploadNonce = propertySubmit.uploadNonce;
         var fileTypeTitle = propertySubmit.fileTypeTitle;
 
@@ -16,10 +24,9 @@ jQuery(document).ready(function($) {
         });
 
         /* initialize uploader */
-        var uploader = new plupload.Uploader({
+        var uploaderArguments = {
             browse_button: 'select-images',          // this can be an id of a DOM element or the DOM element itself
             file_data_name: 'inspiry_upload_file',
-            container: 'plupload-container',
             drop_element: 'drag-and-drop',
             url: ajaxURL + "?action=ajax_img_upload&nonce=" + uploadNonce,
             filters: {
@@ -29,9 +36,17 @@ jQuery(document).ready(function($) {
                 max_file_size: '10000kb',
                 prevent_duplicates: true
             }
-        });
+        };
+
+
+        var uploader = new plupload.Uploader( uploaderArguments );
         uploader.init();
 
+        $('#select-images').click(function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            uploader.start();
+        });
 
         /* Run after adding file */
         uploader.bind('FilesAdded', function(up, files) {

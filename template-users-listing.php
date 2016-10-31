@@ -63,7 +63,7 @@ get_header();
                                         <article class="about-agent clearfix">
 
                                             <!-- user name -->
-                                            <h4><a href="<?php echo $author_page_url; ?>"><?php echo $user->display_name; ?></a></h4>
+                                            <h4><a href="<?php echo esc_url( $author_page_url ); ?>"><?php echo esc_html( $user->display_name ); ?></a></h4>
 
                                             <div class="row-fluid">
 
@@ -76,7 +76,7 @@ get_header();
                                                             ?>
                                                             <!-- user profile image -->
                                                             <figure class="agent-pic">
-                                                                <a title="<?php $user->display_name; ?>" href="<?php echo $author_page_url; ?>">
+                                                                <a title="<?php echo esc_attr( $user->display_name ); ?>" href="<?php echo esc_url( $author_page_url ); ?>">
                                                                     <?php echo wp_get_attachment_image( $profile_image_id, 'agent-image' ); ?>
                                                                 </a>
                                                             </figure>
@@ -86,7 +86,7 @@ get_header();
                                                         ?>
                                                         <!-- user avatar -->
                                                         <figure class="agent-pic">
-                                                            <a title="<?php $user->display_name; ?>" href="<?php echo $author_page_url; ?>">
+                                                            <a title="<?php echo esc_attr( $user->display_name ); ?>" href="<?php echo esc_url( $author_page_url ); ?>">
                                                                 <?php echo get_avatar( $user->user_email, '180' ); ?>
                                                             </a>
                                                         </figure>
@@ -116,13 +116,13 @@ get_header();
                                                         <ul class="contacts-list">
                                                             <?php
                                                             if ( !empty( $user_meta['office_number'][0] ) ) {
-                                                                ?><li class="office"><?php include( get_template_directory() . '/images/icon-phone.svg' ); _e('Office', 'framework'); ?> : <?php echo $user_meta['office_number'][0]; ?></li><?php
+                                                                ?><li class="office"><?php include( get_template_directory() . '/images/icon-phone.svg' ); _e('Office', 'framework'); ?> : <?php echo esc_html( $user_meta['office_number'][0] ); ?></li><?php
                                                             }
                                                             if ( !empty( $user_meta['mobile_number'][0] ) ) {
-                                                                ?><li class="mobile"><?php include( get_template_directory() . '/images/icon-mobile.svg' ); _e('Mobile', 'framework'); ?> : <?php echo $user_meta['mobile_number'][0]; ?></li><?php
+                                                                ?><li class="mobile"><?php include( get_template_directory() . '/images/icon-mobile.svg' ); _e('Mobile', 'framework'); ?> : <?php echo esc_html( $user_meta['mobile_number'][0] ); ?></li><?php
                                                             }
                                                             if( !empty( $user_meta['fax_number'][0] ) ) {
-                                                                ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?>  : <?php echo $user_meta['fax_number'][0]; ?></li><?php
+                                                                ?><li class="fax"><?php include( get_template_directory() . '/images/icon-printer.svg' ); _e('Fax', 'framework'); ?>  : <?php echo esc_html( $user_meta['fax_number'][0] ); ?></li><?php
                                                             }
                                                             ?>
                                                         </ul>
@@ -135,7 +135,7 @@ get_header();
                                             </div>
 
                                             <div class="follow-agent clearfix">
-                                                <a class="real-btn btn" href="<?php  echo $author_page_url; ?>"><?php _e('More Details','framework'); ?></a>
+                                                <a class="real-btn btn" href="<?php echo esc_url( $author_page_url ); ?>"><?php _e('More Details','framework'); ?></a>
                                                 <?php
                                                 // Author social links
                                                 if( isset( $user_meta['facebook_url'] ) || isset( $user_meta['twitter_url'] ) || isset( $user_meta['google_plus_url'] ) || isset( $user_meta['linkedin_url'] ) ) {
@@ -146,7 +146,7 @@ get_header();
                                                         if( !empty( $user_meta['facebook_url'][0] ) ) {
                                                             ?>
                                                             <li class="facebook">
-                                                                <a target="_blank" href="<?php echo $user_meta['facebook_url'][0]; ?>"><i class="fa fa-facebook fa-lg"></i></a>
+                                                                <a target="_blank" href="<?php echo esc_url( $user_meta['facebook_url'][0] ); ?>"><i class="fa fa-facebook fa-lg"></i></a>
                                                             </li>
                                                             <?php
                                                         }
@@ -154,7 +154,7 @@ get_header();
                                                         if( !empty( $user_meta['twitter_url'][0] ) ) {
                                                             ?>
                                                             <li class="twitter">
-                                                                <a target="_blank" href="<?php echo $user_meta['twitter_url'][0]; ?>" ><i class="fa fa-twitter fa-lg"></i></a>
+                                                                <a target="_blank" href="<?php echo esc_url( $user_meta['twitter_url'][0] ); ?>" ><i class="fa fa-twitter fa-lg"></i></a>
                                                             </li>
                                                             <?php
                                                         }
@@ -162,7 +162,7 @@ get_header();
                                                         if( !empty( $user_meta['linkedin_url'][0] ) ) {
                                                             ?>
                                                             <li class="linkedin">
-                                                                <a target="_blank" href="<?php echo $user_meta['linkedin_url'][0]; ?>"><i class="fa fa-linkedin fa-lg"></i></a>
+                                                                <a target="_blank" href="<?php echo esc_url( $user_meta['linkedin_url'][0] ); ?>"><i class="fa fa-linkedin fa-lg"></i></a>
                                                             </li>
                                                             <?php
                                                         }
@@ -170,7 +170,7 @@ get_header();
                                                         if( !empty( $user_meta['google_plus_url'][0] ) ) {
                                                             ?>
                                                             <li class="gplus">
-                                                                <a target="_blank" href="<?php echo $user_meta['google_plus_url'][0]; ?>"><i class="fa fa-google-plus fa-lg"></i></a>
+                                                                <a target="_blank" href="<?php echo esc_url( $user_meta['google_plus_url'][0] ); ?>"><i class="fa fa-google-plus fa-lg"></i></a>
                                                             </li>
                                                             <?php
                                                         }

@@ -10,14 +10,14 @@
     $banner_sub_title = $current_term->description;
     ?>
 
-    <div class="page-head">
+    <div class="page-head" style="background-repeat: no-repeat;background-position: center top;background-image: url('<?php echo esc_url( $banner_image_path ); ?>'); background-size: cover; ">
         <?php if(!('true' == get_option('theme_banner_titles'))): ?>
         <div class="container">
             <div class="wrap clearfix">
-                <h1 class="page-title"><span><?php echo $banner_title; ?></span></h1>
+                <h1 class="page-title"><span><?php echo esc_html( $banner_title ); ?></span></h1>
                 <?php
-                if($banner_sub_title){
-                  ?><p><?php echo $banner_sub_title; ?></p><?php
+                if ( $banner_sub_title ) {
+                  ?><p><?php echo esc_html( $banner_sub_title ); ?></p><?php
                 }
                 ?>
             </div>

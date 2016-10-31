@@ -18,8 +18,8 @@ if ( ! empty ( $additional_details ) ) {    // re-check
     foreach ( $additional_details as $title => $value ) {
         ?>
         <li>
-            <strong><?php echo $title; ?>:</strong>
-            <span><?php echo $value; ?></span>
+            <strong><?php echo esc_html( $title ); ?>:</strong>
+            <span><?php echo esc_html( $value ); ?></span>
         </li>
         <?php
     }
@@ -46,8 +46,8 @@ if ( ! empty ( $additional_details ) ) {    // re-check
             foreach ( $details as $title => $value ){
                 ?>
                 <li>
-                    <strong><?php echo $title; ?>:</strong>
-                    <span><?php echo $value; ?></span>
+                    <strong><?php echo esc_html( $title ); ?>:</strong>
+                    <span><?php echo esc_html( $value ); ?></span>
                 </li>
                 <?php
             }

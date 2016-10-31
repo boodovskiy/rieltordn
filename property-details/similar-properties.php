@@ -57,13 +57,13 @@ if( $display_similar_properties == 'true' ){
                     <?php
                     $similar_properties_title = get_option('theme_similar_properties_title');
                     if( !empty($similar_properties_title) ){
-                        ?><h3><?php echo $similar_properties_title; ?></h3><?php
+                        ?><h3><?php echo esc_html( $similar_properties_title ); ?></h3><?php
                     }
                     while ( $similar_properties_query->have_posts() ) :
                         $similar_properties_query->the_post();
 
                         /* Display Property for Grid */
-                        get_template_part('template-parts/property-for-grid');
+                        get_template_part('template-parts/property-for-similar-section');
 
                     endwhile;
                     wp_reset_query();

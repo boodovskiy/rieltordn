@@ -129,29 +129,29 @@ if( !class_exists('Agent_Properties_Widget') ){
 
             ?>
             <p>
-                <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title', 'framework'); ?></label>
-                <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+                <label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Widget Title', 'framework'); ?></label>
+                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
             </p>
             <p>
-                <label for="<?php echo $this->get_field_id('agent'); ?>"><?php _e('Select an Agent:', 'framework') ?></label>
-                <select name="<?php echo $this->get_field_name('agent'); ?>" id="<?php echo $this->get_field_id('agent'); ?>" class="widefat">
+                <label for="<?php echo esc_attr( $this->get_field_id('agent') ); ?>"><?php _e('Select an Agent:', 'framework') ?></label>
+                <select name="<?php echo esc_attr( $this->get_field_name('agent') ); ?>" id="<?php echo esc_attr( $this->get_field_id('agent') ); ?>" class="widefat">
                     <?php generate_posts_list('agent', $agent); ?>
                 </select>
             </p>
             <p>
-                <label for="<?php echo $this->get_field_id('sort_by'); ?>"><?php _e('Sort By:', 'framework') ?></label>
-                <select name="<?php echo $this->get_field_name('sort_by'); ?>" id="<?php echo $this->get_field_id('sort_by'); ?>" class="widefat">
+                <label for="<?php echo esc_attr( $this->get_field_id('sort_by') ); ?>"><?php _e('Sort By:', 'framework') ?></label>
+                <select name="<?php echo esc_attr( $this->get_field_name('sort_by') ); ?>" id="<?php echo esc_attr( $this->get_field_id('sort_by') ); ?>" class="widefat">
                     <option value="recent"<?php selected( $sort_by, 'recent' ); ?>><?php _e('Most Recent', 'framework'); ?></option>
                     <option value="random"<?php selected( $sort_by, 'random' ); ?>><?php _e('Random', 'framework'); ?></option>
                 </select>
             </p>
             <p>
-                <label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Properties', 'framework'); ?></label>
-                <input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="text" value="<?php echo $count; ?>" size="3" />
+                <label for="<?php echo esc_attr( $this->get_field_id('count') ); ?>"><?php _e('Number of Properties', 'framework'); ?></label>
+                <input id="<?php echo esc_attr( $this->get_field_id('count') ); ?>" name="<?php echo esc_attr( $this->get_field_name('count') ); ?>" type="text" value="<?php echo esc_attr( $count ); ?>" size="3" />
             </p>
             <p>
-                <input class="checkbox" id="<?php echo $this->get_field_id('featured'); ?>" name="<?php echo $this->get_field_name('featured'); ?>" type="checkbox" <?php checked( $featured ); ?>/>
-                <label for="<?php echo $this->get_field_id('featured'); ?>"><?php _e('Show only Featured Properties.', 'framework'); ?></label>
+                <input class="checkbox" id="<?php echo esc_attr( $this->get_field_id('featured') ); ?>" name="<?php echo esc_attr( $this->get_field_name('featured') ); ?>" type="checkbox" <?php checked( $featured ); ?>/>
+                <label for="<?php echo esc_attr( $this->get_field_id('featured') ); ?>"><?php _e('Show only Featured Properties.', 'framework'); ?></label>
             </p>
         <?php
         }

@@ -10,17 +10,17 @@ $properties_for_map = array(
     )
 );
 
-if( is_page_template('template-search.php') || is_page_template('template-search-sidebar.php') ){
+if ( is_page_template( 'template-search.php' ) || is_page_template( 'template-search-sidebar.php' ) || is_page_template( 'template-search-right-sidebar.php' ) ) {
 
     /* Apply Search Filter */
     $properties_for_map = apply_filters( 'real_homes_search_parameters', $properties_for_map );
 
-}elseif(is_page_template('template-home.php')){
+} elseif ( is_page_template( 'template-home.php' ) ) {
 
     /* Apply Homepage Properties Filter */
     $properties_for_map = apply_filters( 'real_homes_homepage_properties', $properties_for_map );
 
-}elseif( is_page_template( array (
+} elseif ( is_page_template( array(
     'template-property-listing.php',
     'template-property-grid-listing.php',
     'template-map-based-listing.php',
@@ -39,7 +39,7 @@ if( is_page_template('template-search.php') || is_page_template('template-search
     // Apply sorting
     $properties_for_map = sort_properties( $properties_for_map );
 
-}elseif( is_tax() ) {
+} elseif ( is_tax() ) {
 
     global $wp_query;
     /* Taxonomy Query */
@@ -50,6 +50,18 @@ if( is_page_template('template-search.php') || is_page_template('template-search
                                                 'terms' => $wp_query->query_vars['term']
                                             )
                                         );
+
+} elseif ( is_post_type_archive( 'property' ) ) {
+
+	$number_of_properties = intval( get_option( 'theme_number_of_properties' ) );
+	if ( ! $number_of_properties ) {
+		$number_of_properties = 6;
+	}
+
+	$properties_for_map['posts_per_page'] = $number_of_properties;
+
+	global $paged;
+	$properties_for_map['paged'] = $paged;
 
 }
 
@@ -94,8 +106,7 @@ if ( $properties_for_map_query->have_posts() ) :
         /* Property Map Icon Based on Property Type */
         $property_type_slug = 'single-family-home'; // Default Icon Slug
 
-        // $type_terms = get_the_terms( $post->ID,"property-type" );
-        $type_terms = get_the_terms( $post->ID,"property-status" );
+        $type_terms = get_the_terms( $post->ID,"property-type" );
         if(!empty($type_terms)){
             foreach($type_terms as $typ_trm){
                 $property_type_slug = $typ_trm->slug;
@@ -125,7 +136,7 @@ if ( $properties_for_map_query->have_posts() ) :
         function initializePropertiesMap() {
 
             /* Properties Array */
-            var properties = <?php echo json_encode( $properties_data ); ?>
+            var properties = <?php echo json_encode( $properties_data ); ?>;
 
             /* Map Center Location - From Theme Options */
             var location_center = new google.maps.LatLng(properties[0].lat,properties[0].lng);
@@ -134,7 +145,7 @@ if ( $properties_for_map_query->have_posts() ) :
                 zoom: 12,
                 maxZoom: 16,
                 scrollwheel: false
-            }
+            };
 
             var map = new google.maps.Map(document.getElementById("listing-map"), mapOptions);
 
@@ -142,7 +153,6 @@ if ( $properties_for_map_query->have_posts() ) :
 
             /* Loop to generate marker and infowindow based on properties array */
             var markers = new Array();
-            var info_windows = new Array();
 
             for (var i=0; i < properties.length; i++) {
 
@@ -212,7 +222,6 @@ if ( $properties_for_map_query->have_posts() ) :
                 };
 
                 var ib = new InfoBox( myOptions );
-
                 attachInfoBoxToMarker( map, markers[i], ib );
             }
 
@@ -232,8 +241,18 @@ if ( $properties_for_map_query->have_posts() ) :
 
             var markerClusterer = new MarkerClusterer( map, markers, markerClustererOptions );
 
+            /* Close previously opened infoBox */
+	        var openedWindows = new Array();
+            var closeOpenedWindows = function() {
+                while ( 0 < openedWindows.length ) {
+	                var windowToClose = openedWindows.pop();
+	                windowToClose.close();
+                }
+            };
+
             function attachInfoBoxToMarker( map, marker, infoBox ){
                 google.maps.event.addListener( marker, 'click', function(){
+	                closeOpenedWindows();
                     var scale = Math.pow( 2, map.getZoom() );
                     var offsety = ( (100/scale) || 0 );
                     var projection = map.getProjection();
@@ -243,9 +262,9 @@ if ( $properties_for_map_query->have_posts() ) :
                     var aboveMarkerLatLng = projection.fromPointToLatLng( pointHalfScreenAbove );
                     map.setCenter( aboveMarkerLatLng );
                     infoBox.open( map, marker );
+	                openedWindows.push(infoBox);
                 });
             }
-
         }
 
         google.maps.event.addDomListener( window, 'load', initializePropertiesMap );

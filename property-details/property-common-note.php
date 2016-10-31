@@ -11,12 +11,12 @@ if( $display_common_note == 'true' ){
             <?php
             // common note title
             if (!empty($common_note_title)) {
-                ?><h4 class="common-note-heading"><?php echo $common_note_title; ?></h4><?php
+                ?><h4 class="common-note-heading"><?php echo esc_html( $common_note_title ); ?></h4><?php
             }
 
             // common note text
-            if (!empty($common_note)) {
-                ?><p><?php echo $common_note; ?></p><?php
+            if ( ! empty( $common_note ) ) {
+                ?><p><?php echo esc_html( $common_note ); ?></p><?php
             }
             ?>
         </div>

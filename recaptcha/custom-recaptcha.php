@@ -41,9 +41,9 @@ if(!empty($reCAPTCHA_public_key) && !empty($reCAPTCHA_private_key) && $show_reCA
         </ul>
     </div>
 
-    <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=<?php echo $reCAPTCHA_public_key; ?>"></script>
+    <script type="text/javascript" src="//www.google.com/recaptcha/api/challenge?k=<?php echo esc_attr( $reCAPTCHA_public_key ); ?>"></script>
     <noscript>
-        <iframe src="http://www.google.com/recaptcha/api/noscript?k=<?php echo $reCAPTCHA_public_key; ?>" height="300" width="220" frameborder="0"></iframe><br>
+        <iframe src="//www.google.com/recaptcha/api/noscript?k=<?php echo esc_attr( $reCAPTCHA_public_key ); ?>" height="300" width="220" frameborder="0"></iframe><br>
         <textarea name="recaptcha_challenge_field"></textarea>
         <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
     </noscript>

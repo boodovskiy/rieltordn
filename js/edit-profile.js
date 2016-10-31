@@ -4,7 +4,15 @@ jQuery(document).ready(function($) {
 
     if ( typeof editProfile !== "undefined" ) {
 
-        var ajaxURL = editProfile.ajaxURL;
+        var removeQueryStringParameters = function ( url ) {
+            if ( url.indexOf ('?') >= 0 ) {
+                var urlParts = url.split('?');
+                return urlParts[0];
+            }
+            return url;
+        };
+
+        var ajaxURL = removeQueryStringParameters( editProfile.ajaxURL );
         var uploadNonce = editProfile.uploadNonce;
         var fileTypeTitle = editProfile.fileTypeTitle;
 
@@ -45,12 +53,10 @@ jQuery(document).ready(function($) {
             });
         }
 
-
         /* initialize uploader */
         var uploader = new plupload.Uploader({
             browse_button: 'select-profile-image',          // this can be an id of a DOM element or the DOM element itself
             file_data_name: 'inspiry_upload_file',
-            container: 'plupload-container',
             multi_selection : false,
             url: ajaxURL + "?action=profile_image_upload&nonce=" + uploadNonce,
             filters: {

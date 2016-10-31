@@ -13,7 +13,7 @@ if( $banner_image_id ){
 }
 ?>
 
-    <div class="page-head">
+    <div class="page-head" style="background-repeat: no-repeat;background-position: center top;background-image: url('<?php echo esc_url( $banner_image_path ); ?>'); background-size: cover;">
         <?php if(!('true' == get_option('theme_banner_titles'))): ?>
             <div class="container">
                 <div class="wrap clearfix">
@@ -46,10 +46,21 @@ if( $banner_image_id ){
                                 if ( ! post_password_required() ) {
 
                                     /*
-                                    * 1. Property Images Slider перенесено в property-details/property-contents
+                                    * 1. Property Images Slider
                                     */
-                                   
-                               /*
+                                    $gallery_slider_type = get_post_meta($post->ID, 'REAL_HOMES_gallery_slider_type', true);
+                                    /* For demo purpose only */
+                                    if(isset($_GET['slider-type'])){
+                                        $gallery_slider_type = $_GET['slider-type'];
+                                    }
+                                    if( $gallery_slider_type == 'thumb-on-bottom' ){
+                                        get_template_part('property-details/property-slider-two');
+                                    }else{
+                                        get_template_part('property-details/property-slider');
+                                    }
+
+
+                                    /*
                                     * 2. Property Information Bar, Icons Bar, Text Contents and Features
                                     */
                                     get_template_part('property-details/property-contents');
@@ -82,13 +93,12 @@ if( $banner_image_id ){
                                     /*
                                     * 8. Property Agent
                                     */
-//                                     $theme_property_detail_variation = get_option('theme_property_detail_variation');
-                                    /* For demo purpose only */
-                                    if(isset($_GET['variation'])){
-                                        $theme_property_detail_variation = $_GET['variation'];
+                                    if ( isset( $_GET[ 'variation' ] ) ) {
+                                        $theme_property_detail_variation = $_GET[ 'variation' ];    // For demo purpose only
                                     }
-                                    if( $theme_property_detail_variation != "agent-in-sidebar" ){
-                                        get_template_part('property-details/property-agent');
+
+                                    if ( $theme_property_detail_variation != "agent-in-sidebar" ) {
+                                        get_template_part( 'property-details/property-agent' );
                                     }
 
                                 } else {
@@ -107,6 +117,18 @@ if( $banner_image_id ){
                  * 8. Similar Properties
                  */
                 get_template_part('property-details/similar-properties');
+
+                /*
+                 * 9. Comments
+                 * If comments are open or we have at least one comment, load up the comment template.
+                 */
+                if ( comments_open() || get_comments_number() ) {
+	                ?>
+	                <div class="property-comments">
+		                <?php comments_template(); ?>
+	                </div>
+	                <?php
+                }
                 ?>
 
             </div> <!-- End span9 -->

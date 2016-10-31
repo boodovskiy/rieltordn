@@ -1,5 +1,7 @@
 <?php
-/* Property Custom Post Type */
+/**
+ *  Partner Custom Post Type
+ * */
 if( !function_exists( 'create_partners_post_type' ) ){
     function create_partners_post_type(){
 

@@ -38,11 +38,10 @@ get_header();
                     <?php
                     if(is_user_logged_in()){
 
-                        // Get User Id
-                        global $current_user;
-                        get_currentuserinfo();
-
                         global $paged;
+
+	                    // Get current user
+	                    $current_user = wp_get_current_user();
 
                         // My properties arguments
                         $my_props_args = array(
@@ -96,10 +95,10 @@ get_header();
                                     <div class="property-controls">
                                         <?php
                                         /* Edit Post Link */
-                                        $submit_url = get_option('theme_submit_url');
+                                        $submit_url = inspiry_get_submit_property_url();
                                         if( ! empty( $submit_url ) ) {
                                             $edit_link = esc_url( add_query_arg( 'edit_property', $post->ID , $submit_url ) );
-                                            ?><a href="<?php echo $edit_link; ?>"><i class="fa fa-pencil"></i></a><?php
+                                            ?><a href="<?php echo esc_url( $edit_link ); ?>"><i class="fa fa-pencil"></i></a><?php
                                         }
 
                                         /* Preview Post Link */
@@ -107,7 +106,7 @@ get_header();
                                             $preview_link = set_url_scheme( get_permalink( $post->ID ) );
                                             $preview_link = esc_url( apply_filters( 'preview_post_link', add_query_arg( 'preview', 'true', $preview_link ) ) );
                                             if ( ! empty( $preview_link ) ) {
-                                                ?><a target="_blank" href="<?php echo $preview_link; ?>"><i class="fa fa-eye"></i></a><?php
+                                                ?><a target="_blank" href="<?php echo esc_url( $preview_link ); ?>"><i class="fa fa-eye"></i></a><?php
                                             }
                                         }
 
@@ -115,7 +114,7 @@ get_header();
                                         if ( current_user_can('delete_posts') ) {
                                             $delete_post_link = get_delete_post_link( $post->ID, '', true );
                                             if ( ! empty( $delete_post_link ) ) {
-                                                ?><a href="<?php echo $delete_post_link; ?>"><i class="fa fa-times"></i></a><?php
+                                                ?><a href="<?php echo esc_url( $delete_post_link ); ?>"><i class="fa fa-times"></i></a><?php
                                             }
                                         }
                                         ?>

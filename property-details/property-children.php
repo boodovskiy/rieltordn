@@ -13,9 +13,9 @@ if ( $child_properties_query->have_posts() ) :
     ?>
     <div class="child-properties clearfix">
     <?php
-    $child_properties_title = get_option('theme_child_properties_title');
-    if( !empty($child_properties_title) ){
-        ?><h3><?php echo $child_properties_title; ?></h3><?php
+    $child_properties_title = get_option( 'theme_child_properties_title' );
+    if ( ! empty( $child_properties_title ) ) {
+        ?><h3><?php echo esc_html( $child_properties_title ); ?></h3><?php
     }
 
     while ( $child_properties_query->have_posts() ) :
@@ -42,7 +42,7 @@ if ( $child_properties_query->have_posts() ) :
                             if( $status_count > 0 ){
                                 echo ', ';
                             }
-                            echo $term->name;
+                            echo esc_html( $term->name );
                             $status_count++;
                         }
                     }

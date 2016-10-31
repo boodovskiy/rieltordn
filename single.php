@@ -25,7 +25,7 @@ get_header();
                                     <article  <?php post_class(); ?>>
                                             <header>
                                                 <h3 class="post-title"><?php the_title(); ?></h3>
-                                                <div class="post-meta <?php echo $format; ?>-meta thumb-<?php echo has_post_thumbnail()?'exist':'not-exist'; ?>">
+                                                <div class="post-meta <?php echo esc_attr( $format ); ?>-meta thumb-<?php echo has_post_thumbnail()?'exist':'not-exist'; ?>">
                                                     <span> <?php _e('Posted on', 'framework'); ?>  <span class="date"> <?php the_time('F d, Y'); ?> </span></span>
                                                     <span> <?php _e('by', 'framework'); ?> <?php the_author(); ?> <?php _e('in', 'framework'); ?>  <?php the_category(', '); ?>  </span>
                                                 </div>

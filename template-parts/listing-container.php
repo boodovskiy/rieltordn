@@ -23,6 +23,12 @@
                         <?php
                         get_template_part('template-parts/sort-controls');
 
+                        $compare_properties_module  = get_option( 'theme_compare_properties_module' );
+                        $inspiry_compare_page       = get_option( 'inspiry_compare_page' );
+                        if ( ( 'enable' == $compare_properties_module ) && ( $inspiry_compare_page ) ) {
+                            get_template_part( 'template-parts/compare-properties' );
+                        }
+
                         $number_of_properties = intval(get_option('theme_number_of_properties'));
                         if(!$number_of_properties){
                             $number_of_properties = 6;

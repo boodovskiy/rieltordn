@@ -68,7 +68,7 @@ if( !function_exists( 'slide_custom_columns' ) ){
             case 'slide_sub_text':
                 $slide_sub_text = get_post_meta($post->ID,'slide_sub_text',true);
                 if(!empty($slide_sub_text)){
-                    echo $slide_sub_text;
+                    echo esc_html( $slide_sub_text );
                 }else{
                     _e('NA','framework');
                 }
@@ -105,7 +105,7 @@ if( !function_exists( 'slide_meta_box' ) ){
                     <label for="slide_sub_text"><strong><?php _e('Sub Text','framework');?></strong></label>
                 </td>
                 <td style="width:75%;">
-                    <textarea name="slide_sub_text" id="slide_sub_text" cols="30" rows="3" style="width:60%; margin-right:4%;"><?php echo $slide_sub_text; ?></textarea>
+                    <textarea name="slide_sub_text" id="slide_sub_text" cols="30" rows="3" style="width:60%; margin-right:4%;"><?php echo esc_textarea( $slide_sub_text ); ?></textarea>
                     <span style="color:#999; display:block;"><?php _e('This text will appear below Title on slide.','framework'); ?></span>
                 </td>
             </tr>
@@ -114,7 +114,7 @@ if( !function_exists( 'slide_meta_box' ) ){
                     <label for="slide_url"><strong><?php _e('Target URL','framework');?></strong></label>
                 </td>
                 <td style="width:75%; ">
-                    <input type="text" name="slide_url" id="slide_url" value="<?php echo $slide_url; ?>" style="width:60%; margin-right:4%;" />
+                    <input type="text" name="slide_url" id="slide_url" value="<?php echo esc_url( $slide_url ); ?>" style="width:60%; margin-right:4%;" />
                     <span style="color:#999; display:block;  margin-bottom:10px;"><?php _e('This URL will be applied on Slide Image.','framework'); ?></span>
                 </td>
             </tr>

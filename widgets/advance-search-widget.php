@@ -23,13 +23,7 @@ class Advance_Search_Widget extends WP_Widget {
             echo '<h4 class="title search-heading">'. $title .'<i class="fa fa-search"></i></h4>';
         endif;
 
-        global $theme_search_url;
-        $theme_search_url = get_option('theme_search_url');
-
-        global $theme_search_fields;
-        $theme_search_fields= get_option('theme_search_fields');
-
-        if( !empty($theme_search_url) && !empty($theme_search_fields) && is_array($theme_search_fields) ):
+        if ( inspiry_is_search_page_configured() ):
             get_template_part('template-parts/search-form');
         endif;
 
@@ -42,8 +36,8 @@ class Advance_Search_Widget extends WP_Widget {
         $title = esc_attr($instance['title']);
         ?>
         <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title', 'framework'); ?></label>
-            <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" class="widefat" />
+            <label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Widget Title', 'framework'); ?></label>
+            <input id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" class="widefat" />
         </p>
         <?php
     }

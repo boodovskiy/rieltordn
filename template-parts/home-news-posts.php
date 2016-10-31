@@ -6,10 +6,10 @@
     if( !empty( $news_posts_title ) ){
         ?>
         <div class="section-title">
-            <h3><?php echo $news_posts_title; ?></h3>
+            <h3><?php echo esc_html( $news_posts_title ); ?></h3>
             <?php
-            if( !empty( $news_posts_text ) ){
-                ?><p><?php echo $news_posts_text; ?></p><?php
+            if ( ! empty( $news_posts_text ) ) {
+                ?><p><?php echo esc_html( $news_posts_text ); ?></p><?php
             }
             ?>
         </div>

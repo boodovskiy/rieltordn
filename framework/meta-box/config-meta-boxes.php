@@ -6,25 +6,15 @@
 add_filter( 'rwmb_meta_boxes', 'inspiry_register_meta_boxes' );
 
 if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
-    function inspiry_register_meta_boxes() {
-        global $wpdb;
-        $lastrowId=$wpdb->get_col( "SELECT ID FROM wp_posts where post_type='property' ORDER BY post_date DESC " );
-        $lastPropertyId=$lastrowId[0]+1;
+    function inspiry_register_meta_boxes( $meta_boxes ) {
 
-
-        // Make sure there's no errors when the plugin is deactivated or during upgrade
-        if (!class_exists('RW_Meta_Box')) {
-            return;
-        }
-
-        $meta_boxes = array();
         $prefix = 'REAL_HOMES_';
 
         // Video embed code meta box for video post format
         $meta_boxes[] = array(
             'id' => 'video-meta-box',
             'title' => __('Video Embed Code', 'framework'),
-            'pages' => array('post'),
+            'post_types' => array('post'),
             'context' => 'normal',
             'priority' => 'high',
             'fields' => array(
@@ -44,7 +34,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'gallery-meta-box',
             'title' => __('Gallery Images', 'framework'),
-            'pages' => array('post'),
+            'post_types' => array('post'),
             'context' => 'normal',
             'priority' => 'high',
             'fields' => array(
@@ -72,7 +62,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'property-meta-box',
             'title' => __('Property', 'framework'),
-            'pages' => array('property'),
+            'post_types' => array('property'),
             'tabs' => array(
                 'details' => array(
                     'label' => __('Basic Information', 'framework'),
@@ -129,8 +119,24 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'columns' => 6,
                     'tab' => 'details',
                 ),
-                
-
+                array(
+                    'id' => "{$prefix}property_size",
+                    'name' => __('Area Size ( Only digits )', 'framework'),
+                    'desc' => __('Example Value: 2500', 'framework'),
+                    'type' => 'text',
+                    'std' => "",
+                    'columns' => 6,
+                    'tab' => 'details',
+                ),
+                array(
+                    'id' => "{$prefix}property_size_postfix",
+                    'name' => __('Size Postfix', 'framework'),
+                    'desc' => __('Example Value: Sq Ft', 'framework'),
+                    'type' => 'text',
+                    'std' => "",
+                    'columns' => 6,
+                    'tab' => 'details',
+                ),
                 array(
                     'id' => "{$prefix}property_bedrooms",
                     'name' => __('Bedrooms', 'framework'),
@@ -163,24 +169,6 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'name' => __('Property ID', 'framework'),
                     'desc' => __('It will help you search a property directly.', 'framework'),
                     'type' => 'text',
-                    'std' => $lastPropertyId,
-                    'columns' => 6,
-                    'tab' => 'details',
-                ),
-                array(
-                    'id' => "{$prefix}property_size",
-                    'name' => __('Area Size ( Only digits )', 'framework'),
-                    'desc' => __('Example Value: 2500', 'framework'),
-                    'type' => 'text',
-                    'std' => "",
-                    'columns' => 6,
-                    'tab' => 'details',
-                ),
-				array(
-                    'id' => "{$prefix}property_size_postfix",
-                    'name' => __('Size Postfix', 'framework'),
-                    'desc' => __('Example Value: Sq Ft', 'framework'),
-                    'type' => 'hidden',
                     'std' => "",
                     'columns' => 6,
                     'tab' => 'details',
@@ -195,14 +183,11 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'tab' => 'details',
                 ),
                 array(
-                    'name' => __('Property Map ?', 'framework'),
+                    'name' => __('Do you want to hide Google map on property detail page ?', 'framework'),
                     'id' => "{$prefix}property_map",
-                    'type' => 'radio',
+                    'type' => 'checkbox',
                     'std' => 0,
-                    'options' => array(
-                        0 => __('Show ', 'framework'),
-                        1 => __('Hide', 'framework')
-                    ),
+                    'desc' => __( 'Yes', 'framework' ),
                     'columns' => 12,
                     'tab' => 'details',
                 ),
@@ -360,20 +345,18 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'id' => "{$prefix}agents",
                     'type' => 'select',
                     'options' => $agents_array,
+                    'multiple' => true,
                     'columns' => 12,
                     'tab' => 'agent',
                 ),
 
                 // Misc
                 array(
-                    'name' => __('Mark this property as featured ?', 'framework'),
+                    'name' => __('Do you want to mark this property as featured ?', 'framework'),
                     'id' => "{$prefix}featured",
-                    'type' => 'radio',
-                    'std' => 1,
-                    'options' => array(
-                        1 => __('Yes ', 'framework'),
-                        0 => __('No', 'framework')
-                    ),
+                    'type' => 'checkbox',
+                    'std' => 0,
+                    'desc' => __('Yes', 'framework'),
                     'columns' => 12,
                     'tab' => 'misc',
                 ),
@@ -387,11 +370,39 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'tab' => 'misc',
                 ),
                 array(
+                    'name' => __('Property Owner Name', 'framework'),
+                    'id' => "inspiry_property_owner_name",
+                    'type' => 'text',
+                    'columns' => 6,
+                    'tab' => 'misc',
+                ),
+                array(
+                    'name' => __('Owner Contact', 'framework'),
+                    'id' => "inspiry_property_owner_contact",
+                    'type' => 'text',
+                    'columns' => 6,
+                    'tab' => 'misc',
+                ),
+                array(
+                    'id' => "inspiry_property_owner_address",
+                    'name' => __('Owner Address', 'framework'),
+                    'type' => 'text',
+                    'columns' => 12,
+                    'tab' => 'misc',
+                ),
+                array(
                     'id' => "{$prefix}property_private_note",
                     'name' => __('Private Note', 'framework'),
                     'desc' => __('In this textarea, You can write your private note about this property. This field will not be displayed anywhere else.', 'framework'),
                     'type' => 'textarea',
                     'std' => "",
+                    'columns' => 12,
+                    'tab' => 'misc',
+                ),
+                array(
+                    'id' => "inspiry_message_to_reviewer",
+                    'name' => __('Message to Reviewer', 'framework'),
+                    'type' => 'textarea',
                     'columns' => 12,
                     'tab' => 'misc',
                 ),
@@ -439,7 +450,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'partners-meta-box',
             'title' => __('Partner Information', 'framework'),
-            'pages' => array('partners'),
+            'post_types' => array('partners'),
             'context' => 'normal',
             'priority' => 'high',
             'fields' => array(
@@ -457,7 +468,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'agent-meta-box',
             'title' => __('Provide Related Information', 'framework'),
-            'pages' => array('agent'),
+            'post_types' => array('agent'),
             'context' => 'normal',
             'priority' => 'high',
             'fields' => array(
@@ -508,6 +519,12 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'id' => "{$prefix}linked_in_url",
                     'desc' => __("Provide Agent LinkedIn URL", "framework"),
                     'type' => 'text'
+                ),
+                array(
+                    'name' => __('Instagram URL', 'framework'),
+                    'id' => "inspiry_instagram_url",
+                    'desc' => __("Provide Agent Instagram URL", "framework"),
+                    'type' => 'text'
                 )
             )
         );
@@ -517,7 +534,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'banner-meta-box',
             'title' => __('Top Banner Area Settings', 'framework'),
-            'pages' => array('page', 'agent'),
+            'post_types' => array('page', 'agent'),
             'context' => 'normal',
             'priority' => 'low',
             'fields' => array(
@@ -555,7 +572,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id' => 'page-title-meta-box',
             'title' => __('Page Title', 'framework'),
-            'pages' => array('page'),
+            'post_types' => array('page'),
             'context' => 'normal',
             'priority' => 'low',
             'fields' => array(
@@ -590,7 +607,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
         $meta_boxes[] = array(
             'id'        => 'properties-list-meta-box',
             'title'     => __( 'Properties Filter Settings', 'framework' ),
-            'pages'     => array( 'page' ),
+            'post_types'     => array( 'page' ),
             'context'   => 'normal',
             'priority'  => 'high',
             'show'   => array(
@@ -628,6 +645,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'type'        => 'select',
                     'options'     => $locations,
                     'multiple'    => true,
+                    'select_all_none' => true,
                 ),
                 array(
                     'id'          => "inspiry_properties_statuses",
@@ -635,6 +653,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'type'        => 'select',
                     'options'     => $statuses,
                     'multiple'    => true,
+                    'select_all_none' => true,
                 ),
                 array(
                     'id'          => "inspiry_properties_types",
@@ -642,6 +661,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'type'        => 'select',
                     'options'     => $types,
                     'multiple'    => true,
+                    'select_all_none' => true,
                 ),
                 array(
                     'id'          => "inspiry_properties_features",
@@ -649,6 +669,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'type'        => 'select',
                     'options'     => $features,
                     'multiple'    => true,
+                    'select_all_none' => true,
                 ),
                 array(
                     'id'    => 'inspiry_properties_min_beds',
@@ -692,5 +713,3 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
 
     }
 }
-
-?>

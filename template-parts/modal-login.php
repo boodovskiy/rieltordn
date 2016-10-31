@@ -3,7 +3,7 @@
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <p><?php _e('You need to log in to use member only features.','framework');?></p>
+        <p><?php _e('Login required for member only features.','framework');?></p>
     </div>
 
     <!-- start of modal body -->
@@ -12,25 +12,44 @@
         <!-- login section -->
         <div class="login-section modal-section">
             <h4><?php _e('Login','framework');?></h4>
-            <form id="login-form" class="login-form" action="<?php echo wp_login_url(); ?>" method="post" enctype="multipart/form-data">
+            <form id="login-form" class="login-form" action="<?php echo admin_url('admin-ajax.php'); ?>" method="post" enctype="multipart/form-data">
                 <div class="form-option">
                     <label for="username"><?php _e('User Name','framework'); ?><span>*</span></label>
-                    <input id="username" name="log" type="text" class="required" title="<?php _e( '* Please provide user name!', 'framework'); ?>" autofocus required/>
+                    <input id="username" name="log" type="text" class="required" title="<?php _e( '* Provide user name!', 'framework'); ?>" autofocus required/>
                 </div>
                 <div class="form-option">
                     <label for="password"><?php _e('Password','framework'); ?><span>*</span></label>
-                    <input id="password" name="pwd" type="password" class="required" title="<?php _e( '* Please provide password!', 'framework'); ?>" required/>
+                    <input id="password" name="pwd" type="password" class="required" title="<?php _e( '* Provide password!', 'framework'); ?>" required/>
                 </div>
+                <input type="hidden" name="action" value="inspiry_ajax_login" />
                 <?php
-                if( is_singular('property') ){
+                // nonce for security
+                wp_nonce_field( 'inspiry-ajax-login-nonce', 'inspiry-secure-login' );
+
+                if ( is_page() || is_single() ) {
                     ?><input type="hidden" name="redirect_to" value="<?php wp_reset_postdata(); global $post; the_permalink( $post->ID ); ?>" /><?php
                 }else{
                     ?><input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url() ); ?>" /><?php
                 }
                 ?>
                 <input type="hidden" name="user-cookie" value="1" />
-                <input type="submit" name="submit" value="<?php _e('Log in','framework');?>" class="real-btn login-btn" />
+                <input type="submit" id="login-button" name="submit" value="<?php _e('Log in','framework');?>" class="real-btn login-btn" />
+                <img id="login-loader" class="modal-loader" src="<?php echo get_template_directory_uri(); ?>/images/ajax-loader.gif" alt="Working...">
+                <div>
+                    <div id="login-message" class="modal-message"></div>
+                    <div id="login-error" class="modal-error"></div>
+                </div>
             </form>
+
+            <div class="inspiry-social-login">
+                <?php
+                /*
+                 * For social login
+                 */
+                do_action( 'wordpress_social_login' );
+                ?>
+            </div>
+
             <p>
                 <?php if( get_option('users_can_register') ) : ?>
                     <a class="activate-section" data-section="register-section" href="#"><?php _e('Register Here','framework'); ?></a>
@@ -43,13 +62,20 @@
         <!-- forgot section -->
         <div class="forgot-section modal-section">
             <h4><?php _e('Reset Password','framework');?></h4>
-            <form action="<?php echo site_url('wp-login.php?action=lostpassword', 'login_post') ?>" id="forgot-form"  method="post">
+            <form action="<?php echo admin_url('admin-ajax.php'); ?>" id="forgot-form"  method="post" enctype="multipart/form-data">
                 <div class="form-option">
-                    <label for="user_login"><?php _e('User Name or Email','framework'); ?><span>*</span></label>
-                    <input id="user_login" name="user_login" type="text" class="required" title="<?php _e( '* Please provide user name or email!', 'framework'); ?>" required/>
+                    <label for="reset_username_or_email"><?php _e('Username or Email','framework'); ?><span>*</span></label>
+                    <input id="reset_username_or_email" name="reset_username_or_email" type="text" class="required" title="<?php _e( '* Provide username or email!', 'framework'); ?>" required/>
                 </div>
+                <input type="hidden" name="action" value="inspiry_ajax_forgot" />
                 <input type="hidden" name="user-cookie" value="1" />
-                <input type="submit" name="user-submit" value="<?php _e('Reset Password','framework');?>" class="real-btn register-btn" />
+                <input type="submit"  id="forgot-button" name="user-submit" value="<?php _e('Reset Password','framework');?>" class="real-btn register-btn" />
+	            <img id="forgot-loader" class="modal-loader" src="<?php echo get_template_directory_uri(); ?>/images/ajax-loader.gif" alt="Working...">
+                <?php wp_nonce_field( 'inspiry-ajax-forgot-nonce', 'inspiry-secure-reset' ); ?>
+                <div>
+                    <div id="forgot-message" class="modal-message"></div>
+                    <div id="forgot-error" class="modal-error"></div>
+                </div>
             </form>
             <p>
                 <a class="activate-section" data-section="login-section" href="#"><?php _e('Login Here','framework'); ?></a>
@@ -66,20 +92,40 @@
             <!-- register section -->
             <div class="register-section modal-section">
                 <h4><?php _e('Register','framework');?></h4>
-                <form action="<?php echo site_url('wp-login.php?action=register', 'login_post') ?>" id="register-form"  method="post">
+                <form action="<?php echo admin_url('admin-ajax.php'); ?>" id="register-form"  method="post" enctype="multipart/form-data">
 
                     <div class="form-option">
-                        <label for="username"><?php _e('User Name','framework'); ?><span>*</span></label>
-                        <input id="username" name="user_login" type="text" class="required" title="<?php _e( '* Please provide user name!', 'framework'); ?>" required/>
+                        <label for="register_username" class=""><?php _e('User Name','framework'); ?><span>*</span></label>
+                        <input id="register_username" name="register_username" type="text" class="required"
+                               title="<?php _e( '* Provide user name!', 'framework'); ?>" required/>
                     </div>
 
                     <div class="form-option">
-                        <label for="user_email"><?php _e('Email','framework'); ?><span>*</span></label>
-                        <input id="user_email" name="user_email" type="text" class="email required" title="<?php _e( '* Please provide valid email address!', 'framework'); ?>" required/>
+                        <label for="register_email" class=""><?php _e('Email','framework'); ?><span>*</span></label>
+                        <input id="register_email" name="register_email" type="text" class="email required"
+                               title="<?php _e( '* Provide valid email address!', 'framework'); ?>" required/>
                     </div>
 
                     <input type="hidden" name="user-cookie" value="1" />
-                    <input type="submit" name="user-submit" value="<?php _e('Register','framework');?>" class="real-btn register-btn" />
+                    <input type="submit" id="register-button" name="user-submit" value="<?php _e('Register','framework');?>" class="real-btn register-btn" />
+	                <img id="register-loader" class="modal-loader" src="<?php echo get_template_directory_uri(); ?>/images/ajax-loader.gif" alt="Working...">
+                    <input type="hidden" name="action" value="inspiry_ajax_register" />
+                    <?php
+                    // nonce for security
+                    wp_nonce_field( 'inspiry-ajax-register-nonce', 'inspiry-secure-register' );
+
+                    if ( is_page() || is_single() ) {
+                        ?><input type="hidden" name="redirect_to" value="<?php wp_reset_postdata(); global $post; the_permalink( $post->ID ); ?>" /><?php
+                    } else {
+                        ?><input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url( '/' ) ); ?>" /><?php
+                    }
+                    ?>
+
+                    <div>
+                        <div id="register-message" class="modal-message"></div>
+                        <div id="register-error" class="modal-error"></div>
+                    </div>
+
                 </form>
                 <p>
                     <a class="activate-section" data-section="login-section" href="#"><?php _e('Login Here','framework'); ?></a>

@@ -1,8 +1,10 @@
 <div class="view-type clearfix">
     <?php
-
+    $page_url = null;
     //page url
-    if( is_tax() ) {
+    if ( is_post_type_archive( 'property' ) ) {
+	    $page_url = get_post_type_archive_link( 'property' );
+    } elseif ( is_tax() ) {
         $page_url = custom_taxonomy_page_url();
     } else {
         global $post;
@@ -24,10 +26,10 @@
         }
     }
     ?>
-    <a class="list <?php echo ( $view_type == 'list' )?'active':''; ?>" href="<?php echo $page_url . $separator . 'view=list'; ?>">
+    <a class="list <?php echo ( $view_type == 'list' )?'active':''; ?>" href="<?php echo esc_url( $page_url . $separator . 'view=list' ); ?>">
         <?php include( get_template_directory() . '/images/list-view.svg' ); ?>
     </a>
-    <a class="grid <?php echo ( $view_type == 'grid' )?'active':''; ?>" href="<?php echo $page_url . $separator . 'view=grid'; ?>">
+    <a class="grid <?php echo ( $view_type == 'grid' )?'active':''; ?>" href="<?php echo esc_url( $page_url . $separator . 'view=grid' ); ?>">
         <?php include( get_template_directory() . '/images/grid-view.svg' ); ?>
     </a>
 </div>

@@ -12,6 +12,7 @@
         <taxonomy translate="1">property-status</taxonomy>
     </taxonomies>
     <custom-fields>
+        <custom-field action="translate">_thumbnail_id</custom-field>
         <custom-field action="translate">REAL_HOMES_embed_code</custom-field>
         <custom-field action="copy">REAL_HOMES_gallery</custom-field>
         <custom-field action="translate">REAL_HOMES_gallery_slider_type</custom-field>
@@ -57,15 +58,33 @@
         <key name="theme_sitelogo" />
         <key name="theme_general_banner_image" />
         <key name="theme_search_url" />
+        <key name="inspiry_search_page" />
         <key name="theme_header_email" />
         <key name="theme_header_phone" />
         <key name="theme_home_advance_search_title" />
+        <key name="inspiry_keyword_label" />
+        <key name="inspiry_keyword_placeholder_text" />
+        <key name="inspiry_property_id_label" />
+        <key name="inspiry_property_id_placeholder_text" />
+        <key name="inspiry_property_status_label" />
+        <key name="inspiry_property_type_label" />
         <key name="theme_location_select_number" />
         <key name="theme_location_title_1" />
         <key name="theme_location_title_2" />
         <key name="theme_location_title_3" />
         <key name="theme_location_title_4" />
+        <key name="inspiry_min_beds_label" />
+        <key name="inspiry_min_beds" />
+        <key name="inspiry_min_baths_label" />
+        <key name="inspiry_min_baths" />
+        <key name="inspiry_min_area_label" />
+        <key name="inspiry_min_area_placeholder_text" />
+        <key name="inspiry_max_area_label" />
+        <key name="inspiry_max_area_placeholder_text" />
         <key name="theme_area_unit" />
+        <key name="inspiry_any_text" />
+        <key name="inspiry_search_button_text" />
+        <key name="inspiry_search_features_title" />
         <key name="theme_slogan_title" />
         <key name="theme_slogan_text" />
         <key name="theme_news_posts_title" />
@@ -90,6 +109,9 @@
         <key name="theme_decimals" />
         <key name="theme_dec_point" />
         <key name="theme_thousands_sep" />
+        <key name="theme_no_price_text" />
+        <key name="inspiry_min_price_label" />
+        <key name="inspiry_max_price_label" />
         <key name="theme_minimum_price_values" />
         <key name="theme_maximum_price_values" />
         <key name="theme_status_for_rent" />
@@ -110,15 +132,21 @@
         <key name="theme_copyright_text" />
         <key name="theme_designed_by_text" />
         <key name="theme_login_url" />
+        <key name="inspiry_login_register_page" />
         <key name="theme_profile_url" />
+        <key name="inspiry_edit_profile_page" />
         <key name="theme_submit_url" />
+        <key name="inspiry_submit_property_page" />
         <key name="theme_submit_default_address" />
         <key name="theme_submit_default_location" />
         <key name="theme_submit_message" />
         <key name="theme_submit_notice_email" />
         <key name="theme_favorites_url" />
+        <key name="inspiry_favorites_page" />
         <key name="theme_my_properties_url" />
+        <key name="inspiry_my_properties_page" />
         <key name="theme_payment_amount" />
         <key name="theme_currency_code" />
+        <key name="theme_footer_bg_img" />
     </admin-texts>
 </wpml-config>

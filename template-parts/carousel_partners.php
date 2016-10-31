@@ -7,7 +7,8 @@ if($show_partners == 'true'){
         <div class="row">
             <div class="span12">
                 <section class="brands-carousel  clearfix">
-                    <h3><span><?php echo $partners_title = get_option('theme_partners_title'); ?></span></h3>
+                    <?php $partners_title = get_option('theme_partners_title'); ?>
+                    <h3><span><?php echo esc_html( $partners_title ); ?></span></h3>
                             <ul class="brands-carousel-list clearfix">
                                 <?php
                                 $partners_query_args = array(
@@ -27,7 +28,7 @@ if($show_partners == 'true'){
                                         }
                                         ?>
                                         <li>
-                                            <a target="_blank" href="<?php echo $partner_url; ?>" title="<?php the_title();?>">
+                                            <a target="_blank" href="<?php echo esc_url( $partner_url ); ?>" title="<?php the_title();?>">
                                                 <?php
                                                 $thumb_title = trim(strip_tags( get_the_title($post->ID)));
                                                 the_post_thumbnail('partners-logo',array(

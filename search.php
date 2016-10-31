@@ -4,7 +4,7 @@
     $banner_image_path = get_default_banner();
 ?>
 
-    <div class="page-head">
+    <div class="page-head" style="background-repeat: no-repeat;background-position: center top;background-image: url('<?php echo esc_url( $banner_image_path ); ?>'); ">
         <div class="container">
             <div class="wrap clearfix">
                 <h1 class="page-title"><span><?php _e('Search Results', 'framework'); ?></span></h1>

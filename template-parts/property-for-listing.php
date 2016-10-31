@@ -34,7 +34,14 @@
         </div>
 
         <div class="property-meta">
-            <?php get_template_part('property-details/property-metas'); ?>
+            <?php get_template_part( 'property-details/property-metas' ); ?>
+            <?php
+                $compare_properties_module  = get_option( 'theme_compare_properties_module' );
+                $inspiry_compare_page       = get_option( 'inspiry_compare_page' );
+                if ( ( 'enable' == $compare_properties_module ) && ( $inspiry_compare_page ) ) {
+                    get_template_part( 'property-details/property-compare' );
+                }
+            ?>
         </div>
 
     </article>

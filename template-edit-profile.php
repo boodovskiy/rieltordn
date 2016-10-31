@@ -42,8 +42,7 @@ get_header();
                     if( is_user_logged_in() ) {
 
                         // get user information
-                        global $current_user;
-                        get_currentuserinfo();
+                        $current_user = wp_get_current_user();
                         $current_user_meta = get_user_meta( $current_user->ID );
                         ?>
                         <form id="inspiry-edit-user" enctype="multipart/form-data" class="submit-form">
@@ -81,7 +80,6 @@ get_header();
                                             </ul>
 
                                             <div id="errors-log"></div>
-                                            <div id="plupload-container"></div>
 
                                         </div><!-- end of profile image controls -->
 
@@ -89,22 +87,22 @@ get_header();
 
                                     <div class="form-option">
                                         <label for="first-name"><?php _e('First Name', 'framework'); ?></label>
-                                        <input name="first-name" type="text" id="first-name" value="<?php if( isset( $current_user_meta['first_name'] ) ) { echo $current_user_meta['first_name'][0]; } ?>" autofocus />
+                                        <input name="first-name" type="text" id="first-name" value="<?php if( isset( $current_user_meta['first_name'] ) ) { echo esc_attr( $current_user_meta['first_name'][0] ); } ?>" autofocus />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="last-name"><?php _e('Last Name', 'framework'); ?></label>
-                                        <input name="last-name" type="text" id="last-name" value="<?php if( isset( $current_user_meta['last_name'] ) ) {  echo $current_user_meta['last_name'][0]; } ?>" />
+                                        <input name="last-name" type="text" id="last-name" value="<?php if( isset( $current_user_meta['last_name'] ) ) {  echo esc_attr( $current_user_meta['last_name'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="display-name"><?php _e('Display Name', 'framework'); ?> *</label>
-                                        <input class="required" name="display-name" type="text" id="display-name" value="<?php echo $current_user->display_name; ?>" required />
+                                        <input class="required" name="display-name" type="text" id="display-name" value="<?php echo esc_attr( $current_user->display_name ); ?>" required />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="email"><?php _e('Email', 'framework'); ?> *</label>
-                                        <input class="required" name="email" type="email" id="email" value="<?php echo $current_user->user_email; ?>" required/>
+                                        <input class="required" name="email" type="email" id="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" required/>
                                     </div>
 
                                     <div class="form-option">
@@ -123,42 +121,42 @@ get_header();
 
                                     <div class="form-option">
                                         <label for="description"><?php _e('Biographical Information', 'framework') ?></label>
-                                        <textarea name="description" id="description" rows="5" cols="30"><?php if( isset( $current_user_meta['description'] ) ) { echo $current_user_meta['description'][0]; } ?></textarea>
+                                        <textarea name="description" id="description" rows="5" cols="30"><?php if( isset( $current_user_meta['description'] ) ) { echo esc_textarea( $current_user_meta['description'][0] ); } ?></textarea>
                                     </div>
 
                                     <div class="form-option">
                                         <label for="mobile-number"><?php _e('Mobile Number', 'framework'); ?></label>
-                                        <input name="mobile-number" type="text" id="mobile-number" value="<?php if( isset( $current_user_meta['mobile_number'] ) ) { echo $current_user_meta['mobile_number'][0]; } ?>" />
+                                        <input name="mobile-number" type="text" id="mobile-number" value="<?php if( isset( $current_user_meta['mobile_number'] ) ) { echo esc_attr( $current_user_meta['mobile_number'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="office-number"><?php _e('Office Number', 'framework'); ?></label>
-                                        <input name="office-number" type="text" id="office-number" value="<?php if( isset( $current_user_meta['office_number'] ) ) { echo $current_user_meta['office_number'][0]; } ?>" />
+                                        <input name="office-number" type="text" id="office-number" value="<?php if( isset( $current_user_meta['office_number'] ) ) { echo esc_attr( $current_user_meta['office_number'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="fax-number"><?php _e('Fax Number', 'framework'); ?></label>
-                                        <input name="fax-number" type="text" id="fax-number" value="<?php if( isset( $current_user_meta['fax_number'] ) ) { echo $current_user_meta['fax_number'][0]; } ?>" />
+                                        <input name="fax-number" type="text" id="fax-number" value="<?php if( isset( $current_user_meta['fax_number'] ) ) { echo esc_attr( $current_user_meta['fax_number'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="facebook-url"><?php _e('Facebook URL', 'framework'); ?></label>
-                                        <input name="facebook-url" type="text" id="facebook-url" value="<?php if( isset( $current_user_meta['facebook_url'] ) ) { echo $current_user_meta['facebook_url'][0]; } ?>" />
+                                        <input name="facebook-url" type="text" id="facebook-url" value="<?php if( isset( $current_user_meta['facebook_url'] ) ) { echo esc_attr( $current_user_meta['facebook_url'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="twitter-url"><?php _e('Twitter URL', 'framework'); ?></label>
-                                        <input name="twitter-url" type="text" id="twitter-url" value="<?php if( isset( $current_user_meta['twitter_url'] ) ) { echo $current_user_meta['twitter_url'][0]; } ?>" />
+                                        <input name="twitter-url" type="text" id="twitter-url" value="<?php if( isset( $current_user_meta['twitter_url'] ) ) { echo esc_attr( $current_user_meta['twitter_url'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="google-plus-url"><?php _e('Google Plus URL', 'framework'); ?></label>
-                                        <input name="google-plus-url" type="text" id="google-plus-url" value="<?php if( isset( $current_user_meta['google_plus_url'] ) ) { echo $current_user_meta['google_plus_url'][0]; } ?>" />
+                                        <input name="google-plus-url" type="text" id="google-plus-url" value="<?php if( isset( $current_user_meta['google_plus_url'] ) ) { echo esc_attr( $current_user_meta['google_plus_url'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">
                                         <label for="linkedin-url"><?php _e('LinkedIn URL', 'framework'); ?></label>
-                                        <input name="linkedin-url" type="text" id="linkedin-url" value="<?php if( isset( $current_user_meta['linkedin_url'] ) ) { echo $current_user_meta['linkedin_url'][0]; } ?>" />
+                                        <input name="linkedin-url" type="text" id="linkedin-url" value="<?php if( isset( $current_user_meta['linkedin_url'] ) ) { echo esc_attr( $current_user_meta['linkedin_url'][0] ); } ?>" />
                                     </div>
 
                                     <div class="form-option">

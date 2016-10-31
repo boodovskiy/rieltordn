@@ -24,19 +24,10 @@ get_header();
 
     <div class="container contents listing-grid-layout">
         <div class="row">
-            <?php
-            /* Featured Properties */
-            $show_featured_properties = get_option('theme_show_featured_properties');
-            if($show_featured_properties == 'true'){
-                /*get_template_part("template-parts/carousel") ;*/
-                the_widget( 'Advance_Search_Widget' );
-            }
-            ?>
             <div class="span9 main-wrap">
 
                 <!-- Main Content -->
                 <div class="main">
-
 
                     <section class="listing-layout <?php if( $view_type == 'grid' ){ echo 'property-grid'; } ?>">
 
@@ -48,6 +39,12 @@ get_header();
                         <div class="list-container clearfix">
                             <?php
                             get_template_part('template-parts/sort-controls');
+
+                            $compare_properties_module  = get_option( 'theme_compare_properties_module' );
+                            $inspiry_compare_page       = get_option( 'inspiry_compare_page' );
+                            if ( ( 'enable' == $compare_properties_module ) && ( $inspiry_compare_page ) ) {
+                                get_template_part( 'template-parts/compare-properties' );
+                            }
 
                             $sort_query_args = array();
                             $sort_query_args = sort_properties($sort_query_args);
