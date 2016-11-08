@@ -220,8 +220,13 @@
 		},
 		_initEvents			: function() {
 			
+			// navButtonPressed = false;
 			var instance	= this;
 			
+			var refreshIntervalId = window.setInterval(function(){
+                instance._slide('right');
+            }, 7000);
+
 			// window resize
 			$(window).bind('resize.elastislide', function( event ) {
 				
@@ -254,10 +259,12 @@
 			// navigation buttons events
 			this.$navNext.bind('click.elastislide', function( event ) {
 				instance._slide('right');
+				clearInterval(refreshIntervalId);
 			});
 			
 			this.$navPrev.bind('click.elastislide', function( event ) {
 				instance._slide('left');
+				clearInterval(refreshIntervalId);
 			});
 			
 			// item click event
