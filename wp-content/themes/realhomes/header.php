@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<meta name="format-detection" content="telephone=no">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
 
     <?php
     if ( !function_exists( 'has_site_icon' ) || !has_site_icon() ) {
@@ -32,42 +33,6 @@
             <div class="container"><!-- Start Header Container -->
 
                 <header id="header" class="clearfix">
-
-                    <div id="header-top" class="clearfix">
-                        <?php
-                        /* WPML Language Switcher */
-                        if ( function_exists( 'icl_get_languages' ) ) {
-	                        $wpml_lang_switcher = get_option( 'theme_wpml_lang_switcher' );
-	                        if ( $wpml_lang_switcher == 'true' ) {
-		                        do_action( 'icl_language_selector' );
-	                        }
-                        }
-
-                        // Currency Switcher
-                        get_template_part( 'template-parts/header-currency-switcher' );
-
-
-                        // header email
-                        $header_email = get_option('theme_header_email');
-                        if ( ! empty( $header_email ) ) {
-                            ?>
-                            <h2 id="contact-email">
-                                <?php
-                                include( get_template_directory() . '/images/icon-mail.svg' );
-                                _e( 'Email us at', 'framework' ); ?> :
-                                <a href="mailto:<?php echo antispambot( $header_email ); ?>"><?php echo antispambot( $header_email ); ?></a>
-                            </h2>
-                            <?php
-                        }
-                        ?>
-
-                        <!-- Social Navigation -->
-                        <?php get_template_part( 'template-parts/social-nav' ); ?>
-
-                        <!-- User Navigation -->
-                        <?php get_template_part( 'template-parts/user-nav' ); ?>
-
-                    </div>
 
                     <!-- Logo -->
                     <div id="logo">
@@ -104,6 +69,13 @@
                         ?>
                     </div>
 
+                    <div id="header-top" class="clearfix">
+                        <?php
+                         // Currency Switcher
+                         // get_template_part( 'template-parts/header-currency-switcher' );       
+                        ?>                  
+                    </div>
+
 
                     <div class="menu-and-contact-wrap">
                         <?php
@@ -127,6 +99,11 @@
                             ?>
                         </nav>
                         <!-- End Main Menu -->
+                            <div class="header-icon-sect">
+                                <i class="fa fa-viber" style="color:#202BA6"></i>
+                                <i class="fa fa-skype" style="color:blue"></i>
+                                <i class="fa fa-whatsapp" style="color:#34af23"></i>
+                            </div>
                     </div>
 
                 </header>
