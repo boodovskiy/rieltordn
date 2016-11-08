@@ -7,6 +7,9 @@ add_filter( 'rwmb_meta_boxes', 'inspiry_register_meta_boxes' );
 
 if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
     function inspiry_register_meta_boxes( $meta_boxes ) {
+        global $wpdb;
+        $lastrowId=$wpdb->get_col( "SELECT ID FROM wp_posts where post_type='property' ORDER BY post_date DESC " );
+        $lastPropertyId=$lastrowId[0]+1;
 
         $prefix = 'REAL_HOMES_';
 
@@ -120,24 +123,6 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'tab' => 'details',
                 ),
                 array(
-                    'id' => "{$prefix}property_size",
-                    'name' => __('Area Size ( Only digits )', 'framework'),
-                    'desc' => __('Example Value: 2500', 'framework'),
-                    'type' => 'text',
-                    'std' => "",
-                    'columns' => 6,
-                    'tab' => 'details',
-                ),
-                array(
-                    'id' => "{$prefix}property_size_postfix",
-                    'name' => __('Size Postfix', 'framework'),
-                    'desc' => __('Example Value: Sq Ft', 'framework'),
-                    'type' => 'text',
-                    'std' => "",
-                    'columns' => 6,
-                    'tab' => 'details',
-                ),
-                array(
                     'id' => "{$prefix}property_bedrooms",
                     'name' => __('Bedrooms', 'framework'),
                     'desc' => __('Example Value: 4', 'framework'),
@@ -169,6 +154,24 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'name' => __('Property ID', 'framework'),
                     'desc' => __('It will help you search a property directly.', 'framework'),
                     'type' => 'text',
+                    'std' => $lastPropertyId,
+                    'columns' => 6,
+                    'tab' => 'details',
+                ),
+                array(
+                    'id' => "{$prefix}property_size",
+                    'name' => __('Area Size ( Only digits )', 'framework'),
+                    'desc' => __('Example Value: 2500', 'framework'),
+                    'type' => 'text',
+                    'std' => "",
+                    'columns' => 6,
+                    'tab' => 'details',
+                ),
+                array(
+                    'id' => "{$prefix}property_size_postfix",
+                    'name' => __('Size Postfix', 'framework'),
+                    'desc' => __('Example Value: Sq Ft', 'framework'),
+                    'type' => 'hidden',
                     'std' => "",
                     'columns' => 6,
                     'tab' => 'details',
@@ -355,7 +358,7 @@ if( !function_exists( 'inspiry_register_meta_boxes' ) ) {
                     'name' => __('Do you want to mark this property as featured ?', 'framework'),
                     'id' => "{$prefix}featured",
                     'type' => 'checkbox',
-                    'std' => 0,
+                    'std' => 1,
                     'desc' => __('Yes', 'framework'),
                     'columns' => 12,
                     'tab' => 'misc',
