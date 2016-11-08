@@ -106,7 +106,8 @@ if ( $properties_for_map_query->have_posts() ) :
         /* Property Map Icon Based on Property Type */
         $property_type_slug = 'single-family-home'; // Default Icon Slug
 
-        $type_terms = get_the_terms( $post->ID,"property-type" );
+        //$type_terms = get_the_terms( $post->ID,"property-type" );
+        $type_terms = get_the_terms( $post->ID,"property-status" );
         if(!empty($type_terms)){
             foreach($type_terms as $typ_trm){
                 $property_type_slug = $typ_trm->slug;
