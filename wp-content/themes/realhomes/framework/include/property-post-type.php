@@ -411,8 +411,9 @@ add_action("manage_pages_custom_column", "property_custom_columns");
 
 /*-----------------------------------------------------------------------------------*/
 /*	Add Metabox to Display Property Payment Information
+/* add_action( 'add_meta_boxes', 'add_payment_meta_box' );
 /*-----------------------------------------------------------------------------------*/
-add_action( 'add_meta_boxes', 'add_payment_meta_box' );
+
 
 if( !function_exists( 'add_payment_meta_box' ) ){
     function add_payment_meta_box(){
