@@ -137,7 +137,7 @@ if ( ! function_exists( 'load_location_script' ) ) {
 		if ( ! is_admin() ) {
 
 			$locations_order = array(
-				'orderby' => 'count',
+				'orderby' => 'name',
 				'order' => 'desc',
 			);
 
@@ -260,8 +260,10 @@ if ( ! function_exists( 'load_location_script' ) ) {
 				$any_text = __( 'None', 'framework' );  // modify it to None for submit page
 			}
 
+			$default_location =is_front_page() ? 'donetsk' : '';
+
 			/* combine all data into one */
-			$location_data_array = array( 'any_text' => $any_text, 'any_value' => inspiry_any_value(), 'all_locations' => $all_locations, 'select_names' => $location_select_names, 'select_count' => $location_select_count, 'locations_in_params' => $locations_in_params, );
+			$location_data_array = array( 'any_text' => $any_text, 'any_value' => inspiry_any_value(), 'all_locations' => $all_locations, 'select_names' => $location_select_names, 'select_count' => $location_select_count, 'locations_in_params' => $locations_in_params,  'default_location' => $default_location,);
 
 			/* provide location data array before custom script */
 			wp_localize_script( 'inspiry-search', 'locationData', $location_data_array );
@@ -301,7 +303,11 @@ if ( ! function_exists( 'advance_search_options' ) ) {
 			}
 		}
 
-		if ( $searched_term == inspiry_any_value() || empty( $searched_term ) ) {
+		if (false !== strpos($_SERVER['REQUEST_URI'], 'arenda')) {
+            $searched_term = 'arenda';
+        }
+
+		if ( $searched_term == inspiry_any_value() /*|| empty( $searched_term ) */) {
 			echo '<option value="' . inspiry_any_value() . '" selected="selected">' . inspiry_any_text() . '</option>';
 		} else {
 			echo '<option value="' . inspiry_any_value() . '">' . inspiry_any_text() . '</option>';
@@ -311,6 +317,8 @@ if ( ! function_exists( 'advance_search_options' ) ) {
 			foreach ( $taxonomy_terms as $term ) {
 				if ( $searched_term == $term->slug ) {
 					echo '<option value="' . $term->slug . '" selected="selected">' . $term->name . '</option>';
+				}elseif ($term->slug == 'prodazha' && empty($searched_term)) {
+                    echo '<option value="'.$term->slug.'" selected="selected">'.$term->name.'</option>';
 				} else {
 					echo '<option value="' . $term->slug . '">' . $term->name . '</option>';
 				}
@@ -343,7 +351,7 @@ if ( ! function_exists( 'advance_hierarchical_options' ) ) {
 			}
 		}
 
-		if ( $searched_term == inspiry_any_value() || empty( $searched_term ) ) {
+		if ( $searched_term == inspiry_any_value() /*|| empty( $searched_term ) */) {
 			echo '<option value="' . inspiry_any_value() . '" selected="selected">' . inspiry_any_text() . '</option>';
 		} else {
 			echo '<option value="' . inspiry_any_value() . '">' . inspiry_any_text() . '</option>';
@@ -369,6 +377,9 @@ if ( ! function_exists( 'generate_hirarchical_options' ) ) {
 			foreach ( $taxonomy_terms as $term ) {
 				if ( $searched_term == $term->slug ) {
 					echo '<option value="' . $term->slug . '" selected="selected">' . $prefix . $term->name . '</option>';
+				} elseif ($term->slug == 'kvartiry' && empty($searched_term)) {
+                     echo '<option value="' . $term->slug . '" selected="selected">' . $term->name . '</option>';
+
 				} else {
 					echo '<option value="' . $term->slug . '">' . $prefix . $term->name . '</option>';
 				}
@@ -420,7 +431,7 @@ if ( ! function_exists( 'numbers_list' ) ) {
 	 * @param $numbers_list_for
 	 */
 	function numbers_list( $numbers_list_for ) {
-		$numbers_array = array( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
+		$numbers_array = array( 1, 2, 3, 4/*, 5, 6, 7, 8, 9, 10 */);
 		$searched_value = '';
 
 		if ( $numbers_list_for == 'bedrooms' ) {
@@ -435,23 +446,87 @@ if ( ! function_exists( 'numbers_list' ) ) {
 			}
 		}
 
-		if ( $searched_value == inspiry_any_value() || empty( $searched_value ) ) {
-			echo '<option value="' . inspiry_any_value() . '" selected="selected">' . inspiry_any_text() . '</option>';
-		} else {
-			echo '<option value="' . inspiry_any_value() . '">' . inspiry_any_text() . '</option>';
-		}
+		if($numbers_list_for == 'bedrooms'){
+            // echo print_r($searched_value);
+            if(!empty($numbers_array)){ 
+                foreach($numbers_array as $number){
+                    if(in_array($number, $searched_value)){
+                        echo '<label class="btn_radiobox btn btn-white-black btn-radio active">
+                                <input name="bedrooms[]" id="radiobox-bedrooms" class="search-radiobox" value="'.$number.'" type="checkbox" checked="checked">
+                                '.( $number == '4' ? '4+' : $number ).'
+                              </label>';
+                    }
+                    elseif ($number == '1' && ($searched_value == 'any' || empty($searched_value)) ) {
+                        echo '<label class="btn_radiobox btn btn-white-black btn-radio active">
+                                <input name="bedrooms[]" id="radiobox-bedrooms" class="search-radiobox" value="1" type="checkbox" checked="checked">
+                                1
+                              </label>';
+                    }  
+                    else {
+                        echo '<label class="btn_radiobox btn btn-white-black btn-radio">
+                                <input name="bedrooms[]" id="radiobox-bedrooms" class="search-radiobox" value="'.$number.'" type="checkbox">
+                                '.( $number == '4' ? '4+' : $number ).'
+                              </label>';
+                    }
+                }
+            }
 
-		if ( ! empty( $numbers_array ) ) {
-			foreach ( $numbers_array as $number ) {
-				if ( $searched_value == $number ) {
-					echo '<option value="' . $number . '" selected="selected">' . $number . '</option>';
-				} else {
-					echo '<option value="' . $number . '">' . $number . '</option>';
+        } else{
+
+			if ( $searched_value == inspiry_any_value() || empty( $searched_value ) ) {
+				echo '<option value="' . inspiry_any_value() . '" selected="selected">' . inspiry_any_text() . '</option>';
+			} else {
+				echo '<option value="' . inspiry_any_value() . '">' . inspiry_any_text() . '</option>';
+			}
+
+			if ( ! empty( $numbers_array ) ) {
+				foreach ( $numbers_array as $number ) {
+					if ( $searched_value == $number ) {
+						echo '<option value="' . $number . '" selected="selected">' . $number . '</option>';
+					} else {
+						echo '<option value="' . $number . '">' . $number . '</option>';
+					}
 				}
 			}
 		}
-
 	}
+}
+
+/*-----------------------------------------------------------------------------------*/
+// Currency loop in Advance Search
+/*-----------------------------------------------------------------------------------*/
+if(!function_exists('currency_list')){
+    function currency_list(){
+        $currency_array = array("USD", "UAH", "RUB");
+        $searched_currency = '';
+
+        if(isset($_GET['search-currency'])) {
+            $searched_currency = $_GET['search-currency'];
+        }
+
+        if(!empty($currency_array)){
+            foreach($currency_array as $currency){
+                if($searched_currency == $currency){
+                    echo '<label class="btn_radiobox_cur btn btn-white-black btn-radio active">
+                            <input name="search-currency" id="radiobox-currency" class="search-radiobox" value="'.$currency.'" type="radio" checked="checked">
+                            '.$currency.'
+                          </label>';
+                }
+                elseif ($currency == 'USD' && ($searched_currency == 'any' || empty($searched_currency)) ) {
+                    echo '<label class="btn_radiobox_cur btn btn-white-black btn-radio active">
+                            <input name="search-currency" id="radiobox-currency" class="search-radiobox" value="USD" type="radio" checked="checked">
+                            USD
+                          </label>';
+                } 
+                else {
+                    echo '<label class="btn_radiobox_cur btn btn-white-black btn-radio">
+                            <input name="search-currency" id="radiobox-currency" class="search-radiobox" value="'.$currency.'" type="radio">
+                            '.$currency.'
+                          </label>';
+                }
+            }
+        }
+    }
 }
 
 
@@ -953,9 +1028,18 @@ if( !function_exists( 'inspiry_price_search' ) ) :
 	 * @return array
 	 */
 	function inspiry_price_search( $meta_query ) {
-		if ( isset( $_GET[ 'min-price' ] ) && ( $_GET[ 'min-price' ] != inspiry_any_value() ) && isset( $_GET[ 'max-price' ] ) && ( $_GET[ 'max-price' ] != inspiry_any_value() ) ) {
-			$min_price = doubleval( $_GET[ 'min-price' ] );
-			$max_price = doubleval( $_GET[ 'max-price' ] );
+
+		$search_currency = 1;
+        if( isset($_GET['search-currency']) && !empty($_GET['search-currency']) ) {
+             $currency_rates = get_exchange_rates();
+             $search_currency = $currency_rates[$_GET['search-currency']];
+             // echo "<pre>";
+             // echo var_dump($search_currency); exit();
+        }
+
+		if( isset($_GET['min-price']) && !empty($_GET['min-price']) && isset($_GET['max-price']) && !empty($_GET['max-price']) ){
+            $min_price = doubleval($_GET['min-price'])/$search_currency;
+            $max_price = doubleval($_GET['max-price'])/$search_currency;
 			if ( $min_price >= 0 && $max_price > $min_price ) {
 				$meta_query[] = array(
 					'key' => 'REAL_HOMES_property_price',
@@ -964,8 +1048,8 @@ if( !function_exists( 'inspiry_price_search' ) ) :
 					'compare' => 'BETWEEN'
 				);
 			}
-		} elseif ( isset( $_GET[ 'min-price' ] ) && ( $_GET[ 'min-price' ] != inspiry_any_value() ) ) {
-			$min_price = doubleval( $_GET[ 'min-price' ] );
+		} elseif( isset($_GET['min-price']) && !empty($_GET['min-price']) ){
+            $min_price = doubleval($_GET['min-price'])/$search_currency;
 			if ( $min_price > 0 ) {
 				$meta_query[] = array(
 					'key' => 'REAL_HOMES_property_price',
@@ -974,8 +1058,8 @@ if( !function_exists( 'inspiry_price_search' ) ) :
 					'compare' => '>='
 				);
 			}
-		} elseif ( isset( $_GET[ 'max-price' ] ) && ( $_GET[ 'max-price' ] != inspiry_any_value() ) ) {
-			$max_price = doubleval( $_GET[ 'max-price' ] );
+		} elseif( isset($_GET['max-price']) && !empty($_GET['max-price']) ){
+            $max_price = doubleval($_GET['max-price'])/$search_currency;
 			if ( $max_price > 0 ) {
 				$meta_query[] = array(
 					'key' => 'REAL_HOMES_property_price',
@@ -1073,13 +1157,29 @@ if( !function_exists( 'inspiry_beds_search' ) ) :
 	 * @return array
 	 */
 	function inspiry_beds_search( $meta_query ) {
+		 $bedrooms = array();
+        foreach ($_GET['bedrooms'] as $key=>$value) $bedrooms[] = (int)$value;        
+        if (max($bedrooms)==4) {
+            for ($i = 5; $i <= 10; $i++) {$bedrooms[] = $i;}
+        }
+        // echo "<pre>"; var_dump($bedrooms); die("конец");
+        
 		if ( ( !empty( $_GET[ 'bedrooms' ] ) ) && ( $_GET[ 'bedrooms' ] != inspiry_any_value() ) ) {
-			$meta_query[] = array(
-				'key' => 'REAL_HOMES_property_bedrooms',
-				'value' => $_GET[ 'bedrooms' ],
-				'compare' => inspiry_get_beds_baths_compare_operator(),
-				'type' => 'DECIMAL'
-			);
+			if((count($bedrooms) > 1) )  {
+                $meta_query[] = array(
+                    'key' => 'REAL_HOMES_property_bedrooms',
+                    'value' => $bedrooms/*$_GET['bedrooms']*/,
+                    'compare' => 'IN',
+                    'type'=> 'DECIMAL'
+                );
+            } else {
+                $meta_query[] = array(
+                    'key' => 'REAL_HOMES_property_bedrooms',
+                    'value' => max($bedrooms),
+                    'compare' => '=',
+                    'type'=> 'DECIMAL'
+                );
+            }
 		}
 		return $meta_query;
 	}

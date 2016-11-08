@@ -441,6 +441,14 @@ if ( ! function_exists( 'load_theme_styles' ) ) {
 				'all'
 			);
 
+			wp_register_style(
+				'fa-viber',  
+				get_template_directory_uri() . '/css/fa-viber.css', array(), 
+				'4.6.3', 
+				'all'
+			);
+
+			wp_enqueue_style( 'fa-viber' );
 			// Flex Slider
 			wp_dequeue_style( 'flexslider' );       // dequeue flexslider if it registered by a plugin
 			wp_deregister_style( 'flexslider' );    // deregister flexslider if it registered by a plugin
