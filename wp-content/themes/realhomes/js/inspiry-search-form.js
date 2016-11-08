@@ -238,6 +238,9 @@
                     targetSelect.find( 'option[value="'+ locationsInParams[ selectName ] +'"]' ).prop('selected', true);
                 }
             }
+
+             if(locationData.default_location == 'donetsk')
+                    targetSelect.find( 'option[value="donetsk"]' ).prop('selected', true);
         }
 
 
@@ -346,9 +349,13 @@
         var max_int_val = (isNaN(max_text_val))?0:parseInt(max_text_val);
 
         if( (min_int_val >= max_int_val) && (min_int_val != 0) && (max_int_val != 0)){
-            $('#select-min-price,#select-max-price').siblings('.select2-container').css('outline','1px solid red');
+            $('#select-max-price,#select-min-price').css('outline','2px solid red');
         }else{
-            $('#select-min-price,#select-max-price').siblings('.select2-container').css('outline','none');
+            $('#select-max-price,#select-min-price').css('outline','none');
+        }
+
+        if (min_text_val >= max_text_val) {
+            $('#select-max-price').val(min_int_val+1);
         }
     });
 
@@ -364,6 +371,10 @@
             $('#select-min-price-for-rent, #select-max-price-for-rent').siblings('.select2-container').css('outline','1px solid red');
         }else{
             $('#select-min-price-for-rent, #select-max-price-for-rent').siblings('.select2-container').css('outline','none');
+        }
+
+        if (min_text_val >= max_text_val) {
+            $('#select-max-price-for-rent').val(min_int_val+1);
         }
     });
 

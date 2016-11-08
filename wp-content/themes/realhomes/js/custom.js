@@ -957,9 +957,9 @@
         /*-----------------------------------------------------------------*/
         /* Property Floor Plans
         /*-----------------------------------------------------------------*/
-        $('.floor-plans-accordions .floor-plan:first-child').addClass('current')
+        /*$('.floor-plans-accordions .floor-plan:first-child').addClass('current')
             .children('.floor-plan-content').css('display', 'block').end()
-            .find('i.fa').removeClass( 'fa-plus').addClass( 'fa-minus' );
+            .find('i.fa').removeClass( 'fa-plus').addClass( 'fa-minus' );*/
 
         $('.floor-plan-title').on( 'click', function(){
             var parent_accordion = $(this).closest('.floor-plan');
@@ -979,6 +979,59 @@
         /* Support for Mortgage Calculator - https://wordpress.org/plugins/mortgage-calculator/
         /*-----------------------------------------------------------------*/
         $('#mc-submit').addClass('real-btn');
+
+        /*-----------------------------------------------------------------*/
+        /* Set Default Select for Property Status in Advanced Search
+        /*-----------------------------------------------------------------*/
+        
+        /* $("#select-status_input").attr("value", "Продажа");
+        $("#select-status [value='any']").attr("selected", false);
+        $("#select-status [value='prodazha']").attr("selected", "selected");*/
+        
+        
+
+        /*-----------------------------------------------------------------*/
+        /* Toggle checkbox button (label) to active in Advanced Search
+        /*-----------------------------------------------------------------*/
+        $(".btn_radiobox").on("click", function (e) {
+            // $(".btn_radiobox").removeClass("active");
+            e.preventDefault();
+            $(this).toggleClass("active");
+            if ($(this).children("input").is(":checked")) {
+
+                $(this).children("input").prop("checked", false);
+
+            } else {
+                $(this).children("input").prop("checked", true);
+            }
+        });
+
+
+        $(".btn_radiobox_cur").on("click", function () {
+            $(".btn_radiobox_cur").removeClass("active");
+            $(this).addClass("active");
+        });
+
+        $(".operation-type select").on("change", function () {
+            
+            if ( $(".operation-type select").val() == 'Земля') {
+               $(".floor").hide();
+               $(".floors").hide();
+               $(".rooms").hide();
+               $(".living-area").hide();
+               $(".kitchen-area").hide();
+               $(".toggle").hide();
+               $(".form-div .area input[type='text']").css("margin-left","0px");;
+            } else {
+               $(".floor").show();
+               $(".floors").show();
+               $(".rooms").show();
+               $(".living-area").show();
+               $(".kitchen-area").show();
+               $(".toggle").show();
+               $(".form-div .area input[type='text']").css("margin-left","12px");;
+            }
+        });
 
     });
 
