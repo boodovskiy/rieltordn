@@ -16,23 +16,6 @@ if ( inspiry_is_search_fields_configured() ):
 		    get_template_part( 'template-parts/search-fields/keyword' );
 	    }
 
-
-	    /*
-	     * Property ID Field
-	     */
-	    if ( in_array ( 'property-id', $theme_search_fields ) ) {
-		    get_template_part( 'template-parts/search-fields/property-id' );
-	    }
-
-
-	    /*
-	     * Location Field
-	     */
-	    if ( in_array ( 'location', $theme_search_fields ) ) {
-		    get_template_part( 'template-parts/search-fields/location' );
-	    }
-
-
 	    /*
 	     * Property Status Field
 	     */
@@ -40,12 +23,18 @@ if ( inspiry_is_search_fields_configured() ):
 		    get_template_part( 'template-parts/search-fields/status' );
 	    }
 
-
 	    /*
 	     * Property Type Field
 	     */
 	    if ( in_array ( 'type', $theme_search_fields ) ) {
 		    get_template_part( 'template-parts/search-fields/type' );
+	    }
+
+	    /*
+	     * Location Field
+	     */
+	    if ( in_array ( 'location', $theme_search_fields ) ) {
+		    get_template_part( 'template-parts/search-fields/location' );
 	    }
 
 
@@ -64,6 +53,14 @@ if ( inspiry_is_search_fields_configured() ):
 		    get_template_part( 'template-parts/search-fields/min-baths' );
 	    }
 
+	    if (strpos($_SERVER['REQUEST_URI'], 'prodazha')) {
+			/*
+			 * Min & Max Area
+			 */
+		    if ( in_array ( 'min-max-area', $theme_search_fields ) ) {
+			    get_template_part( 'template-parts/search-fields/min-max-area' );
+		    }
+		}
 
 		/*
 		 * Min & Max Price
@@ -73,12 +70,14 @@ if ( inspiry_is_search_fields_configured() ):
 	    }
 
 
-		/*
-		 * Min & Max Area
-		 */
-	    if ( in_array ( 'min-max-area', $theme_search_fields ) ) {
-		    get_template_part( 'template-parts/search-fields/min-max-area' );
+	     /*
+	     * Property ID Field
+	     */
+	    if ( in_array ( 'property-id', $theme_search_fields ) ) {
+		    get_template_part( 'template-parts/search-fields/property-id' );
 	    }
+
+
 
 
 	    /*

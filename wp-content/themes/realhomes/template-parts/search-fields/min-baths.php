@@ -12,7 +12,8 @@
 	</label>
     <span class="selectwrap">
         <select name="bathrooms" id="select-bathrooms" class="search-select">
-            <?php inspiry_min_baths(); ?>
+            <?php/* inspiry_min_baths(); */?>
+            <?php numbers_list('bathrooms'); ?>
         </select>
     </span>
 </div>

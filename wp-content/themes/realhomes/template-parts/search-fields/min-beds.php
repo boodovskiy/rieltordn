@@ -10,9 +10,10 @@
 		echo ( $inspiry_min_beds_label ) ? $inspiry_min_beds_label :__('Min Beds', 'framework');
 		?>
 	</label>
-    <span class="selectwrap">
-        <select name="bedrooms" id="select-bedrooms" class="search-select">
-            <?php inspiry_min_beds(); ?>
-        </select>
+    <span class="selectwrap clearfix">
+        <!--<select name="bedrooms" id="select-bedrooms" class="search-select">-->
+            <?php /*inspiry_min_beds(); */?>
+            <?php numbers_list('bedrooms'); ?>
+        <!--</select>-->
     </span>
 </div>

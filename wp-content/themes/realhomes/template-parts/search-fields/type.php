@@ -3,7 +3,7 @@
  * Property Types Field
  */
 ?>
-<div class="option-bar large">
+<div class="option-bar large <?php if ( strpos($_SERVER['REQUEST_URI'], 'arenda') ) echo " arenda-type";?>">
 	<label for="select-property-type">
 		<?php
 		$inspiry_property_type_label = get_option( 'inspiry_property_type_label' );

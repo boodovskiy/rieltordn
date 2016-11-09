@@ -432,7 +432,7 @@ if ( ! function_exists( 'numbers_list' ) ) {
 	 */
 	function numbers_list( $numbers_list_for ) {
 		$numbers_array = array( 1, 2, 3, 4/*, 5, 6, 7, 8, 9, 10 */);
-		$searched_value = '';
+		$searched_value = [];
 
 		if ( $numbers_list_for == 'bedrooms' ) {
 			if ( isset( $_GET[ 'bedrooms' ] ) ) {
