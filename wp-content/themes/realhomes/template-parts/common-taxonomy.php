@@ -24,6 +24,14 @@ get_header();
 
     <div class="container contents listing-grid-layout">
         <div class="row">
+            <?php
+            /* Featured Properties */
+            $show_featured_properties = get_option('theme_show_featured_properties');
+            if($show_featured_properties == 'true'){
+                /*get_template_part("template-parts/carousel") ;*/
+                the_widget( 'Advance_Search_Widget' );
+            }
+            ?>
             <div class="span9 main-wrap">
 
                 <!-- Main Content -->
