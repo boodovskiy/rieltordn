@@ -99,6 +99,55 @@ switch($theme_homepage_module){
                         get_template_part("template-parts/home-properties") ;
                     }
 
+                                        ?>
+                    <!-- Homepage 3 Buttons! -->
+                    <section class="home-recent-posts container-fluid clearfix 3buttons">
+                        <div class="recent-posts-container row-fluid clearfix">
+                        <!-- 1 Button -->
+                        
+                        <article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
+                            <figure>
+                                <span class="format-icon image"></span>
+                                <a href="http://dnrieltor.bget.ru/property-status/prodazha/?view=list" title="">
+                                 <div class="image123">
+                                    <img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/1.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
+                                    <h123>ДЛЯ ПОКУПАТЕЛЕЙ</h123>        
+                                 </div>          
+                                </a>
+                            </figure>
+                        </article>
+                        
+                        <!-- 2 Button -->   
+                        <article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
+                            <figure>
+                                <span class="format-icon image"></span>
+                                    <a href="http://dnrieltor.bget.ru/lorem-post-with-image-format/" title="">
+                                        <div class="image123">
+                                            <img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/2.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
+                                            <h123>ДЛЯ ВЛАДЕЛЬЦЕВ</h123>        
+                                        </div>  
+                                    </a>
+                            </figure>
+                        </article>
+
+                        <!-- 3 Button -->   
+                        <article class="span4 clearfix post-25 post type-post status-publish format-image has-post-thumbnail hentry category-sales tag-custom tag-interior post_format-post-format-image">
+                           <figure>
+                                <span class="format-icon image"></span>
+                                <a href="http://dnrieltor.bget.ru/property-status/arenda/?view=list" title="">
+                                    <div class="image123">
+                                        <img src="http://dnrieltor.bget.ru/wp-content/uploads/2015/12/3.jpg" class="attachment-gallery-two-column-image wp-post-image" alt="" height="269" width="536">
+                                        <h123>АРЕНДА</h123>
+                                    </div>          
+                                </a>
+                            </figure>
+                        </article>
+
+                        </div>
+                    </section>
+
+                    <?php
+
 
                     /* Featured Properties */
                     $show_featured_properties = get_option('theme_show_featured_properties');
