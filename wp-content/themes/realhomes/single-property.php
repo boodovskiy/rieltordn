@@ -46,18 +46,8 @@ if( $banner_image_id ){
                                 if ( ! post_password_required() ) {
 
                                     /*
-                                    * 1. Property Images Slider
+                                    * 1. Property Images Slider перенесено в property-details/property-contents
                                     */
-                                    $gallery_slider_type = get_post_meta($post->ID, 'REAL_HOMES_gallery_slider_type', true);
-                                    /* For demo purpose only */
-                                    if(isset($_GET['slider-type'])){
-                                        $gallery_slider_type = $_GET['slider-type'];
-                                    }
-                                    if( $gallery_slider_type == 'thumb-on-bottom' ){
-                                        get_template_part('property-details/property-slider-two');
-                                    }else{
-                                        get_template_part('property-details/property-slider');
-                                    }
 
 
                                     /*
