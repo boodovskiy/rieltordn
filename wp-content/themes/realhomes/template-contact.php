@@ -26,16 +26,7 @@ get_header();
                                     </article>
                                     <?php
                                 endwhile;
-                            endif;
-
-                            $show_contact_map = get_option('theme_show_contact_map');
-                            if($show_contact_map == 'true'){
-                                ?>
-                                <div class="map-container clearfix">
-                                <?php get_template_part('template-parts/contact-map'); ?>
-                                </div>
-                                <?php
-                            }
+                            endif;                           
 
                             $show_details = get_option('theme_show_details');
                             if($show_details == 'true'){
@@ -84,6 +75,15 @@ get_header();
                                     </ul>
 
                                 </section>
+                                <?php
+                            }
+
+                            $show_contact_map = get_option('theme_show_contact_map');
+                            if($show_contact_map == 'true'){
+                                ?>
+                                <div class="map-container clearfix">
+                                <?php get_template_part('template-parts/contact-map'); ?>
+                                </div>
                                 <?php
                             }
 
